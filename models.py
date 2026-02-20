@@ -54,6 +54,7 @@ class BlogPost(db.Model):
     title = db.Column(db.String(300), nullable=False)
     excerpt = db.Column(db.String(500))
     content = db.Column(db.Text, nullable=False)
+    image = db.Column(db.String(500))
     author = db.Column(db.String(100), default="Your Name")
     category = db.Column(db.String(100))
     date = db.Column(db.Date, nullable=False)
@@ -63,7 +64,25 @@ class BlogPost(db.Model):
 class Skill(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
+    icon = db.Column(db.String(100))
     category = db.Column(db.String(50))
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+
+
+class SocialLink(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    platform = db.Column(db.String(50), nullable=False)
+    url = db.Column(db.String(500), nullable=False)
+    icon = db.Column(db.String(50))
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+
+
+class ContactMessage(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100), nullable=False)
+    email = db.Column(db.String(200), nullable=False)
+    subject = db.Column(db.String(200))
+    message = db.Column(db.Text, nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
 

@@ -1,7 +1,7 @@
 from flask import Flask
 from flask_migrate import Migrate
 from flask_login import LoginManager
-from models import db, User
+from models import db, User, SocialLink
 from routes import main
 from auth import auth
 from admin import admin
@@ -23,6 +23,11 @@ login_manager.login_view = "auth.login"
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))
+
+@app.context_processor
+def inject_social_links():
+    links = SocialLink.query.all()
+    return {"social_links": [{"platform": l.platform, "url": l.url, "icon": l.icon} for l in links]}
 
 app.register_blueprint(main)
 app.register_blueprint(auth)

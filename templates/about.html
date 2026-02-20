@@ -27,7 +27,7 @@
                         <h5>Skills</h5>
                         <ul class="list-unstyled">
                             {% for skill in skills %}
-                            <li><i class="bi bi-check2 text-primary me-2"></i>{{ skill }}</li>
+                            <li><i class="bi {{ skill.icon if skill.icon else 'bi-check2' }} text-primary me-2"></i>{{ skill.name }}</li>
                             {% endfor %}
                         </ul>
                     </div>

@@ -1,0 +1,47 @@
+{% extends "admin/base.html" %}
+
+{% block title %}Social Links - Admin{% endblock %}
+
+{% block content %}
+<h1 class="mb-4">Social Links</h1>
+
+<a href="{{ url_for('admin.new_social_link') }}" class="btn btn-primary mb-3">Add New Link</a>
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    {% for category, message in messages %}
+      <div class="alert alert-{{ 'success' if category == 'success' else 'danger' }}">{{ message }}</div>
+    {% endfor %}
+  {% endif %}
+{% endwith %}
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Platform</th>
+            <th>URL</th>
+            <th>Icon</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for link in links %}
+        <tr>
+            <td>{{ link.platform }}</td>
+            <td><a href="{{ link.url }}" target="_blank">{{ link.url }}</a></td>
+            <td><i class="bi {{ link.icon }}"></i> {{ link.icon }}</td>
+            <td>
+                <a href="{{ url_for('admin.edit_social_link', id=link.id) }}" class="btn btn-sm btn-secondary">Edit</a>
+                <form method="POST" action="{{ url_for('admin.delete_social_link', id=link.id) }}" style="display:inline;">
+                    <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure?')">Delete</button>
+                </form>
+            </td>
+        </tr>
+        {% else %}
+        <tr>
+            <td colspan="4" class="text-center">No social links yet.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

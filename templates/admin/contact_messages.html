@@ -1,0 +1,72 @@
+{% extends "admin/base.html" %}
+
+{% block title %}Contact Messages - Admin{% endblock %}
+
+{% block content %}
+<h1 class="mb-4">Contact Messages</h1>
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    {% for category, message in messages %}
+      <div class="alert alert-{{ 'success' if category == 'success' else 'danger' }}">{{ message }}</div>
+    {% endfor %}
+  {% endif %}
+{% endwith %}
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Date</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Subject</th>
+            <th>Message</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for msg in messages_list %}
+        <tr>
+            <td>{{ msg.created_at.strftime('%Y-%m-%d %H:%M') }}</td>
+            <td>{{ msg.name }}</td>
+            <td><a href="mailto:{{ msg.email }}">{{ msg.email }}</a></td>
+            <td>{{ msg.subject or '-' }}</td>
+            <td>
+                <button type="button" class="btn btn-sm btn-info" data-bs-toggle="modal" data-bs-target="#msgModal{{ msg.id }}">
+                    View
+                </button>
+                <div class="modal fade" id="msgModal{{ msg.id }}" tabindex="-1">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Message from {{ msg.name }}</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                            </div>
+                            <div class="modal-body">
+                                <p><strong>Email:</strong> <a href="mailto:{{ msg.email }}">{{ msg.email }}</a></p>
+                                <p><strong>Subject:</strong> {{ msg.subject or 'No subject' }}</p>
+                                <p><strong>Date:</strong> {{ msg.created_at.strftime('%Y-%m-%d %H:%M') }}</p>
+                                <hr>
+                                <p>{{ msg.message }}</p>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </td>
+            <td>
+                <form method="POST" action="{{ url_for('admin.delete_contact_message', id=msg.id) }}" style="display:inline;">
+                    <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure?')">Delete</button>
+                </form>
+            </td>
+        </tr>
+        {% else %}
+        <tr>
+            <td colspan="6" class="text-center">No messages yet.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

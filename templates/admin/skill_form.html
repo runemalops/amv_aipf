@@ -11,6 +11,11 @@
         <input type="text" class="form-control" id="name" name="name" value="{{ skill.name if skill else '' }}" required>
     </div>
     <div class="mb-3">
+        <label for="icon" class="form-label">Icon (Bootstrap Icons class)</label>
+        <input type="text" class="form-control" id="icon" name="icon" placeholder="e.g., bi-python, bi-braces" value="{{ skill.icon if skill else '' }}">
+        <small class="text-muted">Use Bootstrap Icons class names (e.g., bi-python, bi-javascript, bi-braces)</small>
+    </div>
+    <div class="mb-3">
         <label for="category" class="form-label">Category</label>
         <input type="text" class="form-control" id="category" name="category" placeholder="e.g., Backend, Frontend" value="{{ skill.category if skill else '' }}">
     </div>

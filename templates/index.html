@@ -76,6 +76,9 @@
             {% for post in latest_posts %}
             <div class="col-md-4 mb-4">
                 <div class="card blog-card h-100">
+                    {% if post.image %}
+                    <img src="{{ post.image }}" class="card-img-top" alt="{{ post.title }}" style="height: 180px; object-fit: cover;">
+                    {% endif %}
                     <div class="card-body">
                         <h5 class="card-title">{{ post.title }}</h5>
                         <p class="card-text text-muted small">{{ post.excerpt }}</p>

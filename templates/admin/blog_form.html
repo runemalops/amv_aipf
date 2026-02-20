@@ -11,6 +11,10 @@
         <input type="text" class="form-control" id="title" name="title" value="{{ post.title if post else '' }}" required>
     </div>
     <div class="mb-3">
+        <label for="image" class="form-label">Image URL</label>
+        <input type="url" class="form-control" id="image" name="image" value="{{ post.image if post else '' }}" placeholder="https://example.com/image.jpg">
+    </div>
+    <div class="mb-3">
         <label for="excerpt" class="form-label">Excerpt</label>
         <textarea class="form-control" id="excerpt" name="excerpt" rows="2">{{ post.excerpt if post else '' }}</textarea>
     </div>

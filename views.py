@@ -1,5 +1,5 @@
-from flask import render_template
-from models import db, Project, Experience, Education, BlogPost, Skill, Interest
+from flask import render_template, request, flash, redirect, url_for
+from models import db, Project, Experience, Education, BlogPost, Skill, Interest, SocialLink, ContactMessage
 
 
 def get_featured_projects():
@@ -36,6 +36,7 @@ def get_latest_posts():
             "id": p.id,
             "title": p.title,
             "excerpt": p.excerpt,
+            "image": p.image,
             "date": p.date.strftime("%B %d, %Y")
         }
         for p in posts
@@ -49,6 +50,7 @@ def get_all_posts():
             "id": p.id,
             "title": p.title,
             "excerpt": p.excerpt,
+            "image": p.image,
             "content": p.content,
             "date": p.date.strftime("%B %d, %Y"),
             "author": p.author,
@@ -60,7 +62,12 @@ def get_all_posts():
 
 def get_skills():
     skills = Skill.query.all()
-    return [s.name for s in skills]
+    return [{"name": s.name, "icon": s.icon} for s in skills]
+
+
+def get_social_links():
+    links = SocialLink.query.all()
+    return [{"platform": l.platform, "url": l.url, "icon": l.icon} for l in links]
 
 
 def get_interests():
@@ -99,7 +106,8 @@ def render_index():
     return render_template(
         "index.html",
         featured_projects=get_featured_projects(),
-        latest_posts=get_latest_posts()
+        latest_posts=get_latest_posts(),
+        social_links=get_social_links()
     )
 
 
@@ -108,7 +116,8 @@ def render_about():
         "about.html",
         skills=get_skills(),
         interests=get_interests(),
-        education=get_education()
+        education=get_education(),
+        social_links=get_social_links()
     )
 
 
@@ -150,6 +159,7 @@ def render_blog_post(post_id):
     post_data = {
         "title": post.title,
         "content": post.content,
+        "image": post.image,
         "date": post.date.strftime("%B %d, %Y"),
         "author": post.author,
         "category": post.category
@@ -162,5 +172,25 @@ def render_blog_post(post_id):
         "blog_post.html",
         post=post_data,
         prev_post=prev_data,
-        next_post=next_data
+        next_post=next_data,
+        social_links=get_social_links()
     ), 200
+
+
+def render_contact():
+    if request.method == "POST":
+        name = request.form.get("name")
+        email = request.form.get("email")
+        subject = request.form.get("subject")
+        message = request.form.get("message")
+        
+        contact = ContactMessage(name=name, email=email, subject=subject, message=message)
+        db.session.add(contact)
+        db.session.commit()
+        flash("Message sent successfully!", "success")
+        return redirect(url_for("main.contact"))
+    
+    return render_template(
+        "contact.html",
+        social_links=get_social_links()
+    )

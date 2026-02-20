@@ -43,4 +43,56 @@
         </div>
     </div>
 </div>
+
+<h2 class="mt-4 mb-3">Manage Content</h2>
+<div class="row">
+    <div class="col-md-4 mb-3">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Projects</h5>
+                <a href="{{ url_for('admin.projects') }}" class="btn btn-primary btn-sm">Manage Projects</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-3">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Experience</h5>
+                <a href="{{ url_for('admin.experiences') }}" class="btn btn-primary btn-sm">Manage Experience</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-3">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Blog Posts</h5>
+                <a href="{{ url_for('admin.blog_posts') }}" class="btn btn-primary btn-sm">Manage Blog</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-3">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Skills</h5>
+                <a href="{{ url_for('admin.skills') }}" class="btn btn-primary btn-sm">Manage Skills</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-3">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Social Links</h5>
+                <a href="{{ url_for('admin.social_links') }}" class="btn btn-primary btn-sm">Manage Links</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4 mb-3">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">Contact Messages</h5>
+                <a href="{{ url_for('admin.contact_messages') }}" class="btn btn-primary btn-sm">View Messages</a>
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}

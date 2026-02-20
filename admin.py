@@ -1,6 +1,6 @@
 from flask import Blueprint, render_template, redirect, url_for, flash, request
 from flask_login import login_required, current_user
-from models import db, Project, Experience, Education, BlogPost, Skill, Interest
+from models import db, Project, Experience, Education, BlogPost, Skill, Interest, SocialLink, ContactMessage
 
 admin = Blueprint("admin", __name__, url_prefix="/admin")
 
@@ -152,6 +152,7 @@ def new_blog_post():
             title=request.form.get("title"),
             excerpt=request.form.get("excerpt"),
             content=request.form.get("content"),
+            image=request.form.get("image"),
             author=request.form.get("author"),
             category=request.form.get("category"),
             date=post_date
@@ -174,6 +175,7 @@ def edit_blog_post(id):
         post.title = request.form.get("title")
         post.excerpt = request.form.get("excerpt")
         post.content = request.form.get("content")
+        post.image = request.form.get("image")
         post.author = request.form.get("author")
         post.category = request.form.get("category")
         post.date = datetime.strptime(request.form.get("date"), "%Y-%m-%d").date()
@@ -207,6 +209,7 @@ def new_skill():
     if request.method == "POST":
         skill = Skill(
             name=request.form.get("name"),
+            icon=request.form.get("icon"),
             category=request.form.get("category")
         )
         db.session.add(skill)
@@ -224,6 +227,7 @@ def edit_skill(id):
     
     if request.method == "POST":
         skill.name = request.form.get("name")
+        skill.icon = request.form.get("icon")
         skill.category = request.form.get("category")
         db.session.commit()
         flash("Skill updated successfully!", "success")
@@ -240,3 +244,70 @@ def delete_skill(id):
     db.session.commit()
     flash("Skill deleted successfully!", "success")
     return redirect(url_for("admin.skills"))
+
+
+@admin.route("/social-links", methods=["GET"])
+@login_required
+def social_links():
+    links = SocialLink.query.all()
+    return render_template("admin/social_links.html", links=links)
+
+
+@admin.route("/social-links/new", methods=["GET", "POST"])
+@login_required
+def new_social_link():
+    if request.method == "POST":
+        link = SocialLink(
+            platform=request.form.get("platform"),
+            url=request.form.get("url"),
+            icon=request.form.get("icon")
+        )
+        db.session.add(link)
+        db.session.commit()
+        flash("Social link created successfully!", "success")
+        return redirect(url_for("admin.social_links"))
+    
+    return render_template("admin/social_link_form.html", link=None)
+
+
+@admin.route("/social-links/<int:id>/edit", methods=["GET", "POST"])
+@login_required
+def edit_social_link(id):
+    link = SocialLink.query.get_or_404(id)
+    
+    if request.method == "POST":
+        link.platform = request.form.get("platform")
+        link.url = request.form.get("url")
+        link.icon = request.form.get("icon")
+        db.session.commit()
+        flash("Social link updated successfully!", "success")
+        return redirect(url_for("admin.social_links"))
+    
+    return render_template("admin/social_link_form.html", link=link)
+
+
+@admin.route("/social-links/<int:id>/delete", methods=["POST"])
+@login_required
+def delete_social_link(id):
+    link = SocialLink.query.get_or_404(id)
+    db.session.delete(link)
+    db.session.commit()
+    flash("Social link deleted successfully!", "success")
+    return redirect(url_for("admin.social_links"))
+
+
+@admin.route("/contact-messages", methods=["GET"])
+@login_required
+def contact_messages():
+    messages_list = ContactMessage.query.order_by(ContactMessage.created_at.desc()).all()
+    return render_template("admin/contact_messages.html", messages_list=messages_list)
+
+
+@admin.route("/contact-messages/<int:id>/delete", methods=["POST"])
+@login_required
+def delete_contact_message(id):
+    message = ContactMessage.query.get_or_404(id)
+    db.session.delete(message)
+    db.session.commit()
+    flash("Message deleted successfully!", "success")
+    return redirect(url_for("admin.contact_messages"))
