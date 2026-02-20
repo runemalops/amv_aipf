@@ -1,0 +1,46 @@
+{% extends "admin/base.html" %}
+
+{% block title %}Dashboard - Admin{% endblock %}
+
+{% block content %}
+<h1 class="mb-4">Dashboard</h1>
+
+<div class="row">
+    <div class="col-md-3">
+        <div class="card text-center">
+            <div class="card-body">
+                <i class="bi bi-folder display-4 text-primary"></i>
+                <h3 class="mt-2">{{ project_count }}</h3>
+                <p class="mb-0">Projects</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-center">
+            <div class="card-body">
+                <i class="bi bi-briefcase display-4 text-success"></i>
+                <h3 class="mt-2">{{ experience_count }}</h3>
+                <p class="mb-0">Experiences</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-center">
+            <div class="card-body">
+                <i class="bi bi-file-text display-4 text-info"></i>
+                <h3 class="mt-2">{{ blog_count }}</h3>
+                <p class="mb-0">Blog Posts</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card text-center">
+            <div class="card-body">
+                <i class="bi bi-code-slash display-4 text-warning"></i>
+                <h3 class="mt-2">{{ skill_count }}</h3>
+                <p class="mb-0">Skills</p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

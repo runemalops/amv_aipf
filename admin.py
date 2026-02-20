@@ -1,0 +1,242 @@
+from flask import Blueprint, render_template, redirect, url_for, flash, request
+from flask_login import login_required, current_user
+from models import db, Project, Experience, Education, BlogPost, Skill, Interest
+
+admin = Blueprint("admin", __name__, url_prefix="/admin")
+
+
+@admin.route("/")
+@login_required
+def dashboard():
+    project_count = Project.query.count()
+    experience_count = Experience.query.count()
+    blog_count = BlogPost.query.count()
+    skill_count = Skill.query.count()
+    
+    return render_template(
+        "admin/dashboard.html",
+        project_count=project_count,
+        experience_count=experience_count,
+        blog_count=blog_count,
+        skill_count=skill_count
+    )
+
+
+@admin.route("/projects", methods=["GET"])
+@login_required
+def projects():
+    projects = Project.query.all()
+    return render_template("admin/projects.html", projects=projects)
+
+
+@admin.route("/projects/new", methods=["GET", "POST"])
+@login_required
+def new_project():
+    if request.method == "POST":
+        project = Project(
+            title=request.form.get("title"),
+            description=request.form.get("description"),
+            technologies=request.form.get("technologies"),
+            link=request.form.get("link"),
+            demo=request.form.get("demo"),
+            featured="featured" in request.form
+        )
+        db.session.add(project)
+        db.session.commit()
+        flash("Project created successfully!", "success")
+        return redirect(url_for("admin.projects"))
+    
+    return render_template("admin/project_form.html", project=None)
+
+
+@admin.route("/projects/<int:id>/edit", methods=["GET", "POST"])
+@login_required
+def edit_project(id):
+    project = Project.query.get_or_404(id)
+    
+    if request.method == "POST":
+        project.title = request.form.get("title")
+        project.description = request.form.get("description")
+        project.technologies = request.form.get("technologies")
+        project.link = request.form.get("link")
+        project.demo = request.form.get("demo")
+        project.featured = "featured" in request.form
+        db.session.commit()
+        flash("Project updated successfully!", "success")
+        return redirect(url_for("admin.projects"))
+    
+    return render_template("admin/project_form.html", project=project)
+
+
+@admin.route("/projects/<int:id>/delete", methods=["POST"])
+@login_required
+def delete_project(id):
+    project = Project.query.get_or_404(id)
+    db.session.delete(project)
+    db.session.commit()
+    flash("Project deleted successfully!", "success")
+    return redirect(url_for("admin.projects"))
+
+
+@admin.route("/experience", methods=["GET"])
+@login_required
+def experiences():
+    experiences = Experience.query.all()
+    return render_template("admin/experiences.html", experiences=experiences)
+
+
+@admin.route("/experience/new", methods=["GET", "POST"])
+@login_required
+def new_experience():
+    if request.method == "POST":
+        experience = Experience(
+            title=request.form.get("title"),
+            company=request.form.get("company"),
+            period=request.form.get("period"),
+            location=request.form.get("location"),
+            responsibilities=request.form.get("responsibilities"),
+            technologies=request.form.get("technologies")
+        )
+        db.session.add(experience)
+        db.session.commit()
+        flash("Experience created successfully!", "success")
+        return redirect(url_for("admin.experiences"))
+    
+    return render_template("admin/experience_form.html", experience=None)
+
+
+@admin.route("/experience/<int:id>/edit", methods=["GET", "POST"])
+@login_required
+def edit_experience(id):
+    experience = Experience.query.get_or_404(id)
+    
+    if request.method == "POST":
+        experience.title = request.form.get("title")
+        experience.company = request.form.get("company")
+        experience.period = request.form.get("period")
+        experience.location = request.form.get("location")
+        experience.responsibilities = request.form.get("responsibilities")
+        experience.technologies = request.form.get("technologies")
+        db.session.commit()
+        flash("Experience updated successfully!", "success")
+        return redirect(url_for("admin.experiences"))
+    
+    return render_template("admin/experience_form.html", experience=experience)
+
+
+@admin.route("/experience/<int:id>/delete", methods=["POST"])
+@login_required
+def delete_experience(id):
+    experience = Experience.query.get_or_404(id)
+    db.session.delete(experience)
+    db.session.commit()
+    flash("Experience deleted successfully!", "success")
+    return redirect(url_for("admin.experiences"))
+
+
+@admin.route("/blog", methods=["GET"])
+@login_required
+def blog_posts():
+    posts = BlogPost.query.order_by(BlogPost.date.desc()).all()
+    return render_template("admin/blog_posts.html", posts=posts)
+
+
+@admin.route("/blog/new", methods=["GET", "POST"])
+@login_required
+def new_blog_post():
+    if request.method == "POST":
+        from datetime import datetime
+        post_date = datetime.strptime(request.form.get("date"), "%Y-%m-%d").date()
+        
+        post = BlogPost(
+            title=request.form.get("title"),
+            excerpt=request.form.get("excerpt"),
+            content=request.form.get("content"),
+            author=request.form.get("author"),
+            category=request.form.get("category"),
+            date=post_date
+        )
+        db.session.add(post)
+        db.session.commit()
+        flash("Blog post created successfully!", "success")
+        return redirect(url_for("admin.blog_posts"))
+    
+    return render_template("admin/blog_form.html", post=None)
+
+
+@admin.route("/blog/<int:id>/edit", methods=["GET", "POST"])
+@login_required
+def edit_blog_post(id):
+    post = BlogPost.query.get_or_404(id)
+    
+    if request.method == "POST":
+        from datetime import datetime
+        post.title = request.form.get("title")
+        post.excerpt = request.form.get("excerpt")
+        post.content = request.form.get("content")
+        post.author = request.form.get("author")
+        post.category = request.form.get("category")
+        post.date = datetime.strptime(request.form.get("date"), "%Y-%m-%d").date()
+        db.session.commit()
+        flash("Blog post updated successfully!", "success")
+        return redirect(url_for("admin.blog_posts"))
+    
+    return render_template("admin/blog_form.html", post=post)
+
+
+@admin.route("/blog/<int:id>/delete", methods=["POST"])
+@login_required
+def delete_blog_post(id):
+    post = BlogPost.query.get_or_404(id)
+    db.session.delete(post)
+    db.session.commit()
+    flash("Blog post deleted successfully!", "success")
+    return redirect(url_for("admin.blog_posts"))
+
+
+@admin.route("/skills", methods=["GET"])
+@login_required
+def skills():
+    skills = Skill.query.all()
+    return render_template("admin/skills.html", skills=skills)
+
+
+@admin.route("/skills/new", methods=["GET", "POST"])
+@login_required
+def new_skill():
+    if request.method == "POST":
+        skill = Skill(
+            name=request.form.get("name"),
+            category=request.form.get("category")
+        )
+        db.session.add(skill)
+        db.session.commit()
+        flash("Skill created successfully!", "success")
+        return redirect(url_for("admin.skills"))
+    
+    return render_template("admin/skill_form.html", skill=None)
+
+
+@admin.route("/skills/<int:id>/edit", methods=["GET", "POST"])
+@login_required
+def edit_skill(id):
+    skill = Skill.query.get_or_404(id)
+    
+    if request.method == "POST":
+        skill.name = request.form.get("name")
+        skill.category = request.form.get("category")
+        db.session.commit()
+        flash("Skill updated successfully!", "success")
+        return redirect(url_for("admin.skills"))
+    
+    return render_template("admin/skill_form.html", skill=skill)
+
+
+@admin.route("/skills/<int:id>/delete", methods=["POST"])
+@login_required
+def delete_skill(id):
+    skill = Skill.query.get_or_404(id)
+    db.session.delete(skill)
+    db.session.commit()
+    flash("Skill deleted successfully!", "success")
+    return redirect(url_for("admin.skills"))

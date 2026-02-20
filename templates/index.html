@@ -1,0 +1,96 @@
+{% extends "base.html" %}
+
+{% block title %}Home - Personal Portfolio{% endblock %}
+
+{% block content %}
+<section class="hero-section text-center">
+    <div class="container">
+        <h1 class="display-3 mb-4">Welcome to My Portfolio</h1>
+        <p class="lead mb-4">Developer | Designer | Problem Solver</p>
+        <div class="mb-4">
+            <a href="{{ url_for('main.about') }}" class="btn btn-light btn-lg me-2">About Me</a>
+            <a href="{{ url_for('main.projects') }}" class="btn btn-outline-light btn-lg">My Projects</a>
+        </div>
+    </div>
+</section>
+
+<section class="section-padding">
+    <div class="container">
+        <div class="row text-center">
+            <div class="col-md-4 mb-4">
+                <div class="p-4 bg-light rounded">
+                    <i class="bi bi-code-slash display-4 text-primary mb-3"></i>
+                    <h4>Clean Code</h4>
+                    <p class="mb-0">Writing maintainable and efficient code</p>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="p-4 bg-light rounded">
+                    <i class="bi bi-palette display-4 text-primary mb-3"></i>
+                    <h4>Modern Design</h4>
+                    <p class="mb-0">Creating beautiful user experiences</p>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="p-4 bg-light rounded">
+                    <i class="bi bi-lightning-charge display-4 text-primary mb-3"></i>
+                    <h4>Fast Solutions</h4>
+                    <p class="mb-0">Optimizing for performance</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section-padding bg-light">
+    <div class="container">
+        <h2 class="text-center mb-5">Featured Projects</h2>
+        <div class="row">
+            {% for project in featured_projects %}
+            <div class="col-md-4 mb-4">
+                <div class="card project-card">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ project.title }}</h5>
+                        <p class="card-text">{{ project.description }}</p>
+                        <div class="mb-2">
+                            {% for tech in project.technologies %}
+                            <span class="badge bg-secondary me-1">{{ tech }}</span>
+                            {% endfor %}
+                        </div>
+                        <a href="{{ project.link }}" class="btn btn-sm btn-primary">View Project</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="text-center mt-4">
+            <a href="{{ url_for('main.projects') }}" class="btn btn-outline-primary">View All Projects</a>
+        </div>
+    </div>
+</section>
+
+<section class="section-padding">
+    <div class="container">
+        <h2 class="text-center mb-5">Latest Blog Posts</h2>
+        <div class="row">
+            {% for post in latest_posts %}
+            <div class="col-md-4 mb-4">
+                <div class="card blog-card h-100">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ post.title }}</h5>
+                        <p class="card-text text-muted small">{{ post.excerpt }}</p>
+                        <a href="{{ url_for('main.blog_post', post_id=post.id) }}" class="btn btn-sm btn-outline-primary">Read More</a>
+                    </div>
+                    <div class="card-footer text-muted">
+                        <small>{{ post.date }}</small>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="text-center mt-4">
+            <a href="{{ url_for('main.blog') }}" class="btn btn-outline-primary">View All Posts</a>
+        </div>
+    </div>
+</section>
+{% endblock %}

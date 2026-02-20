@@ -1,0 +1,68 @@
+{% extends "base.html" %}
+
+{% block title %}About Me - Personal Portfolio{% endblock %}
+
+{% block content %}
+<section class="section-padding">
+    <div class="container">
+        <h1 class="text-center mb-5">About Me</h1>
+        <div class="row align-items-center">
+            <div class="col-md-4 text-center mb-4 mb-md-0">
+                <div class="bg-light rounded-circle d-inline-block p-5" style="width: 250px; height: 250px;">
+                    <i class="bi bi-person display-1 text-secondary"></i>
+                </div>
+            </div>
+            <div class="col-md-8">
+                <h2 class="mb-4">Hi, I'm a Developer</h2>
+                <p class="lead mb-4">
+                    I'm a passionate developer with expertise in building web applications and solving complex problems.
+                </p>
+                <p class="mb-4">
+                    With several years of experience in the field, I've worked on various projects ranging from
+                    small business websites to enterprise-level applications. I love learning new technologies
+                    and staying up-to-date with the latest trends in software development.
+                </p>
+                <div class="row mb-4">
+                    <div class="col-6">
+                        <h5>Skills</h5>
+                        <ul class="list-unstyled">
+                            {% for skill in skills %}
+                            <li><i class="bi bi-check2 text-primary me-2"></i>{{ skill }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    <div class="col-6">
+                        <h5>Interests</h5>
+                        <ul class="list-unstyled">
+                            {% for interest in interests %}
+                            <li><i class="bi bi-star text-primary me-2"></i>{{ interest }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+                <a href="{{ url_for('main.experience') }}" class="btn btn-primary">View My Experience</a>
+                <a href="{{ url_for('main.projects') }}" class="btn btn-outline-primary">My Projects</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section-padding bg-light">
+    <div class="container">
+        <h2 class="text-center mb-5">Education</h2>
+        <div class="row justify-content-center">
+            {% for edu in education %}
+            <div class="col-md-8 mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h4>{{ edu.degree }}</h4>
+                        <h5 class="text-muted">{{ edu.school }}</h5>
+                        <p class="mb-0">{{ edu.year }}</p>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+{% endblock %}

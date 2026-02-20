@@ -1,0 +1,38 @@
+{% extends "admin/base.html" %}
+
+{% block title %}{{ 'Edit' if post else 'New' }} Blog Post - Admin{% endblock %}
+
+{% block content %}
+<h1 class="mb-4">{{ 'Edit' if post else 'New' }} Blog Post</h1>
+
+<form method="POST">
+    <div class="mb-3">
+        <label for="title" class="form-label">Title</label>
+        <input type="text" class="form-control" id="title" name="title" value="{{ post.title if post else '' }}" required>
+    </div>
+    <div class="mb-3">
+        <label for="excerpt" class="form-label">Excerpt</label>
+        <textarea class="form-control" id="excerpt" name="excerpt" rows="2">{{ post.excerpt if post else '' }}</textarea>
+    </div>
+    <div class="mb-3">
+        <label for="content" class="form-label">Content (HTML allowed)</label>
+        <textarea class="form-control" id="content" name="content" rows="8" required>{{ post.content if post else '' }}</textarea>
+    </div>
+    <div class="row">
+        <div class="col-md-6 mb-3">
+            <label for="author" class="form-label">Author</label>
+            <input type="text" class="form-control" id="author" name="author" value="{{ post.author if post else 'Your Name' }}">
+        </div>
+        <div class="col-md-6 mb-3">
+            <label for="category" class="form-label">Category</label>
+            <input type="text" class="form-control" id="category" name="category" value="{{ post.category if post else '' }}">
+        </div>
+    </div>
+    <div class="mb-3">
+        <label for="date" class="form-label">Date</label>
+        <input type="date" class="form-control" id="date" name="date" value="{{ post.date.strftime('%Y-%m-%d') if post else '' }}" required>
+    </div>
+    <button type="submit" class="btn btn-primary">Save</button>
+    <a href="{{ url_for('admin.blog_posts') }}" class="btn btn-secondary">Cancel</a>
+</form>
+{% endblock %}

@@ -1,0 +1,36 @@
+{% extends "admin/base.html" %}
+
+{% block title %}{{ 'Edit' if experience else 'New' }} Experience - Admin{% endblock %}
+
+{% block content %}
+<h1 class="mb-4">{{ 'Edit' if experience else 'New' }} Experience</h1>
+
+<form method="POST">
+    <div class="mb-3">
+        <label for="title" class="form-label">Title</label>
+        <input type="text" class="form-control" id="title" name="title" value="{{ experience.title if experience else '' }}" required>
+    </div>
+    <div class="mb-3">
+        <label for="company" class="form-label">Company</label>
+        <input type="text" class="form-control" id="company" name="company" value="{{ experience.company if experience else '' }}" required>
+    </div>
+    <div class="mb-3">
+        <label for="period" class="form-label">Period</label>
+        <input type="text" class="form-control" id="period" name="period" placeholder="2023 - Present" value="{{ experience.period if experience else '' }}" required>
+    </div>
+    <div class="mb-3">
+        <label for="location" class="form-label">Location</label>
+        <input type="text" class="form-control" id="location" name="location" value="{{ experience.location if experience else '' }}">
+    </div>
+    <div class="mb-3">
+        <label for="responsibilities" class="form-label">Responsibilities (one per line)</label>
+        <textarea class="form-control" id="responsibilities" name="responsibilities" rows="4">{{ experience.responsibilities if experience else '' }}</textarea>
+    </div>
+    <div class="mb-3">
+        <label for="technologies" class="form-label">Technologies (comma-separated)</label>
+        <input type="text" class="form-control" id="technologies" name="technologies" value="{{ experience.technologies if experience else '' }}">
+    </div>
+    <button type="submit" class="btn btn-primary">Save</button>
+    <a href="{{ url_for('admin.experiences') }}" class="btn btn-secondary">Cancel</a>
+</form>
+{% endblock %}
