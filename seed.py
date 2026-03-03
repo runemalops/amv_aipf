@@ -74,27 +74,27 @@ def seed_data():
 
         experiences = [
             Experience(
-                title="Senior Developer",
-                company="Tech Company Inc.",
-                period="2023 - Present",
-                location="San Francisco, CA",
-                responsibilities="Lead development of key product features\nMentor junior developers\nDesign and implement RESTful APIs\nCollaborate with cross-functional teams",
-                technologies="Python,Flask,React,AWS"
+                title="Software Engineering Manager",
+                company="PayPal Inc.",
+                period="May 2021 - Present",
+                location="Guatemala, C.A.",
+                responsibilities="Led a team of software engineers to successfully develop a major software project on time and on budget, focused on Google Cloud Platform Provider, delivering a Google Kubernetes Engine environment that enables Git-ops model-oriented deployments.\nImplemented a set of best practices and documented procedures for software deployment, resulting in increased accuracy and reliability of software products.\nImproved compliance with security standards which increased SLA compliance from 60% to 99%, which allowed better performance in Coalfire and PCI DSS compliance.",
+                technologies="GCP,Golang,Terraform,Docker,OL8"
             ),
             Experience(
-                title="Full Stack Developer",
-                company="StartupXYZ",
-                period="2021 - 2023",
-                location="Remote",
-                responsibilities="Built and maintained web applications\nImplemented user authentication\nOptimized database queries\nWorked in agile environment",
+                title="Software Engineer",
+                company="PayPal Inc.",
+                period="November 2015 - April 2021",
+                location="Guatemala, C.A.",
+                responsibilities="Provide support for monitoring tools for software and infrastructure development teams.\nDeveloped custom software tools to automate application and virtual machine monitoring, enabling proactive issue resolution.\nReviewed software requirements and provided feedback to ensure the software meets customer needs.\nDebugging Software problems, identifying root causes and proposed solutions to software problems",
                 technologies="Django,PostgreSQL,JavaScript"
             ),
             Experience(
-                title="Junior Developer",
-                company="Web Agency Co.",
-                period="2020 - 2021",
-                location="New York, NY",
-                responsibilities="Developed responsive websites for clients\nFixed bugs and improved code quality\nParticipated in team meetings",
+                title="Customer Engineer",
+                company="Cognizant Technology Solutions",
+                period="March 2014 - October 2015",
+                location="Guatemala, C.A.",
+                responsibilities="Research and identify the root cause of customer issues and provide detailed reports to stakeholders.\nSupported the development and testing of new software applications, ensuring a smooth transition to production.\nProvided technical support to customers via phone and email, resulting in a 99.95% customer satisfaction rate.\nEstablished and maintained monitoring systems that identified and resolved system issues before customers were affected.\nDeveloped and implemented policies and procedures to ensure data integrity and security.",
                 technologies="JavaScript,HTML/CSS,PHP"
             ),
         ]
@@ -159,7 +159,7 @@ def seed_data():
         ]
 
         skills = [
-            Skill(name="Python", category="Backend"),
+            Skill(name="Python", icon="bi-python", category="Backend"),
             Skill(name="JavaScript", category="Frontend"),
             Skill(name="Flask", category="Backend"),
             Skill(name="Django", category="Backend"),
@@ -168,8 +168,9 @@ def seed_data():
             Skill(name="PostgreSQL", category="Database"),
             Skill(name="MongoDB", category="Database"),
             Skill(name="Git", category="Tools"),
-            Skill(name="Docker", category="DevOps"),
+            Skill(name="Docker", icon="bi-docker", category="IaC"),
             Skill(name="AWS", category="Cloud"),
+            Skill(name="Terraform", icon="bi-terraform", category="IaC"),
         ]
 
         interests = [
