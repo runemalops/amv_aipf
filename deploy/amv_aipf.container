@@ -1,11 +1,11 @@
 [Container]
-Image=localhost/amv_aipf:latest
+Image=amv_aipf:latest
 ContainerName=portfolio
 PublishPort=5000:5000
-Volume=%h/Projects/portfolio/instance:/app/instance
+Volume=%h/.local/share/amv_aipf/instance:/app/instance
 Environment=FLASK_APP=app.py
 Environment=FLASK_ENV=production
-Environment=SECRET_KEY=${SECRET_KEY}
+EnvironmentFile=%h/.config/containers/amv_aipf.env
 
 [Service]
 Restart=always

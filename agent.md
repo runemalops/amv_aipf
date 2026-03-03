@@ -50,16 +50,41 @@ This project is a personal portfolio web application built with Flask, SQLAlchem
 *   **Build container image:**
     ```bash
     # Run from project root directory
-    podman build -f deploy/Containerfile -t localhost/amv_aipf:latest .
+    podman build -f deploy/Containerfile -t amv_aipf:latest .
+    ```
+*   **Prepare instance directory for persistent database:**
+    ```bash
+    mkdir -p ~/.local/share/amv_aipf/instance
+    cp instance/portfolio.db ~/.local/share/amv_aipf/instance/
+    ```
+*   **Set up environment file for secrets:**
+    ```bash
+    mkdir -p ~/.config/containers
+    echo "SECRET_KEY=$(python3 -c 'import secrets; print(secrets.token_hex(32))')" > ~/.config/containers/amv_aipf.env
+    ```
+*   **Update quadlet to use EnvironmentFile:**
+    
+    Edit `~/.config/containers/systemd/amv_aipf.container`:
+    ```ini
+    [Container]
+    Image=amv_aipf:latest
+    ContainerName=portfolio
+    PublishPort=5000:5000
+    Volume=%h/.local/share/amv_aipf/instance:/app/instance
+    Environment=FLASK_APP=app.py
+    Environment=FLASK_ENV=production
+    EnvironmentFile=%h/.config/containers/amv_aipf.env
+
+    [Service]
+    Restart=always
     ```
 *   **Deploy with Quadlet (systemd):**
     ```bash
     mkdir -p ~/.config/containers/systemd/
     cp deploy/amv_aipf.container ~/.config/containers/systemd/
+    # Edit the quadlet file to add EnvironmentFile line as shown above
     systemctl --user daemon-reload
-    export SECRET_KEY=your-secure-random-key
     systemctl --user start amv_aipf
-    systemctl --user enable amv_aipf
     ```
 *   **View container logs:**
     ```bash

@@ -50,27 +50,27 @@ Access at http://localhost:5000
 
 ```bash
 # Run from project root directory
-podman build -f deploy/Containerfile -t localhost/amv_aipf:latest .
+podman build -f deploy/Containerfile -t amv_aipf:latest .
 ```
 
 ### Deploy with Quadlet
 
 ```bash
+# Prepare instance directory for persistent database
+mkdir -p ~/.local/share/amv_aipf/instance
+cp instance/portfolio.db ~/.local/share/amv_aipf/instance/
+
+# Create environment file with secret key
+mkdir -p ~/.config/containers
+echo "SECRET_KEY=$(python3 -c 'import secrets; print(secrets.token_hex(32))')" > ~/.config/containers/amv_aipf.env
+
 # Copy quadlet to systemd directory
 mkdir -p ~/.config/containers/systemd/
 cp deploy/amv_aipf.container ~/.config/containers/systemd/
 
-# Reload systemd
+# Reload systemd and start the container
 systemctl --user daemon-reload
-
-# Set secret key
-export SECRET_KEY=your-secure-random-key
-
-# Start the container
 systemctl --user start amv_aipf
-
-# Enable auto-start on boot
-systemctl --user enable amv_aipf
 ```
 
 ### View Logs
