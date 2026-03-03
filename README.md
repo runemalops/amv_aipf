@@ -49,7 +49,8 @@ Access at http://localhost:5000
 ### Build the Container Image
 
 ```bash
-podman build -t amv_aipf:latest ./deploy
+# Run from project root directory
+podman build -f deploy/Containerfile -t localhost/amv_aipf:latest .
 ```
 
 ### Deploy with Quadlet

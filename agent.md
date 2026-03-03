@@ -46,6 +46,26 @@ This project is a personal portfolio web application built with Flask, SQLAlchem
     python app.py
     ```
 
+## Deployment Commands
+*   **Build container image:**
+    ```bash
+    # Run from project root directory
+    podman build -f deploy/Containerfile -t localhost/amv_aipf:latest .
+    ```
+*   **Deploy with Quadlet (systemd):**
+    ```bash
+    mkdir -p ~/.config/containers/systemd/
+    cp deploy/amv_aipf.container ~/.config/containers/systemd/
+    systemctl --user daemon-reload
+    export SECRET_KEY=your-secure-random-key
+    systemctl --user start amv_aipf
+    systemctl --user enable amv_aipf
+    ```
+*   **View container logs:**
+    ```bash
+    journalctl --user -u amv_aipf -f
+    ```
+
 ## Database Models
 *   `User`: Admin user for authentication
 *   `Project`: Portfolio projects
