@@ -59,8 +59,8 @@ This project is a personal portfolio web application built with Flask, SQLAlchem
     ```
 *   **Set up environment file for secrets:**
     ```bash
-    mkdir -p ~/.config/containers
-    echo "SECRET_KEY=$(python3 -c 'import secrets; print(secrets.token_hex(32))')" > ~/.config/containers/amv_aipf.env
+    mkdir -p ~/.local/share/amv_aipf
+    echo "SECRET_KEY=$(python3 -c 'import secrets; print(secrets.token_hex(32))')" > ~/.local/share/amv_aipf/amv_aipf.env
     ```
 *   **Update quadlet to use EnvironmentFile:**
     
@@ -73,7 +73,7 @@ This project is a personal portfolio web application built with Flask, SQLAlchem
     Volume=%h/.local/share/amv_aipf/instance:/app/instance
     Environment=FLASK_APP=app.py
     Environment=FLASK_ENV=production
-    EnvironmentFile=%h/.config/containers/amv_aipf.env
+    EnvironmentFile=%h/.local/share/amv_aipf/amv_aipf.env
 
     [Service]
     Restart=always

@@ -5,7 +5,7 @@ PublishPort=5000:5000
 Volume=%h/.local/share/amv_aipf/instance:/app/instance
 Environment=FLASK_APP=app.py
 Environment=FLASK_ENV=production
-EnvironmentFile=%h/.config/containers/amv_aipf.env
+EnvironmentFile=%h/.local/share/amv_aipf/amv_aipf.env
 
 [Service]
 Restart=always
