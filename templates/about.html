@@ -5,7 +5,7 @@
 {% block content %}
 <section class="section-padding">
     <div class="container">
-        <h1 class="text-center mb-5">About Me</h1>
+        <h1 class="text-center mb-5">{{ t('about_title') }}</h1>
         <div class="row align-items-center">
             <div class="col-md-4 text-center mb-4 mb-md-0">
                 <div class="bg-light rounded-circle d-inline-block p-5" style="width: 250px; height: 250px;">
@@ -13,18 +13,16 @@
                 </div>
             </div>
             <div class="col-md-8">
-                <h2 class="mb-4">Hi, I'm a well seasoned Software Engineer and Engineering Manager</h2>
+                <h2 class="mb-4">{{ t('about_intro') }}</h2>
                 <p class="lead mb-4">
-                    Software engineer with over 20 years of experience in infrastructure engineering and Software Engineering teams management.
+                    {{ t('about_description1') }}
                 </p>
                 <p class="mb-4">
-                    Used to work with Infrastructure as Code, Agile methodologies, change management and business transformation systems. 
-                    Get used to handling Ruby, Python and Bash Scripting based code, Linux based Infrastructure on Bare Metal Service Providers 
-                    such as VMWare and Proxmox, as well as Cloud Providers such as GCP and AWS.
+                    {{ t('about_description2') }}
                 </p>
                 <div class="row mb-4">
                     <div class="col-6">
-                        <h5>Skills</h5>
+                        <h5>{{ t('skills') }}</h5>
                         <ul class="list-unstyled">
                             {% for skill in skills %}
                             <li><i class="bi {{ skill.icon if skill.icon else 'bi-check2' }} text-primary me-2"></i>{{ skill.name }}</li>
@@ -32,7 +30,7 @@
                         </ul>
                     </div>
                     <div class="col-6">
-                        <h5>Interests</h5>
+                        <h5>{{ t('interests') }}</h5>
                         <ul class="list-unstyled">
                             {% for interest in interests %}
                             <li><i class="bi bi-star text-primary me-2"></i>{{ interest }}</li>
@@ -40,8 +38,8 @@
                         </ul>
                     </div>
                 </div>
-                <a href="{{ url_for('main.experience') }}" class="btn btn-primary">View My Experience</a>
-                <a href="{{ url_for('main.projects') }}" class="btn btn-outline-primary">My Projects</a>
+                <a href="{{ url_for('main.experience') }}" class="btn btn-primary">{{ t('view_my_experience') }}</a>
+                <a href="{{ url_for('main.projects') }}" class="btn btn-outline-primary">{{ t('my_projects') }}</a>
             </div>
         </div>
     </div>
@@ -49,7 +47,7 @@
 
 <section class="section-padding bg-light">
     <div class="container">
-        <h2 class="text-center mb-5">Education</h2>
+        <h2 class="text-center mb-5">{{ t('education') }}</h2>
         <div class="row justify-content-center">
             {% for edu in education %}
             <div class="col-md-8 mb-4">

@@ -6,6 +6,7 @@
 <h1 class="mb-4">{{ 'Edit' if post else 'New' }} Blog Post</h1>
 
 <form method="POST">
+    <h5 class="mb-3">English Version</h5>
     <div class="mb-3">
         <label for="title" class="form-label">Title</label>
         <input type="text" class="form-control" id="title" name="title" value="{{ post.title if post else '' }}" required>
@@ -16,12 +17,29 @@
     </div>
     <div class="mb-3">
         <label for="excerpt" class="form-label">Excerpt</label>
-        <textarea class="form-control" id="excerpt" name="excerpt" rows="2">{{ post.excerpt if post else '' }}</textarea>
+        <textarea class="form-control" id="excerpt" name="excerpt" rows="3">{{ post.excerpt if post else '' }}</textarea>
     </div>
     <div class="mb-3">
         <label for="content" class="form-label">Content (HTML allowed)</label>
-        <textarea class="form-control" id="content" name="content" rows="8" required>{{ post.content if post else '' }}</textarea>
+        <textarea class="form-control" id="content" name="content" rows="15" required>{{ post.content if post else '' }}</textarea>
     </div>
+    
+    <hr class="my-4">
+    
+    <h5 class="mb-3">Spanish Version <button type="button" class="btn btn-sm btn-info" onclick="translateAllToSpanish()">Auto-Translate from English</button></h5>
+    <div class="mb-3">
+        <label for="title_es" class="form-label">Title (Spanish)</label>
+        <input type="text" class="form-control" id="title_es" name="title_es" value="{{ post.title_es if post else '' }}">
+    </div>
+    <div class="mb-3">
+        <label for="excerpt_es" class="form-label">Excerpt (Spanish)</label>
+        <textarea class="form-control" id="excerpt_es" name="excerpt_es" rows="3">{{ post.excerpt_es if post else '' }}</textarea>
+    </div>
+    <div class="mb-3">
+        <label for="content_es" class="form-label">Content (Spanish - HTML allowed)</label>
+        <textarea class="form-control" id="content_es" name="content_es" rows="15">{{ post.content_es if post else '' }}</textarea>
+    </div>
+    
     <div class="row">
         <div class="col-md-6 mb-3">
             <label for="author" class="form-label">Author</label>
@@ -39,4 +57,43 @@
     <button type="submit" class="btn btn-primary">Save</button>
     <a href="{{ url_for('admin.blog_posts') }}" class="btn btn-secondary">Cancel</a>
 </form>
+
+<script>
+async function translateToSpanish(text, endpoint) {
+    const response = await fetch(endpoint, {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({text: text, target_lang: 'es'})
+    });
+    const data = await response.json();
+    return data.translated;
+}
+
+async function translateAllToSpanish() {
+    const title = document.getElementById('title').value;
+    const excerpt = document.getElementById('excerpt').value;
+    const content = document.getElementById('content').value;
+    
+    const btn = event.target;
+    btn.disabled = true;
+    btn.textContent = 'Translating...';
+    
+    try {
+        if (title) {
+            document.getElementById('title_es').value = await translateToSpanish(title, '/admin/translate');
+        }
+        if (excerpt) {
+            document.getElementById('excerpt_es').value = await translateToSpanish(excerpt, '/admin/translate');
+        }
+        if (content) {
+            document.getElementById('content_es').value = await translateToSpanish(content, '/admin/translate-html');
+        }
+    } catch (e) {
+        alert('Translation failed. Please try again.');
+    }
+    
+    btn.disabled = false;
+    btn.textContent = 'Auto-Translate from English';
+}
+</script>
 {% endblock %}

@@ -7,14 +7,18 @@ This project is a personal portfolio web application built with Flask, SQLAlchem
 *   `/`
     *   `app.py`: The main Flask application file.
     *   `routes.py`: URL routing definitions using Flask blueprints.
+    *   `views.py`: View functions for rendering templates.
     *   `models.py`: SQLAlchemy database models.
     *   `auth.py`: Authentication routes (login/logout).
     *   `admin.py`: Admin panel routes for content management.
     *   `seed.py`: Script to seed initial data.
+    *   `translation_service.py`: Translation service using MyMemory API.
+    *   `translations.py`: Translation helper functions.
     *   `requirements.txt`: Project dependencies.
     *   `instance/portfolio.db`: SQLite database file.
     *   `migrations/`: Flask-Migrate database migrations.
     *   `templates/`: Directory for HTML templates.
+    *   `translations/`: Language translation JSON files (en.json, es.json).
     *   `deploy/`: Deployment files (Containerfile, quadlet).
 
 ## Setup Commands
@@ -68,7 +72,7 @@ This project is a personal portfolio web application built with Flask, SQLAlchem
     ```ini
     [Container]
     Image=amv_aipf:latest
-    ContainerName=portfolio
+    ContainerName=amv_aipf
     PublishPort=5000:5000
     Volume=%h/.local/share/amv_aipf/instance:/app/instance
     Environment=FLASK_APP=app.py
@@ -125,6 +129,22 @@ This project is a personal portfolio web application built with Flask, SQLAlchem
 
 ## Icons
 Uses [Bootstrap Icons](https://icons.getbootstrap.com/).
+
+## Internationalization (i18n)
+The application supports English and Spanish languages. Users can switch languages via the dropdown in the navigation bar.
+
+### Translation Features:
+- Static UI text: Stored in `translations/en.json` and `translations/es.json`
+- Content translation: Projects, Experience, Skills, and Blog Posts support Spanish translations
+- Auto-translate: Admin panel has "Auto-Translate from English" buttons for content
+
+### Adding Translations:
+1. Static text: Edit `translations/en.json` or `translations/es.json`
+2. Content: Use admin panel to add Spanish translations to projects, experience, skills, and blog posts
+
+### Language Routes:
+- `/set-lang/en` - Switch to English
+- `/set-lang/es` - Switch to Spanish
 
 ## Code Style
 *   Follow [PEP 8](https://peps.python.org) style guidelines

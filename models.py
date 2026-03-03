@@ -22,10 +22,14 @@ class User(UserMixin, db.Model):
 class Project(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(200), nullable=False)
+    title_es = db.Column(db.String(200))
     description = db.Column(db.Text, nullable=False)
+    description_es = db.Column(db.Text)
     technologies = db.Column(db.String(500))
     link = db.Column(db.String(300))
     demo = db.Column(db.String(300))
+    git_url = db.Column(db.String(300))
+    git_icon = db.Column(db.String(50))
     featured = db.Column(db.Boolean, default=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
@@ -33,10 +37,12 @@ class Project(db.Model):
 class Experience(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(200), nullable=False)
+    title_es = db.Column(db.String(200))
     company = db.Column(db.String(200), nullable=False)
     period = db.Column(db.String(100), nullable=False)
     location = db.Column(db.String(100))
     responsibilities = db.Column(db.Text)
+    responsibilities_es = db.Column(db.Text)
     technologies = db.Column(db.String(500))
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
@@ -52,8 +58,11 @@ class Education(db.Model):
 class BlogPost(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(300), nullable=False)
+    title_es = db.Column(db.String(300))
     excerpt = db.Column(db.String(500))
+    excerpt_es = db.Column(db.String(500))
     content = db.Column(db.Text, nullable=False)
+    content_es = db.Column(db.Text)
     image = db.Column(db.String(500))
     author = db.Column(db.String(100), default="Your Name")
     category = db.Column(db.String(100))
@@ -64,6 +73,7 @@ class BlogPost(db.Model):
 class Skill(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
+    name_es = db.Column(db.String(100))
     icon = db.Column(db.String(100))
     category = db.Column(db.String(50))
     created_at = db.Column(db.DateTime, default=datetime.utcnow)

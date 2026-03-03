@@ -8,6 +8,7 @@ Personal portfolio web application built with Flask, SQLAlchemy, and Bootstrap C
 - **Admin Panel**: Full CRUD management for all content
 - **Authentication**: Secure admin login with password hashing
 - **Database**: SQLite with Flask-Migrate for version control
+- **Internationalization**: English and Spanish language support with auto-translate
 
 ## Tech Stack
 
@@ -96,14 +97,18 @@ amv_aipf/
 ├── app.py              # Main Flask application
 ├── models.py           # Database models
 ├── routes.py           # Public routes
+├── views.py            # View functions
 ├── auth.py             # Authentication
 ├── admin.py            # Admin panel
 ├── seed.py             # Data seeding
+├── translation_service.py  # Translation API service
+├── translations.py     # Translation helpers
 ├── requirements.txt    # Dependencies
 ├── instance/           # SQLite database
 ├── migrations/         # Database migrations
 ├── templates/          # HTML templates
 │   └── admin/          # Admin templates
+├── translations/       # Language files (en.json, es.json)
 └── deploy/             # Deployment files
     ├── Containerfile
     └── amv_aipf.container

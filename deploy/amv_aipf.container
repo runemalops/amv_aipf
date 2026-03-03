@@ -1,6 +1,6 @@
 [Container]
 Image=amv_aipf:latest
-ContainerName=portfolio
+ContainerName=amv_aipf
 PublishPort=5000:5000
 Volume=%h/.local/share/amv_aipf/instance:/app/instance
 Environment=FLASK_APP=app.py

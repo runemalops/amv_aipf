@@ -1,11 +1,11 @@
 {% extends "base.html" %}
 
-{% block title %}My Projects{% endblock %}
+{% block title %}{{ t('my_projects') }}{% endblock %}
 
 {% block content %}
 <section class="section-padding">
     <div class="container">
-        <h1 class="text-center mb-5">My Projects</h1>
+        <h1 class="text-center mb-5">{{ t('projects_title') }}</h1>
         
         <div class="row">
             {% for project in projects %}
@@ -21,11 +21,11 @@
                         </div>
                         <div class="d-flex gap-2">
                             <a href="{{ project.link }}" class="btn btn-primary" target="_blank">
-                                <i class="bi bi-github me-1"></i>View Code
+                                <i class="bi bi-github me-1"></i>{{ t('source_code') }}
                             </a>
                             {% if project.demo %}
                             <a href="{{ project.demo }}" class="btn btn-outline-primary" target="_blank">
-                                <i class="bi bi-play-circle me-1"></i>Live Demo
+                                <i class="bi bi-play-circle me-1"></i>{{ t('live_demo') }}
                             </a>
                             {% endif %}
                         </div>

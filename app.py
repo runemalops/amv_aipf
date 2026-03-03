@@ -1,10 +1,11 @@
-from flask import Flask
+from flask import Flask, request, g, session, redirect, url_for
 from flask_migrate import Migrate
 from flask_login import LoginManager
 from models import db, User, SocialLink
 from routes import main
 from auth import auth
 from admin import admin
+from translations import get_translation
 import click
 
 app = Flask(__name__)
@@ -12,9 +13,27 @@ app = Flask(__name__)
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///portfolio.db"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.config["SECRET_KEY"] = "your-secret-key-change-in-production"
+app.config["LANGUAGES"] = ["en", "es"]
 
 db.init_app(app)
 migrate = Migrate(app, db)
+
+def get_locale():
+    if 'lang' in session:
+        return session['lang']
+    if hasattr(g, 'lang'):
+        return g.lang
+    return request.accept_languages.best_match(app.config["LANGUAGES"])
+
+@app.route('/set-lang/<lang>')
+def set_language(lang):
+    if lang in app.config["LANGUAGES"]:
+        session['lang'] = lang
+    referer = request.headers.get('Referer', '/')
+    return redirect(referer)
+
+def set_lang(lang):
+    g.lang = lang
 
 login_manager = LoginManager()
 login_manager.init_app(app)
@@ -27,7 +46,13 @@ def load_user(user_id):
 @app.context_processor
 def inject_social_links():
     links = SocialLink.query.all()
-    return {"social_links": [{"platform": l.platform, "url": l.url, "icon": l.icon} for l in links]}
+    lang = get_locale()
+    return {
+        "social_links": [{"platform": l.platform, "url": l.url, "icon": l.icon} for l in links],
+        "get_locale": get_locale,
+        "t": lambda key: get_translation(key, lang),
+        "current_lang": lang
+    }
 
 app.register_blueprint(main)
 app.register_blueprint(auth)

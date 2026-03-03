@@ -6,10 +6,22 @@
 <h1 class="mb-4">{{ 'Edit' if skill else 'New' }} Skill</h1>
 
 <form method="POST">
+    <h5 class="mb-3">English Version</h5>
     <div class="mb-3">
         <label for="name" class="form-label">Name</label>
         <input type="text" class="form-control" id="name" name="name" value="{{ skill.name if skill else '' }}" required>
     </div>
+    
+    <hr class="my-4">
+    
+    <h5 class="mb-3">Spanish Version <button type="button" class="btn btn-sm btn-info" onclick="translateSkillToSpanish()">Auto-Translate from English</button></h5>
+    <div class="mb-3">
+        <label for="name_es" class="form-label">Name (Spanish)</label>
+        <input type="text" class="form-control" id="name_es" name="name_es" value="{{ skill.name_es if skill else '' }}">
+    </div>
+    
+    <hr class="my-4">
+    
     <div class="mb-3">
         <label for="icon" class="form-label">Icon (Bootstrap Icons class)</label>
         <input type="text" class="form-control" id="icon" name="icon" placeholder="e.g., bi-python, bi-braces" value="{{ skill.icon if skill else '' }}">
@@ -22,4 +34,35 @@
     <button type="submit" class="btn btn-primary">Save</button>
     <a href="{{ url_for('admin.skills') }}" class="btn btn-secondary">Cancel</a>
 </form>
+
+<script>
+async function translateToSpanish(text, endpoint) {
+    const response = await fetch(endpoint, {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({text: text, target_lang: 'es'})
+    });
+    const data = await response.json();
+    return data.translated;
+}
+
+async function translateSkillToSpanish() {
+    const name = document.getElementById('name').value;
+    
+    const btn = event.target;
+    btn.disabled = true;
+    btn.textContent = 'Translating...';
+    
+    try {
+        if (name) {
+            document.getElementById('name_es').value = await translateToSpanish(name, '/admin/translate');
+        }
+    } catch (e) {
+        alert('Translation failed. Please try again.');
+    }
+    
+    btn.disabled = false;
+    btn.textContent = 'Auto-Translate from English';
+}
+</script>
 {% endblock %}

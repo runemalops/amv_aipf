@@ -1,11 +1,11 @@
 {% extends "base.html" %}
 
-{% block title %}Work Experience{% endblock %}
+{% block title %}{{ t('work_experience') }}{% endblock %}
 
 {% block content %}
 <section class="section-padding">
     <div class="container">
-        <h1 class="text-center mb-5">Work Experience</h1>
+        <h1 class="text-center mb-5">{{ t('experience_title') }}</h1>
         
         <div class="timeline">
             {% for job in experience %}

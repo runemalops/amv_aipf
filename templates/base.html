@@ -57,22 +57,31 @@
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('main.index') }}">Home</a>
+                        <a class="nav-link" href="{{ url_for('main.index') }}">{{ t('home') }}</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('main.about') }}">About Me</a>
+                        <a class="nav-link" href="{{ url_for('main.about') }}">{{ t('about_me') }}</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('main.projects') }}">My Projects</a>
+                        <a class="nav-link" href="{{ url_for('main.projects') }}">{{ t('my_projects') }}</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('main.experience') }}">Work Experience</a>
+                        <a class="nav-link" href="{{ url_for('main.experience') }}">{{ t('work_experience') }}</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('main.blog') }}">Blog</a>
+                        <a class="nav-link" href="{{ url_for('main.blog') }}">{{ t('blog') }}</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('main.contact') }}">Contact</a>
+                        <a class="nav-link" href="{{ url_for('main.contact') }}">{{ t('contact') }}</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="langDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            {{ 'EN' if current_lang == 'en' else 'ES' }}
+                        </a>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="langDropdown">
+                            <li><a class="dropdown-item" href="{{ url_for('set_language', lang='en') }}">English</a></li>
+                            <li><a class="dropdown-item" href="{{ url_for('set_language', lang='es') }}">Español</a></li>
+                        </ul>
                     </li>
                 </ul>
             </div>
@@ -97,7 +106,7 @@
                 <a href="#" class="text-white"><i class="bi bi-envelope"></i></a>
                 {% endif %}
             </div>
-            <p class="mb-0">&copy; 2026 My Portfolio. All rights reserved.</p>
+            <p class="mb-0">&copy; 2026 My Portfolio. {{ t('all_rights_reserved') }}</p>
         </div>
     </footer>
 

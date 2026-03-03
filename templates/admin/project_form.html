@@ -6,14 +6,30 @@
 <h1 class="mb-4">{{ 'Edit' if project else 'New' }} Project</h1>
 
 <form method="POST">
+    <h5 class="mb-3">English Version</h5>
     <div class="mb-3">
         <label for="title" class="form-label">Title</label>
         <input type="text" class="form-control" id="title" name="title" value="{{ project.title if project else '' }}" required>
     </div>
     <div class="mb-3">
         <label for="description" class="form-label">Description</label>
-        <textarea class="form-control" id="description" name="description" rows="4" required>{{ project.description if project else '' }}</textarea>
+        <textarea class="form-control" id="description" name="description" rows="8" required>{{ project.description if project else '' }}</textarea>
     </div>
+    
+    <hr class="my-4">
+    
+    <h5 class="mb-3">Spanish Version <button type="button" class="btn btn-sm btn-info" onclick="translateProjectToSpanish()">Auto-Translate from English</button></h5>
+    <div class="mb-3">
+        <label for="title_es" class="form-label">Title (Spanish)</label>
+        <input type="text" class="form-control" id="title_es" name="title_es" value="{{ project.title_es if project else '' }}">
+    </div>
+    <div class="mb-3">
+        <label for="description_es" class="form-label">Description (Spanish)</label>
+        <textarea class="form-control" id="description_es" name="description_es" rows="8">{{ project.description_es if project else '' }}</textarea>
+    </div>
+    
+    <hr class="my-4">
+    
     <div class="mb-3">
         <label for="technologies" class="form-label">Technologies (comma-separated)</label>
         <input type="text" class="form-control" id="technologies" name="technologies" value="{{ project.technologies if project else '' }}">
@@ -26,6 +42,15 @@
         <label for="demo" class="form-label">Demo Link</label>
         <input type="url" class="form-control" id="demo" name="demo" value="{{ project.demo if project else '' }}">
     </div>
+    <div class="mb-3">
+        <label for="git_url" class="form-label">Git Repository URL</label>
+        <input type="url" class="form-control" id="git_url" name="git_url" value="{{ project.git_url if project else '' }}" placeholder="https://github.com/username/repo">
+    </div>
+    <div class="mb-3">
+        <label for="git_icon" class="form-label">Git Icon (Bootstrap Icons class)</label>
+        <input type="text" class="form-control" id="git_icon" name="git_icon" value="{{ project.git_icon if project else 'bi-github' }}" placeholder="bi-github">
+        <small class="text-muted">Use "bi-github" for GitHub, "bi-git" for GitLab/Bitbucket</small>
+    </div>
     <div class="mb-3 form-check">
         <input type="checkbox" class="form-check-input" id="featured" name="featured" {{ 'checked' if project and project.featured else '' }}>
         <label class="form-check-label" for="featured">Featured</label>
@@ -33,4 +58,39 @@
     <button type="submit" class="btn btn-primary">Save</button>
     <a href="{{ url_for('admin.projects') }}" class="btn btn-secondary">Cancel</a>
 </form>
+
+<script>
+async function translateToSpanish(text, endpoint) {
+    const response = await fetch(endpoint, {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({text: text, target_lang: 'es'})
+    });
+    const data = await response.json();
+    return data.translated;
+}
+
+async function translateProjectToSpanish() {
+    const title = document.getElementById('title').value;
+    const description = document.getElementById('description').value;
+    
+    const btn = event.target;
+    btn.disabled = true;
+    btn.textContent = 'Translating...';
+    
+    try {
+        if (title) {
+            document.getElementById('title_es').value = await translateToSpanish(title, '/admin/translate');
+        }
+        if (description) {
+            document.getElementById('description_es').value = await translateToSpanish(description, '/admin/translate');
+        }
+    } catch (e) {
+        alert('Translation failed. Please try again.');
+    }
+    
+    btn.disabled = false;
+    btn.textContent = 'Auto-Translate from English';
+}
+</script>
 {% endblock %}

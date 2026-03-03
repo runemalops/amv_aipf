@@ -5,11 +5,11 @@
 {% block content %}
 <section class="hero-section text-center">
     <div class="container">
-        <h1 class="display-3 mb-4">Welcome to my personal site</h1>
-        <p class="lead mb-4">Software Engineer | Engineering Manager | Problem Solver</p>
+        <h1 class="display-3 mb-4">{{ t('welcome_personal') }}</h1>
+        <p class="lead mb-4">{{ t('subtitle') }}</p>
         <div class="mb-4">
-            <a href="{{ url_for('main.about') }}" class="btn btn-light btn-lg me-2">About Me</a>
-            <a href="{{ url_for('main.projects') }}" class="btn btn-outline-light btn-lg">My Projects</a>
+            <a href="{{ url_for('main.about') }}" class="btn btn-light btn-lg me-2">{{ t('about_me') }}</a>
+            <a href="{{ url_for('main.projects') }}" class="btn btn-outline-light btn-lg">{{ t('my_projects') }}</a>
         </div>
     </div>
 </section>
@@ -20,22 +20,22 @@
             <div class="col-md-4 mb-4">
                 <div class="p-4 bg-light rounded">
                     <i class="bi bi-code-slash display-4 text-primary mb-3"></i>
-                    <h4>Clean Code</h4>
-                    <p class="mb-0">Writing maintainable and efficient code</p>
+                    <h4>{{ t('clean_code') }}</h4>
+                    <p class="mb-0">{{ t('clean_code_desc') }}</p>
                 </div>
             </div>
             <div class="col-md-4 mb-4">
                 <div class="p-4 bg-light rounded">
                     <i class="bi bi-palette display-4 text-primary mb-3"></i>
-                    <h4>Modern Design</h4>
-                    <p class="mb-0">Creating beautiful user experiences</p>
+                    <h4>{{ t('modern_design') }}</h4>
+                    <p class="mb-0">{{ t('modern_design_desc') }}</p>
                 </div>
             </div>
             <div class="col-md-4 mb-4">
                 <div class="p-4 bg-light rounded">
                     <i class="bi bi-lightning-charge display-4 text-primary mb-3"></i>
-                    <h4>Fast Solutions</h4>
-                    <p class="mb-0">Optimizing for performance</p>
+                    <h4>{{ t('fast_solutions') }}</h4>
+                    <p class="mb-0">{{ t('fast_solutions_desc') }}</p>
                 </div>
             </div>
         </div>
@@ -44,7 +44,7 @@
 
 <section class="section-padding bg-light">
     <div class="container">
-        <h2 class="text-center mb-5">Featured Projects</h2>
+        <h2 class="text-center mb-5">{{ t('featured_projects') }}</h2>
         <div class="row">
             {% for project in featured_projects %}
             <div class="col-md-4 mb-4">
@@ -57,21 +57,21 @@
                             <span class="badge bg-secondary me-1">{{ tech }}</span>
                             {% endfor %}
                         </div>
-                        <a href="{{ project.link }}" class="btn btn-sm btn-primary">View Project</a>
+                        <a href="{{ project.link }}" class="btn btn-sm btn-primary">{{ t('view_project') }}</a>
                     </div>
                 </div>
             </div>
             {% endfor %}
         </div>
         <div class="text-center mt-4">
-            <a href="{{ url_for('main.projects') }}" class="btn btn-outline-primary">View All Projects</a>
+            <a href="{{ url_for('main.projects') }}" class="btn btn-outline-primary">{{ t('view_all_projects') }}</a>
         </div>
     </div>
 </section>
 
 <section class="section-padding">
     <div class="container">
-        <h2 class="text-center mb-5">Latest Blog Posts</h2>
+        <h2 class="text-center mb-5">{{ t('latest_posts') }}</h2>
         <div class="row">
             {% for post in latest_posts %}
             <div class="col-md-4 mb-4">
@@ -82,7 +82,7 @@
                     <div class="card-body">
                         <h5 class="card-title">{{ post.title }}</h5>
                         <p class="card-text text-muted small">{{ post.excerpt }}</p>
-                        <a href="{{ url_for('main.blog_post', post_id=post.id) }}" class="btn btn-sm btn-outline-primary">Read More</a>
+                        <a href="{{ url_for('main.blog_post', post_id=post.id) }}" class="btn btn-sm btn-outline-primary">{{ t('read_more') }}</a>
                     </div>
                     <div class="card-footer text-muted">
                         <small>{{ post.date }}</small>
@@ -92,7 +92,7 @@
             {% endfor %}
         </div>
         <div class="text-center mt-4">
-            <a href="{{ url_for('main.blog') }}" class="btn btn-outline-primary">View All Posts</a>
+            <a href="{{ url_for('main.blog') }}" class="btn btn-outline-primary">{{ t('view_all_posts') }}</a>
         </div>
     </div>
 </section>
