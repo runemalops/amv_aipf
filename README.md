@@ -102,6 +102,7 @@ amv_aipf/
 ├── admin.py            # Admin panel
 ├── seed.py             # Data seeding
 ├── translation_service.py  # Translation API service
+├── translation_utils.py    # Translation helpers with auto-translate
 ├── translations.py     # Translation helpers
 ├── requirements.txt    # Dependencies
 ├── instance/           # SQLite database

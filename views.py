@@ -1,73 +1,58 @@
-from flask import render_template, request, flash, redirect, url_for
+from flask import render_template, request, flash, redirect, url_for, session
 from models import db, Project, Experience, Education, BlogPost, Skill, Interest, SocialLink, ContactMessage
+from translation_utils import get_translated, get_translated_list
 
 
 def get_featured_projects(lang='en'):
-    projects = Project.query.filter_by(featured=True).all()
-    return [
-        {
-            "title": p.title_es if lang == 'es' and p.title_es else p.title,
-            "description": p.description_es if lang == 'es' and p.description_es else p.description,
-            "technologies": p.technologies.split(",") if p.technologies else [],
-            "link": p.link or "#",
-            "demo": p.demo,
-            "git_url": p.git_url,
-            "git_icon": p.git_icon
-        }
-        for p in projects
-    ]
+    projects = Project.query.filter_by(featured=True).order_by(Project.created_at.desc()).all()
+    return get_translated_list(projects, ['title', 'description'], lang)
 
 
 def get_all_projects(lang='en'):
-    projects = Project.query.all()
-    return [
-        {
-            "title": p.title_es if lang == 'es' and p.title_es else p.title,
-            "description": p.description_es if lang == 'es' and p.description_es else p.description,
-            "technologies": p.technologies.split(",") if p.technologies else [],
-            "link": p.link or "#",
-            "demo": p.demo,
-            "git_url": p.git_url,
-            "git_icon": p.git_icon
-        }
-        for p in projects
-    ]
+    projects = Project.query.order_by(Project.created_at.desc()).all()
+    return get_translated_list(projects, ['title', 'description'], lang)
 
 
 def get_latest_posts(lang='en'):
     posts = BlogPost.query.order_by(BlogPost.date.desc()).limit(3).all()
-    return [
-        {
+    result = []
+    for p in posts:
+        result.append({
             "id": p.id,
-            "title": p.title_es if lang == 'es' and p.title_es else p.title,
-            "excerpt": p.excerpt_es if lang == 'es' and p.excerpt_es else p.excerpt,
+            "title": get_translated(p, 'title', lang),
+            "excerpt": get_translated(p, 'excerpt', lang),
             "image": p.image,
-            "date": p.date.strftime("%B %d, %Y")
-        }
-        for p in posts
-    ]
+            "date": p.date.strftime("%B %d, %Y") if p.date else ""
+        })
+    return result
 
 
 def get_all_posts(lang='en'):
     posts = BlogPost.query.order_by(BlogPost.date.desc()).all()
-    return [
-        {
+    result = []
+    for p in posts:
+        result.append({
             "id": p.id,
-            "title": p.title_es if lang == 'es' and p.title_es else p.title,
-            "excerpt": p.excerpt_es if lang == 'es' and p.excerpt_es else p.excerpt,
+            "title": get_translated(p, 'title', lang),
+            "excerpt": get_translated(p, 'excerpt', lang),
             "image": p.image,
-            "content": p.content_es if lang == 'es' and p.content_es else p.content,
-            "date": p.date.strftime("%B %d, %Y"),
+            "content": get_translated(p, 'content', lang),
+            "date": p.date.strftime("%B %d, %Y") if p.date else "",
             "author": p.author,
             "category": p.category
-        }
-        for p in posts
-    ]
+        })
+    return result
 
 
 def get_skills(lang='en'):
     skills = Skill.query.all()
-    return [{"name": s.name_es if lang == 'es' and s.name_es else s.name, "icon": s.icon} for s in skills]
+    return [
+        {
+            "name": get_translated(s, 'name', lang),
+            "icon": s.icon
+        }
+        for s in skills
+    ]
 
 
 def get_social_links():
@@ -93,22 +78,22 @@ def get_education():
 
 
 def get_experience(lang='en'):
-    experiences = Experience.query.order_by(Experience.id.desc()).all()
-    return [
-        {
-            "title": e.title_es if lang == 'es' and e.title_es else e.title,
+    experiences = Experience.query.order_by(Experience.created_at.desc()).all()
+    result = []
+    for e in experiences:
+        responsibilities = get_translated(e, 'responsibilities', lang)
+        result.append({
+            "title": get_translated(e, 'title', lang),
             "company": e.company,
             "period": e.period,
             "location": e.location or "",
-            "responsibilities": (e.responsibilities_es if lang == 'es' and e.responsibilities_es else e.responsibilities).split("\n") if (e.responsibilities_es if lang == 'es' and e.responsibilities_es else e.responsibilities) else [],
+            "responsibilities": responsibilities.split("\n") if responsibilities else [],
             "technologies": e.technologies.split(",") if e.technologies else []
-        }
-        for e in experiences
-    ]
+        })
+    return result
 
 
 def render_index():
-    from flask import session
     lang = session.get('lang', 'en')
     return render_template(
         "index.html",
@@ -119,7 +104,6 @@ def render_index():
 
 
 def render_about():
-    from flask import session
     lang = session.get('lang', 'en')
     return render_template(
         "about.html",
@@ -131,7 +115,6 @@ def render_about():
 
 
 def render_projects():
-    from flask import session
     lang = session.get('lang', 'en')
     return render_template(
         "projects.html",
@@ -140,7 +123,6 @@ def render_projects():
 
 
 def render_experience():
-    from flask import session
     lang = session.get('lang', 'en')
     return render_template(
         "experience.html",
@@ -149,7 +131,6 @@ def render_experience():
 
 
 def render_blog():
-    from flask import session
     lang = session.get('lang', 'en')
     return render_template(
         "blog.html",
@@ -158,7 +139,6 @@ def render_blog():
 
 
 def render_blog_post(post_id):
-    from flask import session
     lang = session.get('lang', 'en')
     
     post = BlogPost.query.get(post_id)
@@ -175,16 +155,16 @@ def render_blog_post(post_id):
     next_post = posts_sorted[current_index - 1] if current_index is not None and current_index > 0 else None
     
     post_data = {
-        "title": post.title_es if lang == 'es' and post.title_es else post.title,
-        "content": post.content_es if lang == 'es' and post.content_es else post.content,
+        "title": get_translated(post, 'title', lang),
+        "content": get_translated(post, 'content', lang),
         "image": post.image,
-        "date": post.date.strftime("%B %d, %Y"),
+        "date": post.date.strftime("%B %d, %Y") if post.date else "",
         "author": post.author,
         "category": post.category
     }
     
-    prev_lang_title = prev_post.title_es if lang == 'es' and prev_post.title_es else prev_post.title if prev_post else None
-    next_lang_title = next_post.title_es if lang == 'es' and next_post.title_es else next_post.title if next_post else None
+    prev_lang_title = get_translated(prev_post, 'title', lang) if prev_post else None
+    next_lang_title = get_translated(next_post, 'title', lang) if next_post else None
     
     prev_data = {"id": prev_post.id, "title": prev_lang_title} if prev_post else None
     next_data = {"id": next_post.id, "title": next_lang_title} if next_post else None

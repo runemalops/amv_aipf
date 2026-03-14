@@ -13,6 +13,7 @@ This project is a personal portfolio web application built with Flask, SQLAlchem
     *   `admin.py`: Admin panel routes for content management.
     *   `seed.py`: Script to seed initial data.
     *   `translation_service.py`: Translation service using MyMemory API.
+    *   `translation_utils.py`: Translation helpers with auto-translate fallback.
     *   `translations.py`: Translation helper functions.
     *   `requirements.txt`: Project dependencies.
     *   `instance/portfolio.db`: SQLite database file.
@@ -133,14 +134,17 @@ Uses [Bootstrap Icons](https://icons.getbootstrap.com/).
 ## Internationalization (i18n)
 The application supports English and Spanish languages. Users can switch languages via the dropdown in the navigation bar.
 
-### Translation Features:
-- Static UI text: Stored in `translations/en.json` and `translations/es.json`
-- Content translation: Projects, Experience, Skills, and Blog Posts support Spanish translations
-- Auto-translate: Admin panel has "Auto-Translate from English" buttons for content
+### Translation Architecture:
+- **Static UI text**: Stored in `translations/en.json` and `translations/es.json`
+- **Content translation**: Models use a `translations` JSON column with format:
+  ```json
+  {"es": {"title": "...", "description": "..."}}
+  ```
+- **Auto-translate fallback**: If a translation doesn't exist in the JSON, `translation_utils.py` will auto-translate using the MyMemory API and cache the result
 
 ### Adding Translations:
 1. Static text: Edit `translations/en.json` or `translations/es.json`
-2. Content: Use admin panel to add Spanish translations to projects, experience, skills, and blog posts
+2. Content: Add translations to the `translations` JSON column via admin or seed data
 
 ### Language Routes:
 - `/set-lang/en` - Switch to English
