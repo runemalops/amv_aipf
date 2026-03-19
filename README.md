@@ -5,7 +5,7 @@ Personal portfolio web application built with Flask, SQLAlchemy, and Bootstrap C
 ## Features
 
 - **Public Pages**: Home, About, Projects, Experience, Blog, Contact
-- **Admin Panel**: Full CRUD management for all content
+- **Admin Panel**: Full CRUD management for all content (Projects, Experience, Education, Blog, Skills, Interests, Social Links)
 - **Authentication**: Secure admin login with password hashing
 - **Database**: SQLite with Flask-Migrate for version control
 - **Internationalization**: English and Spanish language support with auto-translate
@@ -102,9 +102,10 @@ amv_aipf/
 ├── admin.py            # Admin panel
 ├── seed.py             # Data seeding
 ├── translation_service.py  # Translation API service
-├── translation_utils.py    # Translation helpers with auto-translate
+├── translation_utils.py   # Translation helpers with auto-translate
 ├── translations.py     # Translation helpers
 ├── requirements.txt    # Dependencies
+├── agent.md            # Agent instructions for AI assistants
 ├── instance/           # SQLite database
 ├── migrations/         # Database migrations
 ├── templates/          # HTML templates

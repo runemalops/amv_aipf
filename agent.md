@@ -123,8 +123,10 @@ This project is a personal portfolio web application built with Flask, SQLAlchem
 *   `/admin/` - Admin dashboard
 *   `/admin/projects` - Manage projects
 *   `/admin/experience` - Manage work experience
+*   `/admin/education` - Manage education
 *   `/admin/blog` - Manage blog posts
 *   `/admin/skills` - Manage skills
+*   `/admin/interests` - Manage interests
 *   `/admin/social-links` - Manage social media links
 *   `/admin/contact-messages` - View contact messages
 
