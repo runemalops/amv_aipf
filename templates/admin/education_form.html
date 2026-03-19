@@ -1,0 +1,41 @@
+{% extends "admin/base.html" %}
+
+{% block title %}{{ 'Edit' if education else 'Add' }} Education - Admin{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1>{{ 'Edit' if education else 'Add' }} Education</h1>
+    <a href="{{ url_for('admin.educations') }}" class="btn btn-secondary">Back</a>
+</div>
+
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    {% for category, message in messages %}
+      <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+        {{ message }}
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+      </div>
+    {% endfor %}
+  {% endif %}
+{% endwith %}
+
+<div class="card">
+    <div class="card-body">
+        <form method="POST">
+            <div class="mb-3">
+                <label for="degree" class="form-label">Degree</label>
+                <input type="text" class="form-control" id="degree" name="degree" value="{{ education.degree if education else '' }}" required>
+            </div>
+            <div class="mb-3">
+                <label for="school" class="form-label">School</label>
+                <input type="text" class="form-control" id="school" name="school" value="{{ education.school if education else '' }}" required>
+            </div>
+            <div class="mb-3">
+                <label for="year" class="form-label">Year</label>
+                <input type="text" class="form-control" id="year" name="year" value="{{ education.year if education else '' }}" placeholder="e.g., 2018 - 2022" required>
+            </div>
+            <button type="submit" class="btn btn-primary">{{ 'Update' if education else 'Create' }}</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

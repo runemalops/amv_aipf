@@ -36,6 +36,15 @@
                 <a href="{{ url_for('admin.skills') }}" class="{{ 'active' if 'skill' in request.endpoint else '' }}">
                     <i class="bi bi-code-slash me-2"></i>Skills
                 </a>
+                <a href="{{ url_for('admin.educations') }}" class="{{ 'active' if 'education' in request.endpoint else '' }}">
+                    <i class="bi bi-mortarboard me-2"></i>Education
+                </a>
+                <a href="{{ url_for('admin.interests') }}" class="{{ 'active' if 'interest' in request.endpoint else '' }}">
+                    <i class="bi bi-heart me-2"></i>Interests
+                </a>
+                <a href="{{ url_for('admin.social_links') }}" class="{{ 'active' if 'social' in request.endpoint else '' }}">
+                    <i class="bi bi-share me-2"></i>Social Links
+                </a>
                 <a href="{{ url_for('main.index') }}" target="_blank">
                     <i class="bi bi-box-arrow-up-right me-2"></i>View Site
                 </a>
