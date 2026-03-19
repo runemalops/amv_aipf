@@ -3,65 +3,681 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% block title %}Welcome to my Personal Page{% endblock %}</title>
+    <title>{% block title %}Welcome - Runemalops{% endblock %}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
     <style>
+        :root {
+            --primary: #0F172A;
+            --primary-light: #1E293B;
+            --secondary: #334155;
+            --accent: #38BDF8;
+            --accent-secondary: #22D3EE;
+            --success: #10B981;
+            --light-bg: #F8FAFC;
+            --white: #FFFFFF;
+            --text-dark: #0F172A;
+            --text-muted: #64748B;
+            --border-color: #E2E8F0;
+            --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+            --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+        }
+
+        * {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
         body {
             min-height: 100vh;
             display: flex;
             flex-direction: column;
+            color: var(--text-dark);
+            background-color: var(--light-bg);
         }
+
         .content {
             flex: 1;
         }
+
+        .navbar {
+            background: var(--primary) !important;
+            padding: 1rem 0;
+            box-shadow: var(--shadow);
+        }
+
+        .navbar-brand {
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: var(--white) !important;
+            letter-spacing: -0.5px;
+        }
+
+        .navbar-brand:hover {
+            color: var(--accent) !important;
+        }
+
+        .nav-link {
+            color: rgba(255, 255, 255, 0.85) !important;
+            font-weight: 500;
+            padding: 0.5rem 1rem !important;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+        }
+
+        .nav-link:hover {
+            color: var(--white) !important;
+            background: rgba(255, 255, 255, 0.1);
+        }
+
+        .nav-link.active {
+            color: var(--accent) !important;
+        }
+
         .hero-section {
-            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), 
-                        url('https://images.unsplash.com/photo-1519681393784-d120267933ba?w=1920&q=80') center/cover no-repeat fixed;
-            color: white;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            position: relative;
+            overflow: hidden;
+            color: var(--white);
             padding: 120px 0 100px;
-            min-height: 60vh;
+            min-height: 65vh;
             display: flex;
             align-items: center;
         }
+
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1920&q=80') center/cover no-repeat;
+            opacity: 0.15;
+        }
+
+        .hero-section .container {
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero-section h1 {
+            font-weight: 800;
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+            letter-spacing: -1px;
+        }
+
+        .hero-section .lead {
+            font-size: 1.25rem;
+            color: rgba(255, 255, 255, 0.9);
+            font-weight: 400;
+            margin-bottom: 2rem;
+        }
+
+        .btn-accent {
+            background: var(--accent);
+            color: var(--primary);
+            font-weight: 600;
+            padding: 0.75rem 1.75rem;
+            border-radius: 8px;
+            border: none;
+            transition: all 0.2s ease;
+        }
+
+        .btn-accent:hover {
+            background: var(--accent-secondary);
+            color: var(--primary);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(56, 189, 248, 0.4);
+        }
+
+        .btn-outline-accent {
+            background: transparent;
+            color: var(--white);
+            font-weight: 600;
+            padding: 0.75rem 1.75rem;
+            border-radius: 8px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            transition: all 0.2s ease;
+        }
+
+        .btn-outline-accent:hover {
+            background: var(--white);
+            color: var(--primary);
+            border-color: var(--white);
+        }
+
+        .section-padding {
+            padding: 80px 0;
+        }
+
+        .section-dark {
+            background: var(--primary);
+            color: var(--white);
+        }
+
+        .section-title {
+            font-weight: 700;
+            font-size: 2.25rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
+        }
+
+        .section-dark .section-title {
+            color: var(--white);
+        }
+
+        .section-subtitle {
+            color: var(--text-muted);
+            font-size: 1.125rem;
+            max-width: 600px;
+            margin: 0 auto 3rem;
+        }
+
+        .section-dark .section-subtitle {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .feature-card {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 2rem;
+            height: 100%;
+            border: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--accent);
+        }
+
+        .feature-icon {
+            width: 56px;
+            height: 56px;
+            background: linear-gradient(135deg, var(--accent) 0%, var(--accent-secondary) 100%);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .feature-icon i {
+            font-size: 1.5rem;
+            color: var(--white);
+        }
+
+        .feature-card h4 {
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            color: var(--primary);
+        }
+
+        .feature-card p {
+            color: var(--text-muted);
+            margin: 0;
+            line-height: 1.6;
+        }
+
+        .project-card {
+            background: var(--white);
+            border-radius: 12px;
+            overflow: hidden;
+            height: 100%;
+            border: 1px solid var(--border-color);
+            transition: all 0.3s ease;
+        }
+
+        .project-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .project-card .card-body {
+            padding: 1.75rem;
+        }
+
+        .project-card h3 {
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            color: var(--primary);
+        }
+
+        .project-card p {
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+            line-height: 1.6;
+        }
+
+        .tech-badge {
+            background: var(--light-bg);
+            color: var(--secondary);
+            padding: 0.35rem 0.75rem;
+            border-radius: 6px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            border: 1px solid var(--border-color);
+        }
+
+        .btn-primary {
+            background: var(--accent);
+            color: var(--primary);
+            font-weight: 600;
+            padding: 0.5rem 1.25rem;
+            border-radius: 8px;
+            border: none;
+            transition: all 0.2s ease;
+        }
+
+        .btn-primary:hover {
+            background: var(--accent-secondary);
+            color: var(--primary);
+        }
+
+        .btn-outline-primary {
+            color: var(--accent);
+            border: 2px solid var(--accent);
+            font-weight: 600;
+            padding: 0.5rem 1.25rem;
+            border-radius: 8px;
+            background: transparent;
+            transition: all 0.2s ease;
+        }
+
+        .btn-outline-primary:hover {
+            background: var(--accent);
+            color: var(--primary);
+        }
+
+        .btn-outline-white {
+            color: var(--white);
+            border: 2px solid rgba(255, 255, 255, 0.4);
+            font-weight: 600;
+            padding: 0.5rem 1.25rem;
+            border-radius: 8px;
+            background: transparent;
+            transition: all 0.2s ease;
+        }
+
+        .btn-outline-white:hover {
+            background: var(--white);
+            color: var(--primary);
+            border-color: var(--white);
+        }
+
+        .btn-outline-light {
+            color: var(--white);
+            border: 2px solid rgba(255, 255, 255, 0.4);
+            font-weight: 600;
+            padding: 0.75rem 1.75rem;
+            border-radius: 8px;
+            background: transparent;
+            transition: all 0.2s ease;
+        }
+
+        .btn-outline-light:hover {
+            background: var(--white);
+            color: var(--primary);
+            border-color: var(--white);
+        }
+
+        .btn-sm {
+            padding: 0.4rem 1rem;
+            font-size: 0.875rem;
+        }
+
+        .text-accent {
+            color: var(--accent) !important;
+        }
+
+        .badge-accent {
+            background: rgba(56, 189, 248, 0.15);
+            color: var(--accent);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-weight: 500;
+            font-size: 0.875rem;
+        }
+
+        .letter-spacing {
+            letter-spacing: 0.1em;
+        }
+
+        .about-image-wrapper {
+            position: relative;
+            display: inline-block;
+        }
+
+        .about-image-bg {
+            width: 280px;
+            height: 280px;
+            background: linear-gradient(135deg, var(--accent) 0%, var(--accent-secondary) 100%);
+            border-radius: 50%;
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            opacity: 0.3;
+        }
+
+        .about-avatar {
+            width: 280px;
+            height: 280px;
+            background: var(--primary-light);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            border: 4px solid var(--accent);
+        }
+
+        .about-avatar i {
+            font-size: 6rem;
+            color: var(--accent);
+        }
+
+        .skills-card {
+            background: var(--white);
+            border-radius: 16px;
+            padding: 2rem;
+            height: 100%;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .skills-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 2px solid var(--light-bg);
+        }
+
+        .skills-header i {
+            font-size: 1.5rem;
+            color: var(--accent);
+        }
+
+        .skills-header h3 {
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        .skills-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+
+        .skill-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.5rem 0;
+        }
+
+        .skill-item i {
+            color: var(--accent);
+            font-size: 1.1rem;
+        }
+
+        .education-card {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 1.5rem 2rem;
+            display: flex;
+            align-items: flex-start;
+            gap: 2rem;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-sm);
+            transition: all 0.3s ease;
+        }
+
+        .education-card:hover {
+            box-shadow: var(--shadow);
+            border-color: var(--accent);
+        }
+
+        .education-year {
+            background: var(--accent);
+            color: var(--primary);
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            font-weight: 600;
+            white-space: nowrap;
+        }
+
+        .education-content {
+            flex: 1;
+        }
+
+        .education-degree {
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 0.25rem;
+        }
+
+        .education-school {
+            color: var(--accent);
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+
+        .education-desc {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .timeline-wrapper {
+            position: relative;
+            padding-left: 40px;
+        }
+
+        .timeline-wrapper::before {
+            content: '';
+            position: absolute;
+            left: 15px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: linear-gradient(180deg, var(--accent) 0%, var(--accent-secondary) 100%);
+        }
+
+        .timeline-item {
+            position: relative;
+            margin-bottom: 2rem;
+        }
+
+        .timeline-marker {
+            position: absolute;
+            left: -40px;
+            width: 32px;
+            height: 32px;
+            background: var(--accent);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 4px solid var(--white);
+            box-shadow: var(--shadow);
+        }
+
+        .timeline-marker i {
+            font-size: 0.8rem;
+            color: var(--primary);
+        }
+
+        .timeline-content {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 1.5rem 2rem;
+            border: 1px solid var(--border-color);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .experience-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .experience-title {
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 0.25rem;
+        }
+
+        .experience-company {
+            color: var(--accent);
+            font-weight: 500;
+        }
+
+        .experience-meta {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 0.5rem;
+        }
+
+        .badge-timeline {
+            background: var(--accent);
+            color: var(--primary);
+            padding: 0.35rem 0.85rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .experience-location {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .experience-body ul {
+            padding-left: 1.25rem;
+            margin-bottom: 1rem;
+        }
+
+        .experience-body li {
+            color: var(--text-muted);
+            margin-bottom: 0.5rem;
+            line-height: 1.6;
+        }
+
+        .experience-tech {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .section-cta {
+            padding: 60px 0;
+            background: var(--light-bg);
+        }
+
+        .cta-box {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+            border-radius: 16px;
+            padding: 3rem;
+            text-align: center;
+            color: var(--white);
+        }
+
+        .cta-title {
+            font-weight: 700;
+            font-size: 1.75rem;
+            margin-bottom: 1rem;
+        }
+
+        .cta-text {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            margin-bottom: 1.5rem;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .project-icon {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, var(--accent) 0%, var(--accent-secondary) 100%);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.25rem;
+        }
+
+        .project-icon i {
+            font-size: 1.25rem;
+            color: var(--primary);
+        }
+
+        .project-content h3 {
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 0.75rem;
+        }
+
+        .project-description {
+            color: var(--text-muted);
+            margin-bottom: 1rem;
+            line-height: 1.6;
+        }
+
+        .project-tech {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .project-links {
+            display: flex;
+            gap: 0.75rem;
+            flex-wrap: wrap;
+        }
+
         @media (max-width: 768px) {
             .hero-section {
                 padding: 80px 0 60px;
-                min-height: 50vh;
+                min-height: 55vh;
             }
-        }
-        .section-padding {
-            padding: 60px 0;
-        }
-        .project-card {
-            transition: transform 0.3s ease;
-            height: 100%;
-        }
-        .project-card:hover {
-            transform: translateY(-5px);
-        }
-        .experience-card {
-            border-left: 4px solid #667eea;
-        }
-        .blog-card {
-            transition: box-shadow 0.3s ease;
-        }
-        .blog-card:hover {
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-        }
-        footer {
-            background: #2d3748;
-            color: white;
-            padding: 30px 0;
+
+            .hero-section h1 {
+                font-size: 2.25rem;
+            }
+
+            .section-padding {
+                padding: 60px 0;
+            }
+
+            .section-title {
+                font-size: 1.75rem;
+            }
         }
     </style>
     {% block extra_css %}{% endblock %}
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
+    <nav class="navbar navbar-expand-lg sticky-top">
         <div class="container">
             <a class="navbar-brand" href="{{ url_for('main.index') }}">Runemalops</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
@@ -88,7 +704,7 @@
                         <a class="nav-link dropdown-toggle" href="#" id="langDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             {{ 'EN' if current_lang == 'en' else 'ES' }}
                         </a>
-                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="langDropdown">
+                        <ul class="dropdown-menu dropdown-menu-end">
                             <li><a class="dropdown-item" href="{{ url_for('set_language', lang='en') }}">English</a></li>
                             <li><a class="dropdown-item" href="{{ url_for('set_language', lang='es') }}">Español</a></li>
                         </ul>
@@ -103,20 +719,30 @@
     </main>
 
     <footer>
-        <div class="container text-center">
-            <div class="mb-3">
-                {% if social_links %}
-                    {% for link in social_links %}
-                    <a href="{{ link.url }}" class="text-white me-3" target="_blank" rel="noopener noreferrer"><i class="bi {{ link.icon }}"></i></a>
-                    {% endfor %}
-                {% else %}
-                <a href="#" class="text-white me-3"><i class="bi bi-github"></i></a>
-                <a href="#" class="text-white me-3"><i class="bi bi-linkedin"></i></a>
-                <a href="#" class="text-white me-3"><i class="bi bi-twitter-x"></i></a>
-                <a href="#" class="text-white"><i class="bi bi-envelope"></i></a>
-                {% endif %}
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-4 text-center text-md-start mb-3 mb-md-0">
+                    <div class="footer-brand">Runemalops</div>
+                    <small class="text-muted">Cloud Engineer & DevOps Professional</small>
+                </div>
+                <div class="col-md-4 text-center mb-3 mb-md-0">
+                    <div class="social-links">
+                        {% if social_links %}
+                            {% for link in social_links %}
+                            <a href="{{ link.url }}" target="_blank" rel="noopener noreferrer"><i class="bi {{ link.icon }}"></i></a>
+                            {% endfor %}
+                        {% else %}
+                        <a href="#"><i class="bi bi-github"></i></a>
+                        <a href="#"><i class="bi bi-linkedin"></i></a>
+                        <a href="#"><i class="bi bi-twitter-x"></i></a>
+                        <a href="#"><i class="bi bi-envelope"></i></a>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="col-md-4 text-center text-md-end">
+                    <small>&copy; 2026 Runemalops. {{ t('all_rights_reserved') }}</small>
+                </div>
             </div>
-            <p class="mb-0">&copy; 2026 My Portfolio. {{ t('all_rights_reserved') }}</p>
         </div>
     </footer>
 

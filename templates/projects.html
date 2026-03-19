@@ -1,30 +1,41 @@
 {% extends "base.html" %}
 
-{% block title %}{{ t('my_projects') }}{% endblock %}
+{% block title %}{{ t('projects_title') }} - {{ t('cloud_engineer') }}{% endblock %}
 
 {% block content %}
+<section class="section-padding section-dark">
+    <div class="container">
+        <div class="text-center">
+            <span class="badge-accent mb-3">{{ t('portfolio') }}</span>
+            <h1 class="display-4 fw-bold">{{ t('projects_title') }}</h1>
+            <p class="lead text-light opacity-75 mt-3">{{ t('projects_subtitle') }}</p>
+        </div>
+    </div>
+</section>
+
 <section class="section-padding">
     <div class="container">
-        <h1 class="text-center mb-5">{{ t('projects_title') }}</h1>
-        
-        <div class="row">
+        <div class="row g-4">
             {% for project in projects %}
-            <div class="col-md-6 mb-4">
-                <div class="card project-card h-100">
-                    <div class="card-body">
-                        <h3 class="card-title">{{ project.title }}</h3>
-                        <p class="card-text">{{ project.description }}</p>
-                        <div class="mb-3">
+            <div class="col-lg-6">
+                <div class="project-card">
+                    <div class="project-icon">
+                        <i class="bi bi-folder-fill"></i>
+                    </div>
+                    <div class="project-content">
+                        <h3 class="project-title">{{ project.title }}</h3>
+                        <p class="project-description">{{ project.description }}</p>
+                        <div class="project-tech">
                             {% for tech in project.technologies %}
-                            <span class="badge bg-primary me-1">{{ tech }}</span>
+                            <span class="tech-badge">{{ tech }}</span>
                             {% endfor %}
                         </div>
-                        <div class="d-flex gap-2">
-                            <a href="{{ project.link }}" class="btn btn-primary" target="_blank">
+                        <div class="project-links">
+                            <a href="{{ project.link }}" class="btn btn-sm btn-accent" target="_blank">
                                 <i class="bi bi-github me-1"></i>{{ t('source_code') }}
                             </a>
                             {% if project.demo %}
-                            <a href="{{ project.demo }}" class="btn btn-outline-primary" target="_blank">
+                            <a href="{{ project.demo }}" class="btn btn-sm btn-outline-accent" target="_blank">
                                 <i class="bi bi-play-circle me-1"></i>{{ t('live_demo') }}
                             </a>
                             {% endif %}
@@ -33,6 +44,25 @@
                 </div>
             </div>
             {% endfor %}
+        </div>
+        
+        {% if not projects %}
+        <div class="text-center py-5">
+            <i class="bi bi-inbox display-1 text-muted mb-3"></i>
+            <p class="text-muted">{{ t('no_projects') }}</p>
+        </div>
+        {% endif %}
+    </div>
+</section>
+
+<section class="section-cta">
+    <div class="container">
+        <div class="cta-box">
+            <h2 class="cta-title">{{ t('have_project_idea') }}</h2>
+            <p class="cta-text">{{ t('cta_projects_text') }}</p>
+            <a href="{{ url_for('main.contact') }}" class="btn btn-accent">
+                <i class="bi bi-chat-dots me-2"></i>{{ t('lets_discuss') }}
+            </a>
         </div>
     </div>
 </section>

@@ -5,95 +5,128 @@
 {% block content %}
 <section class="hero-section text-center">
     <div class="container">
-        <h1 class="display-3 mb-4">{{ t('welcome_personal') }}</h1>
-        <p class="lead mb-4">{{ t('subtitle') }}</p>
-        <div class="mb-4">
-            <a href="{{ url_for('main.about') }}" class="btn btn-light btn-lg me-2">{{ t('about_me') }}</a>
-            <a href="{{ url_for('main.projects') }}" class="btn btn-outline-light btn-lg">{{ t('my_projects') }}</a>
+        <h1 class="mb-4">{{ t('welcome_personal') }}</h1>
+        <p class="lead mb-4 mx-auto" style="max-width: 700px;">{{ t('subtitle') }}</p>
+        <div class="d-flex justify-content-center gap-3 flex-wrap">
+            <a href="{{ url_for('main.about') }}" class="btn btn-accent">{{ t('about_me') }}</a>
+            <a href="{{ url_for('main.projects') }}" class="btn btn-outline-accent">{{ t('my_projects') }}</a>
         </div>
     </div>
 </section>
 
 <section class="section-padding">
     <div class="container">
-        <div class="row text-center">
-            <div class="col-md-4 mb-4">
-                <div class="p-4 bg-light rounded">
-                    <i class="bi bi-code-slash display-4 text-primary mb-3"></i>
-                    <h4>{{ t('clean_code') }}</h4>
-                    <p class="mb-0">{{ t('clean_code_desc') }}</p>
+        <div class="text-center mb-5">
+            <h2 class="section-title">What I Do</h2>
+            <p class="section-subtitle">Building robust infrastructure and leading high-performance engineering teams</p>
+        </div>
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="bi bi-cloud"></i>
+                    </div>
+                    <h4>{{ t('cloud_devops') }}</h4>
+                    <p>{{ t('cloud_devops_desc') }}</p>
                 </div>
             </div>
-            <div class="col-md-4 mb-4">
-                <div class="p-4 bg-light rounded">
-                    <i class="bi bi-palette display-4 text-primary mb-3"></i>
-                    <h4>{{ t('modern_design') }}</h4>
-                    <p class="mb-0">{{ t('modern_design_desc') }}</p>
+            <div class="col-md-4">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="bi bi-git"></i>
+                    </div>
+                    <h4>{{ t('infrastructure_code') }}</h4>
+                    <p>{{ t('infrastructure_code_desc') }}</p>
                 </div>
             </div>
-            <div class="col-md-4 mb-4">
-                <div class="p-4 bg-light rounded">
-                    <i class="bi bi-lightning-charge display-4 text-primary mb-3"></i>
-                    <h4>{{ t('fast_solutions') }}</h4>
-                    <p class="mb-0">{{ t('fast_solutions_desc') }}</p>
+            <div class="col-md-4">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="bi bi-people"></i>
+                    </div>
+                    <h4>{{ t('team_leadership') }}</h4>
+                    <p>{{ t('team_leadership_desc') }}</p>
                 </div>
             </div>
         </div>
     </div>
 </section>
 
-<section class="section-padding bg-light">
+<section class="section-padding section-dark">
     <div class="container">
-        <h2 class="text-center mb-5">{{ t('featured_projects') }}</h2>
-        <div class="row">
+        <div class="text-center mb-5">
+            <h2 class="section-title">{{ t('featured_projects') }}</h2>
+            <p class="section-subtitle">Showcasing cloud infrastructure and automation projects</p>
+        </div>
+        <div class="row g-4">
             {% for project in featured_projects %}
-            <div class="col-md-4 mb-4">
-                <div class="card project-card">
+            <div class="col-lg-4 col-md-6">
+                <div class="project-card">
                     <div class="card-body">
-                        <h5 class="card-title">{{ project.title }}</h5>
-                        <p class="card-text">{{ project.description }}</p>
-                        <div class="mb-2">
+                        <h3>{{ project.title }}</h3>
+                        <p>{{ project.description }}</p>
+                        <div class="mb-3 d-flex flex-wrap gap-2">
                             {% for tech in project.technologies %}
-                            <span class="badge bg-secondary me-1">{{ tech }}</span>
+                            <span class="tech-badge">{{ tech }}</span>
                             {% endfor %}
                         </div>
-                        <a href="{{ project.link }}" class="btn btn-sm btn-primary">{{ t('view_project') }}</a>
+                        <div class="d-flex gap-2">
+                            <a href="{{ project.link }}" class="btn btn-primary btn-sm" target="_blank">
+                                <i class="bi bi-github me-1"></i>{{ t('source_code') }}
+                            </a>
+                            {% if project.demo %}
+                            <a href="{{ project.demo }}" class="btn btn-outline-white btn-sm" target="_blank">
+                                <i class="bi bi-play-circle me-1"></i>{{ t('live_demo') }}
+                            </a>
+                            {% endif %}
+                        </div>
                     </div>
                 </div>
             </div>
             {% endfor %}
         </div>
-        <div class="text-center mt-4">
-            <a href="{{ url_for('main.projects') }}" class="btn btn-outline-primary">{{ t('view_all_projects') }}</a>
+        <div class="text-center mt-5">
+            <a href="{{ url_for('main.projects') }}" class="btn btn-outline-white">{{ t('view_all_projects') }}</a>
         </div>
     </div>
 </section>
 
 <section class="section-padding">
     <div class="container">
-        <h2 class="text-center mb-5">{{ t('latest_posts') }}</h2>
-        <div class="row">
+        <div class="text-center mb-5">
+            <h2 class="section-title">{{ t('latest_posts') }}</h2>
+            <p class="section-subtitle">Insights on cloud architecture, DevOps, and engineering leadership</p>
+        </div>
+        <div class="row g-4">
             {% for post in latest_posts %}
-            <div class="col-md-4 mb-4">
-                <div class="card blog-card h-100">
+            <div class="col-lg-4 col-md-6">
+                <div class="blog-card">
                     {% if post.image %}
-                    <img src="{{ post.image }}" class="card-img-top" alt="{{ post.title }}" style="height: 180px; object-fit: cover;">
+                    <img src="{{ post.image }}" class="card-img-top" alt="{{ post.title }}">
                     {% endif %}
                     <div class="card-body">
-                        <h5 class="card-title">{{ post.title }}</h5>
-                        <p class="card-text text-muted small">{{ post.excerpt }}</p>
-                        <a href="{{ url_for('main.blog_post', post_id=post.id) }}" class="btn btn-sm btn-outline-primary">{{ t('read_more') }}</a>
-                    </div>
-                    <div class="card-footer text-muted">
-                        <small>{{ post.date }}</small>
+                        <h5>{{ post.title }}</h5>
+                        <p class="text-muted small mb-3">{{ post.excerpt }}</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <small class="text-muted">{{ post.date }}</small>
+                            <a href="{{ url_for('main.blog_post', post_id=post.id) }}" class="btn btn-primary btn-sm">{{ t('read_more') }}</a>
+                        </div>
                     </div>
                 </div>
             </div>
             {% endfor %}
         </div>
-        <div class="text-center mt-4">
+        <div class="text-center mt-5">
             <a href="{{ url_for('main.blog') }}" class="btn btn-outline-primary">{{ t('view_all_posts') }}</a>
         </div>
+    </div>
+</section>
+
+<section class="section-padding section-dark text-center">
+    <div class="container">
+        <h2 class="section-title mb-3">Let's Work Together</h2>
+        <p class="section-subtitle">Have a project in mind? Let's discuss how I can help bring your vision to life.</p>
+        <a href="{{ url_for('main.contact') }}" class="btn btn-accent btn-lg">Get In Touch</a>
     </div>
 </section>
 {% endblock %}

@@ -1,45 +1,75 @@
 {% extends "base.html" %}
 
-{% block title %}About Me - I'm Alexander Morales {% endblock %}
+{% block title %}{{ t('about_title') }} - {{ t('cloud_engineer') }}{% endblock %}
 
 {% block content %}
-<section class="section-padding">
+<section class="section-padding section-dark">
     <div class="container">
-        <h1 class="text-center mb-5">{{ t('about_title') }}</h1>
         <div class="row align-items-center">
-            <div class="col-md-4 text-center mb-4 mb-md-0">
-                <div class="bg-light rounded-circle d-inline-block p-5" style="width: 250px; height: 250px;">
-                    <i class="bi bi-person display-1 text-secondary"></i>
+            <div class="col-lg-4 mb-5 mb-lg-0">
+                <div class="about-image-wrapper">
+                    <div class="about-image-bg"></div>
+                    <div class="about-avatar">
+                        <i class="bi bi-person-fill"></i>
+                    </div>
                 </div>
             </div>
-            <div class="col-md-8">
-                <h2 class="mb-4">{{ t('about_intro') }}</h2>
-                <p class="lead mb-4">
+            <div class="col-lg-8">
+                <span class="badge-accent mb-3">{{ t('about_badge') }}</span>
+                <h1 class="display-5 fw-bold mb-4">{{ t('about_intro') }}</h1>
+                <p class="lead text-light mb-4">
                     {{ t('about_description1') }}
                 </p>
-                <p class="mb-4">
+                <p class="text-light opacity-75 mb-5">
                     {{ t('about_description2') }}
                 </p>
-                <div class="row mb-4">
-                    <div class="col-6">
-                        <h5>{{ t('skills') }}</h5>
-                        <ul class="list-unstyled">
-                            {% for skill in skills %}
-                            <li><i class="bi {{ skill.icon if skill.icon else 'bi-check2' }} text-primary me-2"></i>{{ skill.name }}</li>
-                            {% endfor %}
-                        </ul>
+                <div class="d-flex gap-3 flex-wrap">
+                    <a href="{{ url_for('main.experience') }}" class="btn btn-accent">
+                        <i class="bi bi-briefcase me-2"></i>{{ t('view_my_experience') }}
+                    </a>
+                    <a href="{{ url_for('main.projects') }}" class="btn btn-outline-light">
+                        <i class="bi bi-folder me-2"></i>{{ t('my_projects') }}
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="section-padding">
+    <div class="container">
+        <div class="row g-4">
+            <div class="col-lg-6">
+                <div class="skills-card">
+                    <div class="skills-header">
+                        <i class="bi bi-tools"></i>
+                        <h3 class="mb-0">{{ t('skills') }}</h3>
                     </div>
-                    <div class="col-6">
-                        <h5>{{ t('interests') }}</h5>
-                        <ul class="list-unstyled">
-                            {% for interest in interests %}
-                            <li><i class="bi bi-star text-primary me-2"></i>{{ interest }}</li>
-                            {% endfor %}
-                        </ul>
+                    <div class="skills-list">
+                        {% for skill in skills %}
+                        <div class="skill-item">
+                            <i class="bi {{ skill.icon if skill.icon else 'bi-check2-circle' }}"></i>
+                            <span>{{ skill.name }}</span>
+                        </div>
+                        {% endfor %}
                     </div>
                 </div>
-                <a href="{{ url_for('main.experience') }}" class="btn btn-primary">{{ t('view_my_experience') }}</a>
-                <a href="{{ url_for('main.projects') }}" class="btn btn-outline-primary">{{ t('my_projects') }}</a>
+            </div>
+            <div class="col-lg-6">
+                <div class="skills-card">
+                    <div class="skills-header">
+                        <i class="bi bi-star"></i>
+                        <h3 class="mb-0">{{ t('interests') }}</h3>
+                    </div>
+                    <div class="skills-list">
+                        {% for interest in interests %}
+                        <div class="skill-item">
+                            <i class="bi bi-heart-fill"></i>
+                            <span>{{ interest.name if interest.name else interest }}</span>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -47,15 +77,21 @@
 
 <section class="section-padding bg-light">
     <div class="container">
-        <h2 class="text-center mb-5">{{ t('education') }}</h2>
+        <div class="text-center mb-5">
+            <span class="text-accent fw-semibold text-uppercase letter-spacing">{{ t('my_background') }}</span>
+            <h2 class="section-title">{{ t('education') }}</h2>
+        </div>
         <div class="row justify-content-center">
             {% for edu in education %}
-            <div class="col-md-8 mb-4">
-                <div class="card">
-                    <div class="card-body">
-                        <h4>{{ edu.degree }}</h4>
-                        <h5 class="text-muted">{{ edu.school }}</h5>
-                        <p class="mb-0">{{ edu.year }}</p>
+            <div class="col-lg-8 mb-4">
+                <div class="education-card">
+                    <div class="education-year">{{ edu.year }}</div>
+                    <div class="education-content">
+                        <h4 class="education-degree">{{ edu.degree }}</h4>
+                        <p class="education-school">{{ edu.school }}</p>
+                        {% if edu.description %}
+                        <p class="education-desc">{{ edu.description }}</p>
+                        {% endif %}
                     </div>
                 </div>
             </div>

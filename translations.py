@@ -26,8 +26,13 @@ def get_translation(key, lang="en"):
 
 
 def inject_translations():
-    from flask import request, g
-    from app import get_locale
+    from flask import session, request, g
 
-    lang = get_locale()
+    if "lang" in session:
+        lang = session["lang"]
+    elif hasattr(g, "lang"):
+        lang = g.lang
+    else:
+        lang = request.accept_languages.best_match(["en", "es"]) or "en"
+
     return {"t": lambda key: get_translation(key, lang), "current_lang": lang}
