@@ -105,6 +105,7 @@ amv_aipf/
 ├── translation_utils.py   # Translation helpers with auto-translate
 ├── translations.py     # Translation helpers
 ├── requirements.txt    # Dependencies
+├── agent.md           # Agent instructions for AI assistants
 ├── skill.md           # AI assistant design guidelines
 ├── instance/           # SQLite database
 ├── migrations/         # Database migrations
