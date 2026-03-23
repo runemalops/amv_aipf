@@ -1,7 +1,8 @@
 from flask import Flask, request, g, session, redirect, url_for
 from flask_migrate import Migrate
 from flask_login import LoginManager
-from models import db, User, SocialLink
+from flask_mail import Mail
+from models import db, User, SocialLink, Settings
 from routes import main
 from auth import auth
 from admin import admin
@@ -13,6 +14,15 @@ app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///portfolio.db"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 app.config["SECRET_KEY"] = "your-secret-key-change-in-production"
 app.config["LANGUAGES"] = ["en", "es"]
+
+app.config["MAIL_SERVER"] = Settings.get("smtp_server", "")
+app.config["MAIL_PORT"] = int(Settings.get("smtp_port", 587))
+app.config["MAIL_USE_TLS"] = Settings.get("smtp_tls", "true").lower() == "true"
+app.config["MAIL_USERNAME"] = Settings.get("smtp_username", "")
+app.config["MAIL_PASSWORD"] = Settings.get("smtp_password", "")
+app.config["MAIL_DEFAULT_SENDER"] = Settings.get("smtp_sender", "")
+
+mail = Mail(app)
 
 db.init_app(app)
 migrate = Migrate(app, db)

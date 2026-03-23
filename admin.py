@@ -1,4 +1,13 @@
-from flask import Blueprint, render_template, redirect, url_for, flash, request, jsonify
+from flask import (
+    Blueprint,
+    render_template,
+    redirect,
+    url_for,
+    flash,
+    request,
+    jsonify,
+    current_app,
+)
 from flask_login import login_required, current_user
 from models import (
     db,
@@ -10,6 +19,7 @@ from models import (
     Interest,
     SocialLink,
     ContactMessage,
+    Settings,
 )
 from translation_service import translate_text, translate_html
 
@@ -551,3 +561,48 @@ def delete_contact_message(id):
     db.session.commit()
     flash("Message deleted successfully!", "success")
     return redirect(url_for("admin.contact_messages"))
+
+
+# ============ Settings ============
+
+
+@admin.route("/settings", methods=["GET", "POST"])
+@login_required
+def settings():
+    if request.method == "POST":
+        smtp_fields = [
+            "smtp_server",
+            "smtp_port",
+            "smtp_username",
+            "smtp_password",
+            "smtp_sender",
+            "smtp_tls",
+            "contact_recipient",
+        ]
+        for field in smtp_fields:
+            value = request.form.get(field, "")
+            Settings.set(field, value)
+
+        current_app.config["MAIL_SERVER"] = Settings.get("smtp_server", "")
+        current_app.config["MAIL_PORT"] = int(Settings.get("smtp_port") or 587)
+        current_app.config["MAIL_USE_TLS"] = (
+            Settings.get("smtp_tls", "true").lower() == "true"
+        )
+        current_app.config["MAIL_USERNAME"] = Settings.get("smtp_username", "")
+        current_app.config["MAIL_PASSWORD"] = Settings.get("smtp_password", "")
+        current_app.config["MAIL_DEFAULT_SENDER"] = Settings.get("smtp_sender", "")
+
+        flash("Settings saved successfully!", "success")
+        return redirect(url_for("admin.settings"))
+
+    smtp_fields = {
+        "smtp_server": Settings.get("smtp_server", ""),
+        "smtp_port": Settings.get("smtp_port", "587"),
+        "smtp_username": Settings.get("smtp_username", ""),
+        "smtp_password": Settings.get("smtp_password", ""),
+        "smtp_sender": Settings.get("smtp_sender", ""),
+        "smtp_tls": Settings.get("smtp_tls", "true"),
+        "contact_recipient": Settings.get("contact_recipient", ""),
+    }
+
+    return render_template("admin/settings.html", settings=smtp_fields)

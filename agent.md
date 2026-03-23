@@ -106,6 +106,7 @@ This project is a personal portfolio web application built with Flask, SQLAlchem
 *   `Interest`: Personal interests
 *   `SocialLink`: Social media links
 *   `ContactMessage`: Contact form messages
+*   `Settings`: Key-value store for site configuration (SMTP, etc.)
 
 ## Routes
 ### Public
@@ -129,6 +130,7 @@ This project is a personal portfolio web application built with Flask, SQLAlchem
 *   `/admin/interests` - Manage interests
 *   `/admin/social-links` - Manage social media links
 *   `/admin/contact-messages` - View contact messages
+*   `/admin/settings` - Configure SMTP and site settings
 
 ## Icons
 Uses [Bootstrap Icons](https://icons.getbootstrap.com/).

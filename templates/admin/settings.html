@@ -1,0 +1,146 @@
+{% extends "admin/base.html" %}
+
+{% block title %}Settings - Admin{% endblock %}
+
+{% block content %}
+<h1 class="mb-4">Settings</h1>
+
+<div class="row">
+    <div class="col-lg-8">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title mb-4"><i class="bi bi-envelope me-2"></i>SMTP / Email Settings</h5>
+                <p class="text-muted small mb-4">Configure SMTP settings to enable email notifications when visitors submit contact form messages.</p>
+                
+                <form method="POST">
+                    <div class="row mb-3">
+                        <div class="col-md-8">
+                            <label for="smtp_server" class="form-label">SMTP Server</label>
+                            <input type="text" class="form-control" id="smtp_server" name="smtp_server" value="{{ settings.smtp_server }}" placeholder="smtp.gmail.com">
+                        </div>
+                        <div class="col-md-4">
+                            <label for="smtp_port" class="form-label">Port</label>
+                            <input type="number" class="form-control" id="smtp_port" name="smtp_port" value="{{ settings.smtp_port }}" placeholder="587">
+                        </div>
+                    </div>
+                    
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="smtp_username" class="form-label">Username / Email</label>
+                            <input type="text" class="form-control" id="smtp_username" name="smtp_username" value="{{ settings.smtp_username }}" placeholder="your-email@gmail.com">
+                        </div>
+                        <div class="col-md-6">
+                            <label for="smtp_password" class="form-label">Password / App Password</label>
+                            <input type="password" class="form-control" id="smtp_password" name="smtp_password" value="{{ settings.smtp_password }}" placeholder="App password or SMTP password">
+                            <small class="text-muted">For Gmail, use an App Password instead of your regular password.</small>
+                        </div>
+                    </div>
+                    
+                    <div class="row mb-3">
+                        <div class="col-md-6">
+                            <label for="smtp_sender" class="form-label">Sender Email</label>
+                            <input type="email" class="form-control" id="smtp_sender" name="smtp_sender" value="{{ settings.smtp_sender }}" placeholder="noreply@yourdomain.com">
+                            <small class="text-muted">The email address used as the sender.</small>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="contact_recipient" class="form-label">Contact Recipient</label>
+                            <input type="email" class="form-control" id="contact_recipient" name="contact_recipient" value="{{ settings.contact_recipient }}" placeholder="your-email@yourdomain.com">
+                            <small class="text-muted">Where contact form messages will be sent.</small>
+                        </div>
+                    </div>
+                    
+                    <div class="mb-4">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="smtp_tls" name="smtp_tls" value="true" {% if settings.smtp_tls == 'true' %}checked{% endif %}>
+                            <label class="form-check-label" for="smtp_tls">
+                                Use TLS Encryption
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="btn btn-primary">
+                        <i class="bi bi-save me-2"></i>Save Settings
+                    </button>
+                </form>
+            </div>
+        </div>
+        
+        <div class="card mt-4">
+            <div class="card-body">
+                <h5 class="card-title mb-3"><i class="bi bi-info-circle me-2"></i>SMTP Configuration Examples</h5>
+                
+                <div class="accordion" id="smtpExamples">
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#gmail">
+                                Gmail SMTP
+                            </button>
+                        </h2>
+                        <div id="gmail" class="accordion-collapse collapse" data-bs-parent="#smtpExamples">
+                            <div class="accordion-body">
+                                <ul class="mb-0 small">
+                                    <li><strong>SMTP Server:</strong> smtp.gmail.com</li>
+                                    <li><strong>Port:</strong> 587</li>
+                                    <li><strong>Username:</strong> your-email@gmail.com</li>
+                                    <li><strong>Password:</strong> 16-character App Password (enable 2FA first)</li>
+                                    <li><strong>Sender Email:</strong> your-email@gmail.com</li>
+                                    <li><strong>TLS:</strong> Enabled</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#outlook">
+                                Outlook / Hotmail SMTP
+                            </button>
+                        </h2>
+                        <div id="outlook" class="accordion-collapse collapse" data-bs-parent="#smtpExamples">
+                            <div class="accordion-body">
+                                <ul class="mb-0 small">
+                                    <li><strong>SMTP Server:</strong> smtp-mail.outlook.com</li>
+                                    <li><strong>Port:</strong> 587</li>
+                                    <li><strong>Username:</strong> your-email@outlook.com</li>
+                                    <li><strong>Password:</strong> Your account password</li>
+                                    <li><strong>Sender Email:</strong> your-email@outlook.com</li>
+                                    <li><strong>TLS:</strong> Enabled</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="accordion-item">
+                        <h2 class="accordion-header">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#custom">
+                                Custom SMTP (Mailgun, SendGrid, etc.)
+                            </button>
+                        </h2>
+                        <div id="custom" class="accordion-collapse collapse" data-bs-parent="#smtpExamples">
+                            <div class="accordion-body">
+                                <ul class="mb-0 small">
+                                    <li>Use the SMTP credentials provided by your email service</li>
+                                    <li>Common ports: 587 (TLS) or 465 (SSL)</li>
+                                    <li>Check your service's documentation for server address</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-lg-4">
+        <div class="card bg-light">
+            <div class="card-body">
+                <h5 class="card-title"><i class="bi bi-lightbulb me-2"></i>Tips</h5>
+                <ul class="mb-0 small">
+                    <li class="mb-2">For Gmail, you need to generate an <strong>App Password</strong> after enabling 2-Factor Authentication.</li>
+                    <li class="mb-2">The Contact Recipient is where you'll receive messages from the contact form.</li>
+                    <li class="mb-2">If SMTP is not configured, messages will still be saved to the database.</li>
+                    <li>Test your configuration by submitting a contact form after saving.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
