@@ -110,6 +110,44 @@ def get_experience(lang="en"):
     return result
 
 
+def get_site_config():
+    return {
+        "site_title": Settings.get("site_title", "Your Name"),
+        "site_subtitle": Settings.get("site_subtitle", "Your Title | Your Profession"),
+        "hero_title": Settings.get("hero_title", "Your Hero Headline"),
+        "hero_cta_text": Settings.get("hero_cta_text", "View My Work"),
+        "hero_cta_link": Settings.get("hero_cta_link", "/projects"),
+        "hero_cta_secondary_text": Settings.get(
+            "hero_cta_secondary_text", "Download CV"
+        ),
+        "hero_cta_secondary_link": Settings.get("hero_cta_secondary_link", "#"),
+        "what_i_do_title": Settings.get("what_i_do_title", "What I Do"),
+        "what_i_do_subtitle": Settings.get(
+            "what_i_do_subtitle", "Describe what you do"
+        ),
+        "feature1_title": Settings.get("feature1_title", "Feature 1"),
+        "feature1_desc": Settings.get("feature1_desc", "Feature description"),
+        "feature2_title": Settings.get("feature2_title", "Feature 2"),
+        "feature2_desc": Settings.get("feature2_desc", "Feature description"),
+        "feature3_title": Settings.get("feature3_title", "Feature 3"),
+        "feature3_desc": Settings.get("feature3_desc", "Feature description"),
+        "about_badge": Settings.get("about_badge", "Get To Know Me"),
+        "about_intro": Settings.get("about_intro", "Your Professional Title"),
+        "about_description1": Settings.get(
+            "about_description1", "Write your first description here."
+        ),
+        "about_description2": Settings.get(
+            "about_description2", "Write your second description here."
+        ),
+        "about_image": Settings.get("about_image", ""),
+        "cv_download_link": Settings.get("cv_download_link", ""),
+        "projects_subtitle": Settings.get("projects_subtitle", "Showcase your work"),
+        "blog_subtitle": Settings.get("blog_subtitle", "Share your insights"),
+        "cta_title": Settings.get("cta_title", "Let's Work Together"),
+        "cta_text": Settings.get("cta_text", "Have a project in mind? Let's discuss."),
+    }
+
+
 def render_index():
     lang = session.get("lang", "en")
     return render_template(
@@ -117,6 +155,7 @@ def render_index():
         featured_projects=get_featured_projects(lang),
         latest_posts=get_latest_posts(lang),
         social_links=get_social_links(),
+        site_config=get_site_config(),
     )
 
 
@@ -128,6 +167,7 @@ def render_about():
         interests=get_interests(),
         education=get_education(),
         social_links=get_social_links(),
+        site_config=get_site_config(),
     )
 
 
@@ -202,35 +242,29 @@ def render_contact():
         email = request.form.get("email")
         subject = request.form.get("subject")
         message = request.form.get("message")
-        
-        contact = ContactMessage(name=name, email=email, subject=subject, message=message)
+
+        contact = ContactMessage(
+            name=name, email=email, subject=subject, message=message
+        )
         db.session.add(contact)
         db.session.commit()
-        
+
         recipient = Settings.get("contact_recipient", "")
         smtp_server = Settings.get("smtp_server", "")
-        
+
         if recipient and smtp_server:
             try:
                 from app import mail
+
                 msg = Message(
                     subject=f"Contact Form: {subject}",
                     recipients=[recipient],
-                    body=f"Name: {name}\nEmail: {email}\n\nMessage:\n{message}"
+                    body=f"Name: {name}\nEmail: {email}\n\nMessage:\n{message}",
                 )
                 mail.send(msg)
             except Exception as e:
                 current_app.logger.error(f"Failed to send email: {e}")
-        
-        flash("Message sent successfully!", "success")
-        return redirect(url_for("main.contact"))
-    
-    return render_template(
-        "contact.html",
-        social_links=get_social_links()
-    )
-        db.session.add(contact)
-        db.session.commit()
+
         flash("Message sent successfully!", "success")
         return redirect(url_for("main.contact"))
 

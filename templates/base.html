@@ -444,6 +444,15 @@
             color: var(--accent);
         }
 
+        .about-photo {
+            width: 280px;
+            height: 280px;
+            border-radius: 50%;
+            object-fit: cover;
+            position: relative;
+            border: 4px solid var(--accent);
+        }
+
         .skills-card {
             background: var(--white);
             border-radius: 16px;
@@ -744,7 +753,7 @@
 <body>
     <nav class="navbar navbar-expand-lg sticky-top">
         <div class="container">
-            <a class="navbar-brand" href="{{ url_for('main.index') }}">Runemalops</a>
+            <a class="navbar-brand" href="{{ url_for('main.index') }}">{{ site_config.site_title }}</a>
             <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>

@@ -606,3 +606,108 @@ def settings():
     }
 
     return render_template("admin/settings.html", settings=smtp_fields)
+
+
+@admin.route("/site-config", methods=["GET", "POST"])
+@login_required
+def site_config():
+    if request.method == "POST":
+        site_fields = [
+            "site_title",
+            "site_subtitle",
+            "hero_title",
+            "hero_cta_text",
+            "hero_cta_link",
+            "hero_cta_secondary_text",
+            "hero_cta_secondary_link",
+            "what_i_do_title",
+            "what_i_do_subtitle",
+            "feature1_title",
+            "feature1_desc",
+            "feature2_title",
+            "feature2_desc",
+            "feature3_title",
+            "feature3_desc",
+            "about_badge",
+            "about_intro",
+            "about_description1",
+            "about_description2",
+            "about_image",
+            "cv_download_link",
+            "projects_subtitle",
+            "blog_subtitle",
+            "cta_title",
+            "cta_text",
+        ]
+        for field in site_fields:
+            value = request.form.get(field, "")
+            Settings.set(field, value)
+
+        flash("Site configuration saved successfully!", "success")
+        return redirect(url_for("admin.site_config"))
+
+    site_fields = {
+        "site_title": Settings.get("site_title", "Your Name"),
+        "site_subtitle": Settings.get("site_subtitle", "Your Title | Your Profession"),
+        "hero_title": Settings.get("hero_title", "Your Hero Headline"),
+        "hero_cta_text": Settings.get("hero_cta_text", "View My Work"),
+        "hero_cta_link": Settings.get("hero_cta_link", "/projects"),
+        "hero_cta_secondary_text": Settings.get(
+            "hero_cta_secondary_text", "Download CV"
+        ),
+        "hero_cta_secondary_link": Settings.get("hero_cta_secondary_link", "#"),
+        "what_i_do_title": Settings.get("what_i_do_title", "What I Do"),
+        "what_i_do_subtitle": Settings.get(
+            "what_i_do_subtitle", "Describe what you do"
+        ),
+        "feature1_title": Settings.get("feature1_title", "Feature 1"),
+        "feature1_desc": Settings.get("feature1_desc", "Feature description"),
+        "feature2_title": Settings.get("feature2_title", "Feature 2"),
+        "feature2_desc": Settings.get("feature2_desc", "Feature description"),
+        "feature3_title": Settings.get("feature3_title", "Feature 3"),
+        "feature3_desc": Settings.get("feature3_desc", "Feature description"),
+        "about_badge": Settings.get("about_badge", "Get To Know Me"),
+        "about_intro": Settings.get("about_intro", "Your Professional Title"),
+        "about_description1": Settings.get(
+            "about_description1", "Write your first description here."
+        ),
+        "about_description2": Settings.get(
+            "about_description2", "Write your second description here."
+        ),
+        "about_image": Settings.get("about_image", ""),
+        "cv_download_link": Settings.get("cv_download_link", ""),
+        "projects_subtitle": Settings.get("projects_subtitle", "Showcase your work"),
+        "blog_subtitle": Settings.get("blog_subtitle", "Share your insights"),
+        "cta_title": Settings.get("cta_title", "Let's Work Together"),
+        "cta_text": Settings.get("cta_text", "Have a project in mind? Let's discuss."),
+    }
+
+    return render_template("admin/site_config.html", config=site_fields)
+
+
+@admin.route("/change-password", methods=["GET", "POST"])
+@login_required
+def change_password():
+    if request.method == "POST":
+        current_password = request.form.get("current_password")
+        new_password = request.form.get("new_password")
+        confirm_password = request.form.get("confirm_password")
+
+        if not current_user.check_password(current_password):
+            flash("Current password is incorrect.", "danger")
+            return redirect(url_for("admin.change_password"))
+
+        if new_password != confirm_password:
+            flash("New passwords do not match.", "danger")
+            return redirect(url_for("admin.change_password"))
+
+        if len(new_password) < 6:
+            flash("New password must be at least 6 characters.", "danger")
+            return redirect(url_for("admin.change_password"))
+
+        current_user.set_password(new_password)
+        db.session.commit()
+        flash("Password changed successfully!", "success")
+        return redirect(url_for("admin.dashboard"))
+
+    return render_template("admin/change_password.html")

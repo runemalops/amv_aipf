@@ -1,0 +1,196 @@
+{% extends "admin/base.html" %}
+
+{% block title %}Site Configuration - Admin{% endblock %}
+
+{% block content %}
+<h1 class="mb-4">Site Configuration</h1>
+
+<div class="row">
+    <div class="col-lg-8">
+        <form method="POST">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0"><i class="bi bi-house me-2"></i>Site Identity</h5>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <label for="site_title" class="form-label">Site Title (Name)</label>
+                        <input type="text" class="form-control" id="site_title" name="site_title" value="{{ config.site_title }}">
+                        <small class="text-muted">Your name displayed in the navbar and footer</small>
+                    </div>
+                    <div class="mb-3">
+                        <label for="site_subtitle" class="form-label">Site Subtitle</label>
+                        <input type="text" class="form-control" id="site_subtitle" name="site_subtitle" value="{{ config.site_subtitle }}">
+                        <small class="text-muted">Your title/profession shown in the hero section</small>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0"><i class="bi bi-easel me-2"></i>Hero Section</h5>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <label for="hero_title" class="form-label">Hero Title</label>
+                        <input type="text" class="form-control" id="hero_title" name="hero_title" value="{{ config.hero_title }}">
+                        <small class="text-muted">Main headline on the home page</small>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="hero_cta_text" class="form-label">Primary CTA Text</label>
+                            <input type="text" class="form-control" id="hero_cta_text" name="hero_cta_text" value="{{ config.hero_cta_text }}">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="hero_cta_link" class="form-label">Primary CTA Link</label>
+                            <input type="text" class="form-control" id="hero_cta_link" name="hero_cta_link" value="{{ config.hero_cta_link }}">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="hero_cta_secondary_text" class="form-label">Secondary CTA Text</label>
+                            <input type="text" class="form-control" id="hero_cta_secondary_text" name="hero_cta_secondary_text" value="{{ config.hero_cta_secondary_text }}">
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="hero_cta_secondary_link" class="form-label">Secondary CTA Link</label>
+                            <input type="text" class="form-control" id="hero_cta_secondary_link" name="hero_cta_secondary_link" value="{{ config.hero_cta_secondary_link }}">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0"><i class="bi bi-grid me-2"></i>Homepage "What I Do" Section</h5>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <label for="what_i_do_title" class="form-label">Section Title</label>
+                        <input type="text" class="form-control" id="what_i_do_title" name="what_i_do_title" value="{{ config.what_i_do_title }}">
+                    </div>
+                    <div class="mb-3">
+                        <label for="what_i_do_subtitle" class="form-label">Section Subtitle</label>
+                        <input type="text" class="form-control" id="what_i_do_subtitle" name="what_i_do_subtitle" value="{{ config.what_i_do_subtitle }}">
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <label for="feature1_title" class="form-label">Feature 1 Title</label>
+                            <input type="text" class="form-control" id="feature1_title" name="feature1_title" value="{{ config.feature1_title }}">
+                        </div>
+                        <div class="col-md-8 mb-3">
+                            <label for="feature1_desc" class="form-label">Feature 1 Description</label>
+                            <input type="text" class="form-control" id="feature1_desc" name="feature1_desc" value="{{ config.feature1_desc }}">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <label for="feature2_title" class="form-label">Feature 2 Title</label>
+                            <input type="text" class="form-control" id="feature2_title" name="feature2_title" value="{{ config.feature2_title }}">
+                        </div>
+                        <div class="col-md-8 mb-3">
+                            <label for="feature2_desc" class="form-label">Feature 2 Description</label>
+                            <input type="text" class="form-control" id="feature2_desc" name="feature2_desc" value="{{ config.feature2_desc }}">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <label for="feature3_title" class="form-label">Feature 3 Title</label>
+                            <input type="text" class="form-control" id="feature3_title" name="feature3_title" value="{{ config.feature3_title }}">
+                        </div>
+                        <div class="col-md-8 mb-3">
+                            <label for="feature3_desc" class="form-label">Feature 3 Description</label>
+                            <input type="text" class="form-control" id="feature3_desc" name="feature3_desc" value="{{ config.feature3_desc }}">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0"><i class="bi bi-person me-2"></i>About Section</h5>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <label for="about_badge" class="form-label">Badge Text</label>
+                        <input type="text" class="form-control" id="about_badge" name="about_badge" value="{{ config.about_badge }}">
+                        <small class="text-muted">Small label above your intro</small>
+                    </div>
+                    <div class="mb-3">
+                        <label for="about_intro" class="form-label">Introduction</label>
+                        <input type="text" class="form-control" id="about_intro" name="about_intro" value="{{ config.about_intro }}">
+                        <small class="text-muted">Your professional title/role</small>
+                    </div>
+                    <div class="mb-3">
+                        <label for="about_description1" class="form-label">Description Paragraph 1</label>
+                        <textarea class="form-control" id="about_description1" name="about_description1" rows="3">{{ config.about_description1 }}</textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="about_description2" class="form-label">Description Paragraph 2</label>
+                        <textarea class="form-control" id="about_description2" name="about_description2" rows="3">{{ config.about_description2 }}</textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="about_image" class="form-label">Profile Image URL</label>
+                        <input type="text" class="form-control" id="about_image" name="about_image" value="{{ config.about_image }}" placeholder="https://example.com/your-photo.jpg">
+                        <small class="text-muted">URL to your profile photo</small>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0"><i class="bi bi-file-earmark-arrow-down me-2"></i>Download</h5>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <label for="cv_download_link" class="form-label">CV/Resume Download Link</label>
+                        <input type="text" class="form-control" id="cv_download_link" name="cv_download_link" value="{{ config.cv_download_link }}" placeholder="https://example.com/cv.pdf">
+                        <small class="text-muted">Link to download your CV or resume</small>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5 class="mb-0"><i class="bi bi-card-text me-2"></i>Homepage Section Subtitles</h5>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <label for="projects_subtitle" class="form-label">Featured Projects Subtitle</label>
+                        <input type="text" class="form-control" id="projects_subtitle" name="projects_subtitle" value="{{ config.projects_subtitle }}">
+                    </div>
+                    <div class="mb-3">
+                        <label for="blog_subtitle" class="form-label">Latest Posts Subtitle</label>
+                        <input type="text" class="form-control" id="blog_subtitle" name="blog_subtitle" value="{{ config.blog_subtitle }}">
+                    </div>
+                    <div class="mb-3">
+                        <label for="cta_title" class="form-label">Call to Action Title</label>
+                        <input type="text" class="form-control" id="cta_title" name="cta_title" value="{{ config.cta_title }}">
+                    </div>
+                    <div class="mb-3">
+                        <label for="cta_text" class="form-label">Call to Action Text</label>
+                        <input type="text" class="form-control" id="cta_text" name="cta_text" value="{{ config.cta_text }}">
+                    </div>
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary">
+                <i class="bi bi-save me-2"></i>Save Configuration
+            </button>
+        </form>
+    </div>
+
+    <div class="col-lg-4">
+        <div class="card bg-light">
+            <div class="card-body">
+                <h5 class="card-title"><i class="bi bi-info-circle me-2"></i>Tips</h5>
+                <ul class="mb-0 small">
+                    <li class="mb-2">Changes are applied immediately after saving.</li>
+                    <li class="mb-2">For profile images, use a square image hosted online or upload to your server.</li>
+                    <li class="mb-2">CTA links can be internal (e.g., <code>/projects</code>) or external URLs.</li>
+                    <li>Keep descriptions concise but informative.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

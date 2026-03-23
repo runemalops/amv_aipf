@@ -1,15 +1,17 @@
 {% extends "base.html" %}
 
-{% block title %}Home - Runemalops{% endblock %}
+{% block title %}Home - {{ site_config.site_title }}{% endblock %}
 
 {% block content %}
 <section class="hero-section text-center">
     <div class="container">
-        <h1 class="mb-4">{{ t('welcome_personal') }}</h1>
-        <p class="lead mb-4 mx-auto" style="max-width: 700px;">{{ t('subtitle') }}</p>
+        <h1 class="mb-4">{{ site_config.hero_title }}</h1>
+        <p class="lead mb-4 mx-auto" style="max-width: 700px;">{{ site_config.site_subtitle }}</p>
         <div class="d-flex justify-content-center gap-3 flex-wrap">
-            <a href="{{ url_for('main.about') }}" class="btn btn-accent">{{ t('about_me') }}</a>
-            <a href="{{ url_for('main.projects') }}" class="btn btn-outline-accent">{{ t('my_projects') }}</a>
+            <a href="{{ site_config.hero_cta_link }}" class="btn btn-accent">{{ site_config.hero_cta_text }}</a>
+            {% if site_config.hero_cta_secondary_link and site_config.hero_cta_secondary_link != '#' %}
+            <a href="{{ site_config.hero_cta_secondary_link }}" class="btn btn-outline-accent" target="_blank">{{ site_config.hero_cta_secondary_text }}</a>
+            {% endif %}
         </div>
     </div>
 </section>
@@ -17,35 +19,35 @@
 <section class="section-padding">
     <div class="container">
         <div class="text-center mb-5">
-            <h2 class="section-title">What I Do</h2>
-            <p class="section-subtitle">Building robust infrastructure and leading high-performance engineering teams</p>
+            <h2 class="section-title">{{ site_config.what_i_do_title }}</h2>
+            <p class="section-subtitle">{{ site_config.what_i_do_subtitle }}</p>
         </div>
         <div class="row g-4">
             <div class="col-md-4">
                 <div class="feature-card">
                     <div class="feature-icon">
-                        <i class="bi bi-cloud"></i>
+                        <i class="bi bi-star"></i>
                     </div>
-                    <h4>{{ t('cloud_devops') }}</h4>
-                    <p>{{ t('cloud_devops_desc') }}</p>
+                    <h4>{{ site_config.feature1_title }}</h4>
+                    <p>{{ site_config.feature1_desc }}</p>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="feature-card">
                     <div class="feature-icon">
-                        <i class="bi bi-git"></i>
+                        <i class="bi bi-star"></i>
                     </div>
-                    <h4>{{ t('infrastructure_code') }}</h4>
-                    <p>{{ t('infrastructure_code_desc') }}</p>
+                    <h4>{{ site_config.feature2_title }}</h4>
+                    <p>{{ site_config.feature2_desc }}</p>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="feature-card">
                     <div class="feature-icon">
-                        <i class="bi bi-people"></i>
+                        <i class="bi bi-star"></i>
                     </div>
-                    <h4>{{ t('team_leadership') }}</h4>
-                    <p>{{ t('team_leadership_desc') }}</p>
+                    <h4>{{ site_config.feature3_title }}</h4>
+                    <p>{{ site_config.feature3_desc }}</p>
                 </div>
             </div>
         </div>
@@ -56,7 +58,7 @@
     <div class="container">
         <div class="text-center mb-5">
             <h2 class="section-title">{{ t('featured_projects') }}</h2>
-            <p class="section-subtitle">Showcasing cloud infrastructure and automation projects</p>
+            <p class="section-subtitle">{{ site_config.projects_subtitle }}</p>
         </div>
         <div class="row g-4">
             {% for project in featured_projects %}
@@ -95,7 +97,7 @@
     <div class="container">
         <div class="text-center mb-5">
             <h2 class="section-title">{{ t('latest_posts') }}</h2>
-            <p class="section-subtitle">Insights on cloud architecture, DevOps, and engineering leadership</p>
+            <p class="section-subtitle">{{ site_config.blog_subtitle }}</p>
         </div>
         <div class="row g-4">
             {% for post in latest_posts %}
@@ -124,9 +126,9 @@
 
 <section class="section-padding section-dark text-center">
     <div class="container">
-        <h2 class="section-title mb-3">Let's Work Together</h2>
-        <p class="section-subtitle">Have a project in mind? Let's discuss how I can help bring your vision to life.</p>
-        <a href="{{ url_for('main.contact') }}" class="btn btn-accent btn-lg">Get In Touch</a>
+        <h2 class="section-title mb-3">{{ site_config.cta_title }}</h2>
+        <p class="section-subtitle">{{ site_config.cta_text }}</p>
+        <a href="{{ url_for('main.contact') }}" class="btn btn-accent btn-lg">{{ t('get_in_touch') }}</a>
     </div>
 </section>
 {% endblock %}

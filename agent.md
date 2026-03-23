@@ -106,7 +106,7 @@ This project is a personal portfolio web application built with Flask, SQLAlchem
 *   `Interest`: Personal interests
 *   `SocialLink`: Social media links
 *   `ContactMessage`: Contact form messages
-*   `Settings`: Key-value store for site configuration (SMTP, etc.)
+*   `Settings`: Key-value store for site configuration (SMTP, site content). Note: Site content fields need multilingual support (TODO).
 
 ## Routes
 ### Public
@@ -131,6 +131,7 @@ This project is a personal portfolio web application built with Flask, SQLAlchem
 *   `/admin/social-links` - Manage social media links
 *   `/admin/contact-messages` - View contact messages
 *   `/admin/settings` - Configure SMTP and site settings
+*   `/admin/site-config` - Configure hero, about section, and site content
 
 ## Icons
 Uses [Bootstrap Icons](https://icons.getbootstrap.com/).
@@ -154,6 +155,14 @@ The application supports English and Spanish languages. Users can switch languag
 - `/set-lang/en` - Switch to English
 - `/set-lang/es` - Switch to Spanish
 
+### Multilingual Site Configuration (TODO):
+The `/admin/site-config` page currently stores values as plain text without translation support.
+**Required**: Update site configuration to support English and Spanish translations:
+1. Store settings values as JSON: `{"en": "English text", "es": "Spanish text"}`
+2. Add form fields for both languages in the admin template
+3. Update `get_site_config()` to return the translated value based on current language
+4. Follow the same pattern as other models with `translations` JSON column
+
 ## Code Style
 *   Follow [PEP 8](https://peps.python.org) style guidelines
 *   Use type hinting where appropriate
@@ -166,3 +175,27 @@ The application supports English and Spanish languages. Users can switch languag
 ## Boundaries
 *   All new features should include corresponding database migrations when models change
 *   Test the application after making changes
+
+## Deployment Workflow
+After making changes and confirming they work locally or in the container:
+
+1. **Rebuild the image:**
+   ```bash
+   podman build -t amv_aipf:latest -f deploy/Containerfile .
+   ```
+
+2. **Reload and restart the quadlet:**
+   ```bash
+   systemctl --user daemon-reload
+   systemctl --user restart amv_aipf.service
+   ```
+
+3. **Verify the service is running:**
+   ```bash
+   systemctl --user status amv_aipf.service
+   ```
+
+4. **View logs if needed:**
+   ```bash
+   journalctl --user -u amv_aipf -f
+   ```

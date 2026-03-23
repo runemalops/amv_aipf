@@ -45,6 +45,19 @@
                 <a href="{{ url_for('admin.social_links') }}" class="{{ 'active' if 'social' in request.endpoint else '' }}">
                     <i class="bi bi-share me-2"></i>Social Links
                 </a>
+                <a href="{{ url_for('admin.contact_messages') }}" class="{{ 'active' if 'contact' in request.endpoint else '' }}">
+                    <i class="bi bi-envelope me-2"></i>Contact Messages
+                </a>
+                <a href="{{ url_for('admin.settings') }}" class="{{ 'active' if 'settings' in request.endpoint else '' }}">
+                    <i class="bi bi-gear me-2"></i>Settings
+                </a>
+                <a href="{{ url_for('admin.site_config') }}" class="{{ 'active' if 'site_config' in request.endpoint else '' }}">
+                    <i class="bi bi-palette me-2"></i>Site Content
+                </a>
+                <hr class="bg-secondary my-2">
+                <a href="{{ url_for('admin.change_password') }}" class="{{ 'active' if 'password' in request.endpoint else '' }}">
+                    <i class="bi bi-key me-2"></i>Change Password
+                </a>
                 <a href="{{ url_for('main.index') }}" target="_blank">
                     <i class="bi bi-box-arrow-up-right me-2"></i>View Site
                 </a>
