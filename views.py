@@ -159,6 +159,7 @@ def get_site_config(lang="en"):
         ),
         "about_image": Settings.get("about_image", ""),
         "cv_download_link": Settings.get("cv_download_link", ""),
+        "hero_background_image": Settings.get("hero_background_image", ""),
         "projects_subtitle": Settings.get_translated(
             "projects_subtitle", lang, "Showcase your work"
         ),

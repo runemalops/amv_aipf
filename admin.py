@@ -660,6 +660,7 @@ def site_config():
             "hero_cta_secondary_link",
             "about_image",
             "cv_download_link",
+            "hero_background_image",
         ]
         translatable_fields = [
             "site_title",
@@ -741,6 +742,7 @@ def site_config():
         ),
         "about_image": Settings.get("about_image", ""),
         "cv_download_link": Settings.get("cv_download_link", ""),
+        "hero_background_image": Settings.get("hero_background_image", ""),
         "projects_subtitle": Settings.get("projects_subtitle", "Showcase your work"),
         "blog_subtitle": Settings.get("blog_subtitle", "Share your insights"),
         "cta_title": Settings.get("cta_title", "Let's Work Together"),

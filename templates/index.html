@@ -3,7 +3,7 @@
 {% block title %}Home - {{ site_config.site_title }}{% endblock %}
 
 {% block content %}
-<section class="hero-section text-center">
+<section class="hero-section text-center"{% if site_config.hero_background_image %} style="--hero-bg: url('{{ site_config.hero_background_image }}');"{% endif %}>
     <div class="container">
         <h1 class="mb-4">{{ site_config.hero_title }}</h1>
         <p class="lead mb-4 mx-auto" style="max-width: 700px;">{{ site_config.site_subtitle }}</p>

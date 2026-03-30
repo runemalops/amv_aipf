@@ -96,6 +96,7 @@ def inject_site_config():
             ),
             "about_image": Settings.get("about_image", ""),
             "cv_download_link": Settings.get("cv_download_link", ""),
+            "hero_background_image": Settings.get("hero_background_image", ""),
             "projects_subtitle": Settings.get(
                 "projects_subtitle", "Showcase your work"
             ),
