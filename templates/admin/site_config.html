@@ -13,6 +13,7 @@
                     <h5 class="mb-0"><i class="bi bi-house me-2"></i>Site Identity</h5>
                 </div>
                 <div class="card-body">
+                    <h6 class="text-muted mb-3">English</h6>
                     <div class="mb-3">
                         <label for="site_title" class="form-label">Site Title (Name)</label>
                         <input type="text" class="form-control" id="site_title" name="site_title" value="{{ config.site_title }}">
@@ -23,6 +24,16 @@
                         <input type="text" class="form-control" id="site_subtitle" name="site_subtitle" value="{{ config.site_subtitle }}">
                         <small class="text-muted">Your title/profession shown in the hero section</small>
                     </div>
+                    <hr>
+                    <h6 class="text-muted mb-3">Spanish</h6>
+                    <div class="mb-3">
+                        <label for="site_title_es" class="form-label">Site Title (Spanish)</label>
+                        <input type="text" class="form-control" id="site_title_es" name="site_title_es" value="{{ config_es.site_title if config_es else '' }}">
+                    </div>
+                    <div class="mb-3">
+                        <label for="site_subtitle_es" class="form-label">Site Subtitle (Spanish)</label>
+                        <input type="text" class="form-control" id="site_subtitle_es" name="site_subtitle_es" value="{{ config_es.site_subtitle if config_es else '' }}">
+                    </div>
                 </div>
             </div>
 
@@ -31,6 +42,7 @@
                     <h5 class="mb-0"><i class="bi bi-easel me-2"></i>Hero Section</h5>
                 </div>
                 <div class="card-body">
+                    <h6 class="text-muted mb-3">English</h6>
                     <div class="mb-3">
                         <label for="hero_title" class="form-label">Hero Title</label>
                         <input type="text" class="form-control" id="hero_title" name="hero_title" value="{{ config.hero_title }}">
@@ -56,6 +68,24 @@
                             <input type="text" class="form-control" id="hero_cta_secondary_link" name="hero_cta_secondary_link" value="{{ config.hero_cta_secondary_link }}">
                         </div>
                     </div>
+                    <hr>
+                    <h6 class="text-muted mb-3">Spanish</h6>
+                    <div class="mb-3">
+                        <label for="hero_title_es" class="form-label">Hero Title (Spanish)</label>
+                        <input type="text" class="form-control" id="hero_title_es" name="hero_title_es" value="{{ config_es.hero_title if config_es else '' }}">
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="hero_cta_text_es" class="form-label">Primary CTA Text (Spanish)</label>
+                            <input type="text" class="form-control" id="hero_cta_text_es" name="hero_cta_text_es" value="{{ config_es.hero_cta_text if config_es else '' }}">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="hero_cta_secondary_text_es" class="form-label">Secondary CTA Text (Spanish)</label>
+                            <input type="text" class="form-control" id="hero_cta_secondary_text_es" name="hero_cta_secondary_text_es" value="{{ config_es.hero_cta_secondary_text if config_es else '' }}">
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -64,6 +94,7 @@
                     <h5 class="mb-0"><i class="bi bi-grid me-2"></i>Homepage "What I Do" Section</h5>
                 </div>
                 <div class="card-body">
+                    <h6 class="text-muted mb-3">English</h6>
                     <div class="mb-3">
                         <label for="what_i_do_title" class="form-label">Section Title</label>
                         <input type="text" class="form-control" id="what_i_do_title" name="what_i_do_title" value="{{ config.what_i_do_title }}">
@@ -102,6 +133,46 @@
                             <input type="text" class="form-control" id="feature3_desc" name="feature3_desc" value="{{ config.feature3_desc }}">
                         </div>
                     </div>
+                    <hr>
+                    <h6 class="text-muted mb-3">Spanish</h6>
+                    <div class="mb-3">
+                        <label for="what_i_do_title_es" class="form-label">Section Title (Spanish)</label>
+                        <input type="text" class="form-control" id="what_i_do_title_es" name="what_i_do_title_es" value="{{ config_es.what_i_do_title if config_es else '' }}">
+                    </div>
+                    <div class="mb-3">
+                        <label for="what_i_do_subtitle_es" class="form-label">Section Subtitle (Spanish)</label>
+                        <input type="text" class="form-control" id="what_i_do_subtitle_es" name="what_i_do_subtitle_es" value="{{ config_es.what_i_do_subtitle if config_es else '' }}">
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <label for="feature1_title_es" class="form-label">Feature 1 Title (Spanish)</label>
+                            <input type="text" class="form-control" id="feature1_title_es" name="feature1_title_es" value="{{ config_es.feature1_title if config_es else '' }}">
+                        </div>
+                        <div class="col-md-8 mb-3">
+                            <label for="feature1_desc_es" class="form-label">Feature 1 Description (Spanish)</label>
+                            <input type="text" class="form-control" id="feature1_desc_es" name="feature1_desc_es" value="{{ config_es.feature1_desc if config_es else '' }}">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <label for="feature2_title_es" class="form-label">Feature 2 Title (Spanish)</label>
+                            <input type="text" class="form-control" id="feature2_title_es" name="feature2_title_es" value="{{ config_es.feature2_title if config_es else '' }}">
+                        </div>
+                        <div class="col-md-8 mb-3">
+                            <label for="feature2_desc_es" class="form-label">Feature 2 Description (Spanish)</label>
+                            <input type="text" class="form-control" id="feature2_desc_es" name="feature2_desc_es" value="{{ config_es.feature2_desc if config_es else '' }}">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4 mb-3">
+                            <label for="feature3_title_es" class="form-label">Feature 3 Title (Spanish)</label>
+                            <input type="text" class="form-control" id="feature3_title_es" name="feature3_title_es" value="{{ config_es.feature3_title if config_es else '' }}">
+                        </div>
+                        <div class="col-md-8 mb-3">
+                            <label for="feature3_desc_es" class="form-label">Feature 3 Description (Spanish)</label>
+                            <input type="text" class="form-control" id="feature3_desc_es" name="feature3_desc_es" value="{{ config_es.feature3_desc if config_es else '' }}">
+                        </div>
+                    </div>
                 </div>
             </div>
 
@@ -110,6 +181,7 @@
                     <h5 class="mb-0"><i class="bi bi-person me-2"></i>About Section</h5>
                 </div>
                 <div class="card-body">
+                    <h6 class="text-muted mb-3">English</h6>
                     <div class="mb-3">
                         <label for="about_badge" class="form-label">Badge Text</label>
                         <input type="text" class="form-control" id="about_badge" name="about_badge" value="{{ config.about_badge }}">
@@ -128,6 +200,26 @@
                         <label for="about_description2" class="form-label">Description Paragraph 2</label>
                         <textarea class="form-control" id="about_description2" name="about_description2" rows="3">{{ config.about_description2 }}</textarea>
                     </div>
+                    <hr>
+                    <h6 class="text-muted mb-3">Spanish</h6>
+                    <div class="mb-3">
+                        <label for="about_badge_es" class="form-label">Badge Text (Spanish)</label>
+                        <input type="text" class="form-control" id="about_badge_es" name="about_badge_es" value="{{ config_es.about_badge if config_es else '' }}">
+                    </div>
+                    <div class="mb-3">
+                        <label for="about_intro_es" class="form-label">Introduction (Spanish)</label>
+                        <input type="text" class="form-control" id="about_intro_es" name="about_intro_es" value="{{ config_es.about_intro if config_es else '' }}">
+                    </div>
+                    <div class="mb-3">
+                        <label for="about_description1_es" class="form-label">Description Paragraph 1 (Spanish)</label>
+                        <textarea class="form-control" id="about_description1_es" name="about_description1_es" rows="3">{{ config_es.about_description1 if config_es else '' }}</textarea>
+                    </div>
+                    <div class="mb-3">
+                        <label for="about_description2_es" class="form-label">Description Paragraph 2 (Spanish)</label>
+                        <textarea class="form-control" id="about_description2_es" name="about_description2_es" rows="3">{{ config_es.about_description2 if config_es else '' }}</textarea>
+                    </div>
+                    <hr>
+                    <h6 class="text-muted mb-3">Common</h6>
                     <div class="mb-3">
                         <label for="about_image" class="form-label">Profile Image URL</label>
                         <input type="text" class="form-control" id="about_image" name="about_image" value="{{ config.about_image }}" placeholder="https://example.com/your-photo.jpg">
@@ -154,6 +246,7 @@
                     <h5 class="mb-0"><i class="bi bi-card-text me-2"></i>Homepage Section Subtitles</h5>
                 </div>
                 <div class="card-body">
+                    <h6 class="text-muted mb-3">English</h6>
                     <div class="mb-3">
                         <label for="projects_subtitle" class="form-label">Featured Projects Subtitle</label>
                         <input type="text" class="form-control" id="projects_subtitle" name="projects_subtitle" value="{{ config.projects_subtitle }}">
@@ -169,6 +262,24 @@
                     <div class="mb-3">
                         <label for="cta_text" class="form-label">Call to Action Text</label>
                         <input type="text" class="form-control" id="cta_text" name="cta_text" value="{{ config.cta_text }}">
+                    </div>
+                    <hr>
+                    <h6 class="text-muted mb-3">Spanish</h6>
+                    <div class="mb-3">
+                        <label for="projects_subtitle_es" class="form-label">Featured Projects Subtitle (Spanish)</label>
+                        <input type="text" class="form-control" id="projects_subtitle_es" name="projects_subtitle_es" value="{{ config_es.projects_subtitle if config_es else '' }}">
+                    </div>
+                    <div class="mb-3">
+                        <label for="blog_subtitle_es" class="form-label">Latest Posts Subtitle (Spanish)</label>
+                        <input type="text" class="form-control" id="blog_subtitle_es" name="blog_subtitle_es" value="{{ config_es.blog_subtitle if config_es else '' }}">
+                    </div>
+                    <div class="mb-3">
+                        <label for="cta_title_es" class="form-label">Call to Action Title (Spanish)</label>
+                        <input type="text" class="form-control" id="cta_title_es" name="cta_title_es" value="{{ config_es.cta_title if config_es else '' }}">
+                    </div>
+                    <div class="mb-3">
+                        <label for="cta_text_es" class="form-label">Call to Action Text (Spanish)</label>
+                        <input type="text" class="form-control" id="cta_text_es" name="cta_text_es" value="{{ config_es.cta_text if config_es else '' }}">
                     </div>
                 </div>
             </div>
@@ -188,6 +299,7 @@
                     <li class="mb-2">For profile images, use a square image hosted online or upload to your server.</li>
                     <li class="mb-2">CTA links can be internal (e.g., <code>/projects</code>) or external URLs.</li>
                     <li>Keep descriptions concise but informative.</li>
+                    <li>Fill in both English and Spanish fields for full multilingual support.</li>
                 </ul>
             </div>
         </div>

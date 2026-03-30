@@ -40,7 +40,6 @@ def get_translated_list(items, fields, lang="en"):
         item_dict = {}
         for field in fields:
             if field == "technologies" or field == "responsibilities":
-                # Split comma/newline separated values
                 raw_value = getattr(item, field, "")
                 if raw_value:
                     item_dict[field] = raw_value.split(
@@ -51,7 +50,6 @@ def get_translated_list(items, fields, lang="en"):
             else:
                 item_dict[field] = get_translated(item, field, lang)
 
-        # Add non-translatable fields
         if hasattr(item, "id"):
             item_dict["id"] = item.id
         if hasattr(item, "link"):
@@ -81,4 +79,66 @@ def get_translated_list(items, fields, lang="en"):
 
         result.append(item_dict)
 
+    return result
+
+
+def get_education_list(educations, lang="en"):
+    """
+    Get translated education list.
+
+    Args:
+        educations: List of Education model instances
+        lang: Target language code
+
+    Returns:
+        List of dicts with translated values
+    """
+    result = []
+    for edu in educations:
+        result.append(
+            {
+                "id": edu.id,
+                "degree": get_translated(edu, "degree", lang),
+                "school": get_translated(edu, "school", lang),
+                "year": edu.year,
+            }
+        )
+    return result
+
+
+def get_interests_list(interests, lang="en"):
+    """
+    Get translated interests list.
+
+    Args:
+        interests: List of Interest model instances
+        lang: Target language code
+
+    Returns:
+        List of translated interest names
+    """
+    return [get_translated(i, "name", lang) for i in interests]
+
+
+def get_social_links_list(links, lang="en"):
+    """
+    Get translated social links list.
+
+    Args:
+        links: List of SocialLink model instances
+        lang: Target language code
+
+    Returns:
+        List of dicts with translated values
+    """
+    result = []
+    for link in links:
+        result.append(
+            {
+                "id": link.id,
+                "platform": get_translated(link, "platform", lang),
+                "url": link.url,
+                "icon": link.icon,
+            }
+        )
     return result

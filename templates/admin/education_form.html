@@ -22,6 +22,7 @@
 <div class="card">
     <div class="card-body">
         <form method="POST">
+            <h5 class="mb-3">English</h5>
             <div class="mb-3">
                 <label for="degree" class="form-label">Degree</label>
                 <input type="text" class="form-control" id="degree" name="degree" value="{{ education.degree if education else '' }}" required>
@@ -30,6 +31,18 @@
                 <label for="school" class="form-label">School</label>
                 <input type="text" class="form-control" id="school" name="school" value="{{ education.school if education else '' }}" required>
             </div>
+            <hr>
+            <h5 class="mb-3">Spanish</h5>
+            <div class="mb-3">
+                <label for="degree_es" class="form-label">Degree (Spanish)</label>
+                <input type="text" class="form-control" id="degree_es" name="degree_es" value="{{ education.translations.es.degree if education and education.translations and education.translations.es else '' }}">
+            </div>
+            <div class="mb-3">
+                <label for="school_es" class="form-label">School (Spanish)</label>
+                <input type="text" class="form-control" id="school_es" name="school_es" value="{{ education.translations.es.school if education and education.translations and education.translations.es else '' }}">
+            </div>
+            <hr>
+            <h5 class="mb-3">Common</h5>
             <div class="mb-3">
                 <label for="year" class="form-label">Year</label>
                 <input type="text" class="form-control" id="year" name="year" value="{{ education.year if education else '' }}" placeholder="e.g., 2018 - 2022" required>

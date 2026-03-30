@@ -9,15 +9,16 @@ Personal portfolio web application built with Flask, SQLAlchemy, and Bootstrap C
 - **Authentication**: Secure admin login with password hashing
 - **Database**: SQLite with Flask-Migrate for version control
 - **Internationalization**: English and Spanish language support with auto-translate
+- **Multilingual Content**: All user content (projects, blog posts, skills, etc.) supports English and Spanish
 
 ## Tech Stack
 
-- Flask 3.x
-- SQLAlchemy
-- Flask-Login
-- Flask-Migrate
-- Bootstrap 5 + Bootstrap Icons
-- Gunicorn (production)
+- **Backend**: Flask 3.x, SQLAlchemy
+- **Auth**: Flask-Login with password hashing
+- **Database**: SQLite with Flask-Migrate
+- **Frontend**: Bootstrap 5, Bootstrap Icons
+- **Email**: Flask-Mail (SMTP)
+- **Production**: Gunicorn, Podman
 
 ## Quick Start (Development)
 
@@ -94,25 +95,51 @@ Or configure a persistent tunnel with your domain in `~/.cloudflared/config.yml`
 
 ```
 amv_aipf/
-├── app.py              # Main Flask application
-├── models.py           # Database models
-├── routes.py           # Public routes
-├── views.py            # View functions
-├── auth.py             # Authentication
-├── admin.py            # Admin panel
-├── seed.py             # Data seeding
-├── translation_service.py  # Translation API service
-├── translation_utils.py   # Translation helpers with auto-translate
-├── translations.py     # Translation helpers
-├── requirements.txt    # Dependencies
-├── agent.md           # Agent instructions for AI assistants
-├── skill.md           # AI assistant design guidelines
-├── instance/           # SQLite database
-├── migrations/         # Database migrations
-├── templates/          # HTML templates
-│   └── admin/          # Admin templates
-├── translations/       # Language files (en.json, es.json)
-└── deploy/             # Deployment files
-    ├── Containerfile
-    └── amv_aipf.container
+├── app.py                  # Main Flask application (init, context processors)
+├── models.py               # Database models with translations JSON columns
+├── routes.py               # Public URL routes
+├── views.py                # View functions (business logic)
+├── auth.py                 # Authentication routes
+├── admin.py                # Admin panel CRUD operations
+├── seed.py                 # Data seeding
+├── translation_service.py  # MyMemory API integration
+├── translation_utils.py    # Translation helpers (get_translated, etc.)
+├── translations.py         # JSON file loader, t() function
+├── requirements.txt        # Python dependencies
+├── agent.md               # Agent instructions for AI assistants
+├── instance/               # SQLite database
+├── migrations/            # Flask-Migrate migrations
+├── templates/             # HTML templates (Jinja2)
+│   ├── base.html          # Base layout with navbar/footer
+│   ├── index.html         # Homepage
+│   ├── about.html         # About page
+│   ├── projects.html      # Projects listing
+│   ├── experience.html    # Work experience
+│   ├── blog.html          # Blog listing
+│   ├── blog_post.html     # Single blog post
+│   ├── contact.html       # Contact form
+│   └── admin/             # Admin panel templates
+├── translations/          # Language JSON files
+│   ├── en.json           # English UI strings
+│   └── es.json           # Spanish UI strings
+└── deploy/                # Deployment files
+    ├── Containerfile      # Podman container build
+    └── amv_aipf.container # Quadlet systemd unit
 ```
+
+## Internationalization Architecture
+
+The application uses a 3-layer translation system:
+
+| Layer | Source | Usage in Templates |
+|-------|--------|-------------------|
+| UI Strings | `translations/*.json` | `{{ t('key') }}` |
+| Database Content | `translations` JSON column | Via `get_translated()` in views |
+| Site Config | `Settings` model | `{{ site_config.field }}` |
+
+### Translation Flow:
+1. User selects language → stored in session
+2. Route calls view function with `lang` parameter
+3. View fetches data using `get_translated()` functions
+4. Translated data passed to template
+5. Template renders content in selected language

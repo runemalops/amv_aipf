@@ -50,6 +50,7 @@ class Education(db.Model):
     degree = db.Column(db.String(200), nullable=False)
     school = db.Column(db.String(200), nullable=False)
     year = db.Column(db.String(50), nullable=False)
+    translations = db.Column(db.JSON, default={})
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
 
@@ -80,6 +81,7 @@ class SocialLink(db.Model):
     platform = db.Column(db.String(50), nullable=False)
     url = db.Column(db.String(500), nullable=False)
     icon = db.Column(db.String(50))
+    translations = db.Column(db.JSON, default={})
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
 
@@ -95,6 +97,7 @@ class ContactMessage(db.Model):
 class Interest(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
+    translations = db.Column(db.JSON, default={})
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
 
@@ -102,6 +105,7 @@ class Settings(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     key = db.Column(db.String(100), unique=True, nullable=False)
     value = db.Column(db.Text)
+    translations = db.Column(db.JSON, default={})
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
     updated_at = db.Column(
         db.DateTime, default=datetime.utcnow, onupdate=datetime.utcnow
@@ -113,11 +117,37 @@ class Settings(db.Model):
         return setting.value if setting else default
 
     @staticmethod
-    def set(key, value):
+    def get_translated(key, lang="en", default=None):
+        setting = Settings.query.filter_by(key=key).first()
+        if not setting:
+            return default
+
+        if lang == "en":
+            return setting.value or default
+
+        translations = setting.translations or {}
+        if lang in translations:
+            return translations[lang]
+
+        return setting.value or default
+
+    @staticmethod
+    def set(key, value, translations=None):
         setting = Settings.query.filter_by(key=key).first()
         if setting:
             setting.value = value
+            if translations is not None:
+                setting.translations = translations
         else:
-            setting = Settings(key=key, value=value)
+            setting = Settings(key=key, value=value, translations=translations or {})
             db.session.add(setting)
         db.session.commit()
+
+    @staticmethod
+    def set_translations(key, lang, value):
+        setting = Settings.query.filter_by(key=key).first()
+        if setting:
+            translations = setting.translations or {}
+            translations[lang] = value
+            setting.translations = translations
+            db.session.commit()

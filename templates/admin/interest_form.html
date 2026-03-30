@@ -22,9 +22,16 @@
 <div class="card">
     <div class="card-body">
         <form method="POST">
+            <h5 class="mb-3">English</h5>
             <div class="mb-3">
                 <label for="name" class="form-label">Name</label>
                 <input type="text" class="form-control" id="name" name="name" value="{{ interest.name if interest else '' }}" required>
+            </div>
+            <hr>
+            <h5 class="mb-3">Spanish</h5>
+            <div class="mb-3">
+                <label for="name_es" class="form-label">Name (Spanish)</label>
+                <input type="text" class="form-control" id="name_es" name="name_es" value="{{ interest.translations.es.name if interest and interest.translations and interest.translations.es else '' }}">
             </div>
             <button type="submit" class="btn btn-primary">{{ 'Update' if interest else 'Create' }}</button>
         </form>

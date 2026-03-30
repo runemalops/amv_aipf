@@ -6,10 +6,19 @@
 <h1 class="mb-4">{{ 'Edit' if link else 'New' }} Social Link</h1>
 
 <form method="POST">
+    <h5 class="mb-3">English</h5>
     <div class="mb-3">
         <label for="platform" class="form-label">Platform Name</label>
         <input type="text" class="form-control" id="platform" name="platform" value="{{ link.platform if link else '' }}" placeholder="e.g., GitHub, YouTube, LinkedIn" required>
     </div>
+    <hr>
+    <h5 class="mb-3">Spanish</h5>
+    <div class="mb-3">
+        <label for="platform_es" class="form-label">Platform Name (Spanish)</label>
+        <input type="text" class="form-control" id="platform_es" name="platform_es" value="{{ link.translations.es.platform if link and link.translations and link.translations.es else '' }}" placeholder="e.g., GitHub, YouTube, LinkedIn">
+    </div>
+    <hr>
+    <h5 class="mb-3">Common</h5>
     <div class="mb-3">
         <label for="url" class="form-label">URL</label>
         <input type="url" class="form-control" id="url" name="url" value="{{ link.url if link else '' }}" placeholder="https://..." required>

@@ -20,7 +20,13 @@ from models import (
     ContactMessage,
     Settings,
 )
-from translation_utils import get_translated, get_translated_list
+from translation_utils import (
+    get_translated,
+    get_translated_list,
+    get_education_list,
+    get_interests_list,
+    get_social_links_list,
+)
 
 
 def get_featured_projects(lang="en"):
@@ -75,19 +81,19 @@ def get_skills(lang="en"):
     return [{"name": get_translated(s, "name", lang), "icon": s.icon} for s in skills]
 
 
-def get_social_links():
+def get_social_links(lang="en"):
     links = SocialLink.query.all()
-    return [{"platform": l.platform, "url": l.url, "icon": l.icon} for l in links]
+    return get_social_links_list(links, lang)
 
 
-def get_interests():
+def get_interests(lang="en"):
     interests = Interest.query.all()
-    return [i.name for i in interests]
+    return get_interests_list(interests, lang)
 
 
-def get_education():
+def get_education(lang="en"):
     education = Education.query.all()
-    return [{"degree": e.degree, "school": e.school, "year": e.year} for e in education]
+    return get_education_list(education, lang)
 
 
 def get_experience(lang="en"):
@@ -110,41 +116,59 @@ def get_experience(lang="en"):
     return result
 
 
-def get_site_config():
+def get_site_config(lang="en"):
     return {
-        "site_title": Settings.get("site_title", "Your Name"),
-        "site_subtitle": Settings.get("site_subtitle", "Your Title | Your Profession"),
-        "hero_title": Settings.get("hero_title", "Your Hero Headline"),
-        "hero_cta_text": Settings.get("hero_cta_text", "View My Work"),
+        "site_title": Settings.get_translated("site_title", lang, "Your Name"),
+        "site_subtitle": Settings.get_translated(
+            "site_subtitle", lang, "Your Title | Your Profession"
+        ),
+        "hero_title": Settings.get_translated("hero_title", lang, "Your Hero Headline"),
+        "hero_cta_text": Settings.get_translated("hero_cta_text", lang, "View My Work"),
         "hero_cta_link": Settings.get("hero_cta_link", "/projects"),
-        "hero_cta_secondary_text": Settings.get(
-            "hero_cta_secondary_text", "Download CV"
+        "hero_cta_secondary_text": Settings.get_translated(
+            "hero_cta_secondary_text", lang, "Download CV"
         ),
         "hero_cta_secondary_link": Settings.get("hero_cta_secondary_link", "#"),
-        "what_i_do_title": Settings.get("what_i_do_title", "What I Do"),
-        "what_i_do_subtitle": Settings.get(
-            "what_i_do_subtitle", "Describe what you do"
+        "what_i_do_title": Settings.get_translated(
+            "what_i_do_title", lang, "What I Do"
         ),
-        "feature1_title": Settings.get("feature1_title", "Feature 1"),
-        "feature1_desc": Settings.get("feature1_desc", "Feature description"),
-        "feature2_title": Settings.get("feature2_title", "Feature 2"),
-        "feature2_desc": Settings.get("feature2_desc", "Feature description"),
-        "feature3_title": Settings.get("feature3_title", "Feature 3"),
-        "feature3_desc": Settings.get("feature3_desc", "Feature description"),
-        "about_badge": Settings.get("about_badge", "Get To Know Me"),
-        "about_intro": Settings.get("about_intro", "Your Professional Title"),
-        "about_description1": Settings.get(
-            "about_description1", "Write your first description here."
+        "what_i_do_subtitle": Settings.get_translated(
+            "what_i_do_subtitle", lang, "Describe what you do"
         ),
-        "about_description2": Settings.get(
-            "about_description2", "Write your second description here."
+        "feature1_title": Settings.get_translated("feature1_title", lang, "Feature 1"),
+        "feature1_desc": Settings.get_translated(
+            "feature1_desc", lang, "Feature description"
+        ),
+        "feature2_title": Settings.get_translated("feature2_title", lang, "Feature 2"),
+        "feature2_desc": Settings.get_translated(
+            "feature2_desc", lang, "Feature description"
+        ),
+        "feature3_title": Settings.get_translated("feature3_title", lang, "Feature 3"),
+        "feature3_desc": Settings.get_translated(
+            "feature3_desc", lang, "Feature description"
+        ),
+        "about_badge": Settings.get_translated("about_badge", lang, "Get To Know Me"),
+        "about_intro": Settings.get_translated(
+            "about_intro", lang, "Your Professional Title"
+        ),
+        "about_description1": Settings.get_translated(
+            "about_description1", lang, "Write your first description here."
+        ),
+        "about_description2": Settings.get_translated(
+            "about_description2", lang, "Write your second description here."
         ),
         "about_image": Settings.get("about_image", ""),
         "cv_download_link": Settings.get("cv_download_link", ""),
-        "projects_subtitle": Settings.get("projects_subtitle", "Showcase your work"),
-        "blog_subtitle": Settings.get("blog_subtitle", "Share your insights"),
-        "cta_title": Settings.get("cta_title", "Let's Work Together"),
-        "cta_text": Settings.get("cta_text", "Have a project in mind? Let's discuss."),
+        "projects_subtitle": Settings.get_translated(
+            "projects_subtitle", lang, "Showcase your work"
+        ),
+        "blog_subtitle": Settings.get_translated(
+            "blog_subtitle", lang, "Share your insights"
+        ),
+        "cta_title": Settings.get_translated("cta_title", lang, "Let's Work Together"),
+        "cta_text": Settings.get_translated(
+            "cta_text", lang, "Have a project in mind? Let's discuss."
+        ),
     }
 
 
@@ -154,8 +178,8 @@ def render_index():
         "index.html",
         featured_projects=get_featured_projects(lang),
         latest_posts=get_latest_posts(lang),
-        social_links=get_social_links(),
-        site_config=get_site_config(),
+        social_links=get_social_links(lang),
+        site_config=get_site_config(lang),
     )
 
 
@@ -164,10 +188,10 @@ def render_about():
     return render_template(
         "about.html",
         skills=get_skills(lang),
-        interests=get_interests(),
-        education=get_education(),
-        social_links=get_social_links(),
-        site_config=get_site_config(),
+        interests=get_interests(lang),
+        education=get_education(lang),
+        social_links=get_social_links(lang),
+        site_config=get_site_config(lang),
     )
 
 
@@ -232,7 +256,7 @@ def render_blog_post(post_id):
         post=post_data,
         prev_post=prev_data,
         next_post=next_data,
-        social_links=get_social_links(),
+        social_links=get_social_links(lang),
     ), 200
 
 
@@ -268,4 +292,6 @@ def render_contact():
         flash("Message sent successfully!", "success")
         return redirect(url_for("main.contact"))
 
-    return render_template("contact.html", social_links=get_social_links())
+    return render_template(
+        "contact.html", social_links=get_social_links(session.get("lang", "en"))
+    )

@@ -45,5 +45,19 @@
     "view_my_experience": "Ver Mi Experiencia",
     "my_background": "Mi Trayectoria",
     "career_journey": "Trayectoria Profesional",
-    "get_in_touch": "Ponerse en Contacto"
+    "get_in_touch": "Ponerse en Contacto",
+    "cloud_engineer": "Ingeniero Cloud",
+    "devops_professional": "Profesional DevOps",
+    "portfolio": "Portafolio",
+    "experience_subtitle": "Mi Trayectoria Profesional",
+    "projects_subtitle_text": "Muestra tu trabajo",
+    "blog_subtitle_text": "Comparte tus ideas",
+    "cta_title_text": "Trabajemos Juntos",
+    "cta_text_content": "¿Tienes un proyecto en mente? Hablemos.",
+    "cta_projects_text": "Ver Mis Proyectos",
+    "cta_experience_text": "Ver Mi Experiencia",
+    "have_project_idea": "¿Tienes una idea de proyecto?",
+    "lets_discuss": "Hablemos",
+    "interested_working_together": "¿Interesado en trabajar juntos?",
+    "footer_tagline": "Ingeniero Cloud & Profesional DevOps"
 }

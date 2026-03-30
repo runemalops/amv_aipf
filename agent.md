@@ -3,6 +3,41 @@
 ## Project Overview
 This project is a personal portfolio web application built with Flask, SQLAlchemy, and Bootstrap CSS. It includes sections for About Me, My Projects, Work Experience, Blog, Contact, with an admin panel for content management.
 
+## Architecture Layers
+
+### Layer 1: Flask Application (app.py)
+- Initializes Flask app with configuration
+- Registers blueprints: `main`, `auth`, `admin`
+- Sets up extensions: `db`, `migrate`, `login_manager`, `mail`
+- **Context Processors**: Injects `site_config` and `t()` function to ALL templates automatically
+- **Language Handling**: `get_locale()` detects language from session or browser
+
+### Layer 2: Routes/Blueprints (routes.py, auth.py, admin.py)
+- **routes.py**: Public URL definitions (`/`, `/about`, `/projects`, etc.)
+- **auth.py**: Authentication routes (login/logout)
+- **admin.py**: All admin CRUD operations with translation support
+
+### Layer 3: Views (views.py)
+- Contains business logic functions (`render_index()`, `render_about()`, etc.)
+- Fetches data using model methods
+- Calls translation functions with current language
+- Returns `render_template()` with translated data
+
+### Layer 4: Models (models.py)
+- SQLAlchemy ORM models
+- Most models have `translations` JSON column
+- `Settings` model uses `get_translated()` for multilingual site content
+
+### Layer 5: Translation Utilities
+- **translations.py**: Loads JSON files, provides `t()` function
+- **translation_utils.py**: `get_translated()`, `get_translated_list()` helpers
+- **translation_service.py**: MyMemory API integration for auto-translate
+
+### Layer 6: Templates (Jinja2)
+- **base.html**: Layout with navbar, footer, language switcher
+- **Page templates**: index, about, projects, experience, blog, contact
+- **Admin templates**: Forms with English/Spanish fields
+
 ## Project Structure
 *   `/`
     *   `app.py`: The main Flask application file.
@@ -97,16 +132,22 @@ This project is a personal portfolio web application built with Flask, SQLAlchem
     ```
 
 ## Database Models
-*   `User`: Admin user for authentication
-*   `Project`: Portfolio projects
-*   `Experience`: Work experience
-*   `Education`: Educational background
-*   `BlogPost`: Blog posts
-*   `Skill`: Technical skills with icons
-*   `Interest`: Personal interests
-*   `SocialLink`: Social media links
-*   `ContactMessage`: Contact form messages
-*   `Settings`: Key-value store for site configuration (SMTP, site content). Note: Site content fields need multilingual support (TODO).
+All models with translatable content have a `translations` JSON column for multilingual support.
+
+| Model | Fields | Translatable Fields |
+|-------|--------|---------------------|
+| `User` | id, username, password_hash, created_at | None (auth only) |
+| `Project` | id, title, description, technologies, link, demo, git_url, featured, translations | title, description |
+| `Experience` | id, title, company, period, location, responsibilities, technologies, translations | title, responsibilities |
+| `Education` | id, degree, school, year, translations | degree, school |
+| `BlogPost` | id, title, excerpt, content, image, author, category, date, translations | title, excerpt, content |
+| `Skill` | id, name, icon, category, translations | name |
+| `Interest` | id, name, translations | name |
+| `SocialLink` | id, platform, url, icon, translations | platform |
+| `ContactMessage` | id, name, email, subject, message, created_at | None (form data) |
+| `Settings` | id, key, value, translations, created_at, updated_at | value (via translations) |
+
+**Settings Keys**: Site content stored in Settings includes hero section, about section, features, CTAs, and SMTP configuration. All text content is translatable.
 
 ## Routes
 ### Public
@@ -139,29 +180,49 @@ Uses [Bootstrap Icons](https://icons.getbootstrap.com/).
 ## Internationalization (i18n)
 The application supports English and Spanish languages. Users can switch languages via the dropdown in the navigation bar.
 
-### Translation Architecture:
-- **Static UI text**: Stored in `translations/en.json` and `translations/es.json`
-- **Content translation**: Models use a `translations` JSON column with format:
-  ```json
-  {"es": {"title": "...", "description": "..."}}
-  ```
-- **Auto-translate fallback**: If a translation doesn't exist in the JSON, `translation_utils.py` will auto-translate using the MyMemory API and cache the result
+### Translation Architecture (3 Layers):
+
+**Layer 1 - Static UI Text (JSON files)**
+- Located in `translations/en.json` and `translations/es.json`
+- Used in templates via `{{ t('key') }}` function
+- Examples: navigation labels, button text, section headers
+
+**Layer 2 - Database Content (translations JSON column)**
+- Each model with translatable content has a `translations` JSON column
+- Format: `{"es": {"field_name": "translated value"}}`
+- Used via `get_translated(model_instance, "field_name", lang)` function
+- Examples: project titles, blog post content, skill names
+
+**Layer 3 - Site Configuration (Settings model)**
+- Uses `Settings.get_translated(key, lang, default)` static method
+- Stores English as default value, Spanish in `translations` JSON column
+- Available globally via `site_config` context processor
+
+### Translation Flow:
+```
+Request → routes.py → views.py → get_translated() → Template
+                    ↓
+              translation_utils.py → Database (translations JSON)
+                    ↓
+              translations.py → JSON files (UI strings)
+```
+
+### Key Functions (translation_utils.py):
+- `get_translated(obj, field, lang)` - Get translated value from model
+- `get_translated_list(items, fields, lang)` - Translate multiple items
+- `get_education_list(educations, lang)` - Translate education entries
+- `get_interests_list(interests, lang)` - Translate interests
+- `get_social_links_list(links, lang)` - Translate social links
 
 ### Adding Translations:
-1. Static text: Edit `translations/en.json` or `translations/es.json`
-2. Content: Add translations to the `translations` JSON column via admin or seed data
+1. **Static UI text**: Edit `translations/en.json` or `translations/es.json`
+2. **Database content**: Via admin panel forms (Spanish fields have `_es` suffix)
+3. **Site config**: Via `/admin/site-config` with separate English/Spanish fields
 
-### Language Routes:
-- `/set-lang/en` - Switch to English
-- `/set-lang/es` - Switch to Spanish
-
-### Multilingual Site Configuration (TODO):
-The `/admin/site-config` page currently stores values as plain text without translation support.
-**Required**: Update site configuration to support English and Spanish translations:
-1. Store settings values as JSON: `{"en": "English text", "es": "Spanish text"}`
-2. Add form fields for both languages in the admin template
-3. Update `get_site_config()` to return the translated value based on current language
-4. Follow the same pattern as other models with `translations` JSON column
+### Language Detection & Switching:
+- Session-based: `session["lang"]`
+- Browser preference: `request.accept_languages.best_match()`
+- Routes: `/set-lang/en` and `/set-lang/es`
 
 ## Code Style
 *   Follow [PEP 8](https://peps.python.org) style guidelines
@@ -175,6 +236,31 @@ The `/admin/site-config` page currently stores values as plain text without tran
 ## Boundaries
 *   All new features should include corresponding database migrations when models change
 *   Test the application after making changes
+*   When models change, update BOTH local (`instance/portfolio.db`) AND production (`~/.local/share/amv_aipf/instance/portfolio.db`) databases:
+  ```bash
+  # For local development
+  python3 -c "import sqlite3; conn = sqlite3.connect('instance/portfolio.db'); cursor.execute('ALTER TABLE table_name ADD COLUMN ...'); conn.commit()"
+  
+  # For production (if migration not possible)
+  python3 -c "import sqlite3; conn = sqlite3.connect('/home/user/.local/share/amv_aipf/instance/portfolio.db'); ..."
+  ```
+
+## Migration Workflow
+When modifying database models:
+
+1. **Development**: Update `models.py` with new columns/tables
+2. **Local DB**: Add columns directly to `instance/portfolio.db` (SQLite limitations)
+3. **Rebuild & Restart Container**:
+   ```bash
+   podman build -t amv_aipf:latest -f deploy/Containerfile .
+   podman stop amv_aipf && podman rm amv_aipf
+   podman run -d --name amv_aipf -p 5000:5000 \
+     -v ~/.local/share/amv_aipf/instance:/app/instance \
+     -e FLASK_APP=app.py -e FLASK_ENV=production \
+     --env-file ~/.local/share/amv_aipf/amv_aipf.env \
+     localhost/amv_aipf:latest
+   ```
+4. **Production DB**: Add columns to `~/.local/share/amv_aipf/instance/portfolio.db`
 
 ## Deployment Workflow
 After making changes and confirming they work locally or in the container:

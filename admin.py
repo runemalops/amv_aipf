@@ -248,10 +248,17 @@ def educations():
 @login_required
 def new_education():
     if request.method == "POST":
+        translations = {"es": {}}
+        if request.form.get("degree_es"):
+            translations["es"]["degree"] = request.form.get("degree_es")
+        if request.form.get("school_es"):
+            translations["es"]["school"] = request.form.get("school_es")
+
         education = Education(
             degree=request.form.get("degree"),
             school=request.form.get("school"),
             year=request.form.get("year"),
+            translations=translations if translations["es"] else {},
         )
         db.session.add(education)
         db.session.commit()
@@ -270,6 +277,16 @@ def edit_education(id):
         education.degree = request.form.get("degree")
         education.school = request.form.get("school")
         education.year = request.form.get("year")
+
+        translations = education.translations or {}
+        if request.form.get("degree_es"):
+            translations["es"] = translations.get("es", {})
+            translations["es"]["degree"] = request.form.get("degree_es")
+        if request.form.get("school_es"):
+            translations["es"] = translations.get("es", {})
+            translations["es"]["school"] = request.form.get("school_es")
+        education.translations = translations
+
         db.session.commit()
         flash("Education updated successfully!", "success")
         return redirect(url_for("admin.educations"))
@@ -455,7 +472,14 @@ def interests():
 @login_required
 def new_interest():
     if request.method == "POST":
-        interest = Interest(name=request.form.get("name"))
+        translations = {"es": {}}
+        if request.form.get("name_es"):
+            translations["es"]["name"] = request.form.get("name_es")
+
+        interest = Interest(
+            name=request.form.get("name"),
+            translations=translations if translations["es"] else {},
+        )
         db.session.add(interest)
         db.session.commit()
         flash("Interest created successfully!", "success")
@@ -471,6 +495,13 @@ def edit_interest(id):
 
     if request.method == "POST":
         interest.name = request.form.get("name")
+
+        translations = interest.translations or {}
+        if request.form.get("name_es"):
+            translations["es"] = translations.get("es", {})
+            translations["es"]["name"] = request.form.get("name_es")
+        interest.translations = translations
+
         db.session.commit()
         flash("Interest updated successfully!", "success")
         return redirect(url_for("admin.interests"))
@@ -502,10 +533,15 @@ def social_links():
 @login_required
 def new_social_link():
     if request.method == "POST":
+        translations = {"es": {}}
+        if request.form.get("platform_es"):
+            translations["es"]["platform"] = request.form.get("platform_es")
+
         link = SocialLink(
             platform=request.form.get("platform"),
             url=request.form.get("url"),
             icon=request.form.get("icon"),
+            translations=translations if translations["es"] else {},
         )
         db.session.add(link)
         db.session.commit()
@@ -524,6 +560,13 @@ def edit_social_link(id):
         link.platform = request.form.get("platform")
         link.url = request.form.get("url")
         link.icon = request.form.get("icon")
+
+        translations = link.translations or {}
+        if request.form.get("platform_es"):
+            translations["es"] = translations.get("es", {})
+            translations["es"]["platform"] = request.form.get("platform_es")
+        link.translations = translations
+
         db.session.commit()
         flash("Social link updated successfully!", "success")
         return redirect(url_for("admin.social_links"))
@@ -612,14 +655,18 @@ def settings():
 @login_required
 def site_config():
     if request.method == "POST":
-        site_fields = [
+        non_translatable_fields = [
+            "hero_cta_link",
+            "hero_cta_secondary_link",
+            "about_image",
+            "cv_download_link",
+        ]
+        translatable_fields = [
             "site_title",
             "site_subtitle",
             "hero_title",
             "hero_cta_text",
-            "hero_cta_link",
             "hero_cta_secondary_text",
-            "hero_cta_secondary_link",
             "what_i_do_title",
             "what_i_do_subtitle",
             "feature1_title",
@@ -632,16 +679,34 @@ def site_config():
             "about_intro",
             "about_description1",
             "about_description2",
-            "about_image",
-            "cv_download_link",
             "projects_subtitle",
             "blog_subtitle",
             "cta_title",
             "cta_text",
         ]
-        for field in site_fields:
+
+        for field in non_translatable_fields:
             value = request.form.get(field, "")
             Settings.set(field, value)
+
+        for field in translatable_fields:
+            value = request.form.get(field, "")
+            es_value = request.form.get(f"{field}_es", "")
+            setting = Settings.query.filter_by(key=field).first()
+            if setting:
+                setting.value = value
+                if es_value:
+                    translations = setting.translations or {}
+                    translations["es"] = es_value
+                    setting.translations = translations
+            else:
+                setting = Settings(
+                    key=field,
+                    value=value,
+                    translations={"es": es_value} if es_value else {},
+                )
+                db.session.add(setting)
+            db.session.commit()
 
         flash("Site configuration saved successfully!", "success")
         return redirect(url_for("admin.site_config"))
@@ -682,7 +747,17 @@ def site_config():
         "cta_text": Settings.get("cta_text", "Have a project in mind? Let's discuss."),
     }
 
-    return render_template("admin/site_config.html", config=site_fields)
+    site_fields_es = {}
+    for key in site_fields:
+        setting = Settings.query.filter_by(key=key).first()
+        if setting and setting.translations:
+            site_fields_es[key] = setting.translations.get("es", "")
+        else:
+            site_fields_es[key] = ""
+
+    return render_template(
+        "admin/site_config.html", config=site_fields, config_es=site_fields_es
+    )
 
 
 @admin.route("/change-password", methods=["GET", "POST"])
