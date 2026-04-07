@@ -106,18 +106,67 @@ def get_education_list(educations, lang="en"):
     return result
 
 
+INTEREST_ICON_MAP = {
+    "coding": "bi-code-square",
+    "programming": "bi-code-square",
+    "learning": "bi-book",
+    "open source": "bi-github",
+    "cloud computing": "bi-cloud",
+    "machine learning": "bi-brain",
+    "cybersecurity": "bi-shield-lock",
+    "web development": "bi-globe",
+    "mobile apps": "bi-phone",
+    "music": "bi-music-note",
+    "guitar": "bi-guitar",
+    "motorcycles": "bi-bicycle",
+    "cars": "bi-car-front",
+    "racing": "bi-speedometer2",
+    "videogames": "bi-controller",
+    "gaming": "bi-controller",
+    "pc gaming": "bi-pc-display",
+    "photography": "bi-camera",
+    "hiking": "bi-compass",
+    "travel": "bi-airplane",
+    "cooking": "bi-utensils",
+    "reading": "bi-book",
+    "writing": "bi-pen",
+    "fitness": "bi-heart-pulse",
+    "sports": "bi-dribbble",
+    "coffee": "bi-cup-hot",
+    "tea": "bi-cup",
+    "movies": "bi-film",
+    "series": "bi-tv",
+    "anime": "bi-yin-yang",
+    "art": "bi-palette",
+    "design": "bi-palette",
+}
+
+
+def get_default_interest_icon(interest_name: str) -> str:
+    name_lower = interest_name.lower()
+    for key, icon in INTEREST_ICON_MAP.items():
+        if key in name_lower or name_lower in key:
+            return icon
+    return "bi-heart"
+
+
 def get_interests_list(interests, lang="en"):
     """
-    Get translated interests list.
+    Get translated interests list with icons.
 
     Args:
         interests: List of Interest model instances
         lang: Target language code
 
     Returns:
-        List of translated interest names
+        List of dicts with name and icon
     """
-    return [get_translated(i, "name", lang) for i in interests]
+    result = []
+    for i in interests:
+        name = get_translated(i, "name", lang)
+        icon = i.icon if i.icon else get_default_interest_icon(name)
+        result.append({"name": name, "icon": icon})
+    return result
 
 
 def get_social_links_list(links, lang="en"):

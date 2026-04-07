@@ -73,8 +73,8 @@
                     <div class="skills-list">
                         {% for interest in interests %}
                         <div class="skill-item">
-                            <i class="bi bi-heart-fill"></i>
-                            <span>{{ interest.name if interest.name else interest }}</span>
+                            <i class="bi {{ interest.icon }}"></i>
+                            <span>{{ interest.name }}</span>
                         </div>
                         {% endfor %}
                     </div>

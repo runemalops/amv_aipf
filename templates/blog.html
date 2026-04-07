@@ -3,25 +3,33 @@
 {% block title %}{{ t('blog_title') }}{% endblock %}
 
 {% block content %}
+<section class="section-padding section-dark">
+    <div class="container">
+        <div class="text-center">
+            <span class="badge-accent mb-3">{{ t('latest_posts') }}</span>
+            <h1 class="display-4 fw-bold">{{ t('blog_title') }}</h1>
+            <p class="lead text-light opacity-75 mt-3">{{ site_config.blog_subtitle }}</p>
+        </div>
+    </div>
+</section>
+
 <section class="section-padding">
     <div class="container">
-        <h1 class="text-center mb-5">{{ t('blog_title') }}</h1>
-        
-        <div class="row">
+        <div class="row g-4">
             {% for post in posts %}
-            <div class="col-md-6 col-lg-4 mb-4">
-                <div class="card blog-card h-100">
+            <div class="col-md-6 col-lg-4">
+                <div class="blog-card h-100">
                     {% if post.image %}
                     <img src="{{ post.image }}" class="card-img-top" alt="{{ post.title }}" style="height: 200px; object-fit: cover;">
                     {% endif %}
                     <div class="card-body">
-                        <div class="d-flex justify-content-between align-items-center mb-2">
-                            <span class="badge bg-primary">{{ post.category }}</span>
+                        <div class="d-flex justify-content-between align-items-center mb-3">
+                            <span class="badge badge-primary">{{ post.category }}</span>
                             <small class="text-muted">{{ post.date }}</small>
                         </div>
                         <h5 class="card-title">{{ post.title }}</h5>
                         <p class="card-text">{{ post.excerpt }}</p>
-                        <a href="{{ url_for('main.blog_post', post_id=post.id) }}" class="btn btn-outline-primary btn-sm">{{ t('read_more') }}</a>
+                        <a href="{{ url_for('main.blog_post', post_id=post.id) }}" class="btn btn-primary btn-sm">{{ t('read_more') }}</a>
                     </div>
                 </div>
             </div>

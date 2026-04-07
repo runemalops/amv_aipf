@@ -87,18 +87,28 @@ def seed_data():
         ]
 
         skills = [
-            Skill(name="Python", icon="bi-python", category="Backend"),
-            Skill(name="JavaScript", icon="bi-code", category="Frontend"),
+            Skill(name="Python", icon="bi-filetype-py", category="Backend"),
+            Skill(name="JavaScript", icon="bi-braces", category="Frontend"),
             Skill(name="HTML/CSS", icon="bi-filetype-html", category="Frontend"),
-            Skill(name="PostgreSQL", icon="bi-database", category="Database"),
+            Skill(name="PostgreSQL", icon="bi-database-fill", category="Database"),
             Skill(name="Git", icon="bi-git", category="Tools"),
-            Skill(name="Docker", icon="bi-box-seam", category="DevOps"),
+            Skill(name="Docker", icon="bi-box-seam-fill", category="DevOps"),
         ]
 
         interests = [
-            Interest(name="Coding"),
-            Interest(name="Learning"),
-            Interest(name="Open Source"),
+            Interest(name="Coding", icon="bi-code-square"),
+            Interest(name="Open Source", icon="bi-github"),
+            Interest(name="Cloud Computing", icon="bi-cloud"),
+            Interest(name="Machine Learning", icon="bi-brain"),
+            Interest(name="Cybersecurity", icon="bi-shield-lock"),
+            Interest(name="Web Development", icon="bi-globe"),
+            Interest(name="Mobile Apps", icon="bi-phone"),
+            Interest(name="Music", icon="bi-music-note"),
+            Interest(name="Motorcycles", icon="bi-bicycle"),
+            Interest(name="Cars", icon="bi-car-front"),
+            Interest(name="Video Games", icon="bi-controller"),
+            Interest(name="Photography", icon="bi-camera"),
+            Interest(name="Hiking", icon="bi-compass"),
         ]
 
         db.session.add_all(projects)

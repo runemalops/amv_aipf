@@ -1,9 +1,37 @@
 # AGENTS.md
 
 ## Project Overview
-This project is a personal portfolio web application built with Flask, SQLAlchemy, and Bootstrap CSS. It includes sections for About Me, My Projects, Work Experience, Blog, Contact, with an admin panel for content management.
+This project is a personal portfolio web application built with Flask, SQLAlchemy, and Bootstrap CSS with React islands for interactive components. It includes sections for About Me, My Projects, Work Experience, Blog, Contact, with an admin panel for content management.
 
 ## Architecture Layers
+
+### Flask-React Hybrid Architecture
+
+| Section | Approach | Reason |
+|---------|----------|--------|
+| Header/Footer | Flask/Jinja | Static, SEO-critical |
+| Project Grid | **React** | Technology filtering, animations |
+| Contact Form | **React** | Client-side validation, async submit |
+| Blog Posts | Flask | SEO-friendly content |
+| About/Education | Flask | Simple display |
+
+### API Endpoints for React
+
+React components communicate via REST API:
+
+| Endpoint | Method | Description |
+|----------|--------|-------------|
+| `/api/projects` | GET | List all projects |
+| `/api/projects?featured=true` | GET | Featured projects only |
+| `/api/blog` | GET | Blog posts |
+| `/api/blog?limit=3` | GET | Limited posts |
+| `/api/experience` | GET | Work experience |
+| `/api/education` | GET | Education |
+| `/api/skills` | GET | Skills |
+| `/api/contact` | POST | Submit contact form |
+| `/api/csrf-token` | GET | CSRF token for forms |
+
+React files are in `/react/` with Vite for building. The Flask-React hybrid uses a "React Islands" pattern where only interactive components are React-powered.
 
 ### Layer 1: Flask Application (app.py)
 - Initializes Flask app with configuration
@@ -41,6 +69,7 @@ This project is a personal portfolio web application built with Flask, SQLAlchem
 ## Project Structure
 *   `/`
     *   `app.py`: The main Flask application file.
+    *   `api.py`: REST API endpoints for React components.
     *   `routes.py`: URL routing definitions using Flask blueprints.
     *   `views.py`: View functions for rendering templates.
     *   `models.py`: SQLAlchemy database models.
@@ -51,6 +80,7 @@ This project is a personal portfolio web application built with Flask, SQLAlchem
     *   `translation_utils.py`: Translation helpers with auto-translate fallback.
     *   `translations.py`: Translation helper functions.
     *   `requirements.txt`: Project dependencies.
+    *   `react/`: React frontend (Vite + Zustand)
     *   `instance/portfolio.db`: SQLite database file.
     *   `migrations/`: Flask-Migrate database migrations.
     *   `templates/`: Directory for HTML templates.
@@ -285,3 +315,18 @@ After making changes and confirming they work locally or in the container:
    ```bash
    journalctl --user -u amv_aipf -f
    ```
+
+## OpenCode Skills
+
+This project uses OpenCode's multi-skill system. Skills are in `.opencode/skills/`:
+
+| Skill | Purpose |
+|-------|---------|
+| `ui-ux-pro-max` | UI/UX design intelligence |
+| `flask-backend-expert` | Flask web development |
+| `backend-expert` | General backend/API architecture |
+| `python-developer` | Python scripting and automation |
+| `react-integration` | React + Flask hybrid patterns |
+| `react-native-expert` | React Native mobile development |
+
+See `.opencode/skills/README.md` for full details.

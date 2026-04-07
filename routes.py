@@ -6,7 +6,6 @@ from views import (
     render_experience,
     render_blog,
     render_blog_post,
-    render_contact
 )
 
 main = Blueprint("main", __name__)
@@ -43,8 +42,3 @@ def blog_post(post_id):
     if result[1] == 404:
         return "Post not found", 404
     return result[0]
-
-
-@main.route("/contact", methods=["GET", "POST"])
-def contact():
-    return render_contact()

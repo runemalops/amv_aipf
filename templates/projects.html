@@ -15,43 +15,7 @@
 
 <section class="section-padding">
     <div class="container">
-        <div class="row g-4">
-            {% for project in projects %}
-            <div class="col-lg-6">
-                <div class="project-card">
-                    <div class="project-icon">
-                        <i class="bi bi-folder-fill"></i>
-                    </div>
-                    <div class="project-content">
-                        <h3 class="project-title">{{ project.title }}</h3>
-                        <p class="project-description">{{ project.description }}</p>
-                        <div class="project-tech">
-                            {% for tech in project.technologies %}
-                            <span class="tech-badge">{{ tech }}</span>
-                            {% endfor %}
-                        </div>
-                        <div class="project-links">
-                            <a href="{{ project.link }}" class="btn btn-sm btn-accent" target="_blank">
-                                <i class="bi bi-github me-1"></i>{{ t('source_code') }}
-                            </a>
-                            {% if project.demo %}
-                            <a href="{{ project.demo }}" class="btn btn-sm btn-outline-accent" target="_blank">
-                                <i class="bi bi-play-circle me-1"></i>{{ t('live_demo') }}
-                            </a>
-                            {% endif %}
-                        </div>
-                    </div>
-                </div>
-            </div>
-            {% endfor %}
-        </div>
-        
-        {% if not projects %}
-        <div class="text-center py-5">
-            <i class="bi bi-inbox display-1 text-muted mb-3"></i>
-            <p class="text-muted">{{ t('no_projects') }}</p>
-        </div>
-        {% endif %}
+        <div id="projects-grid-root"></div>
     </div>
 </section>
 
@@ -60,10 +24,18 @@
         <div class="cta-box">
             <h2 class="cta-title">{{ t('have_project_idea') }}</h2>
             <p class="cta-text">{{ t('cta_projects_text') }}</p>
-            <a href="{{ url_for('main.contact') }}" class="btn btn-accent">
+            <button class="btn btn-accent" onclick="document.querySelector('.contact-panel-trigger').click()">
                 <i class="bi bi-chat-dots me-2"></i>{{ t('lets_discuss') }}
-            </a>
+            </button>
         </div>
     </div>
 </section>
+{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='react/assets/styles.css') }}">
+{% endblock %}
+
+{% block extra_js %}
+<script type="module" src="{{ url_for('static', filename='react/assets/projects.js') }}"></script>
 {% endblock %}

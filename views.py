@@ -76,9 +76,115 @@ def get_all_posts(lang="en"):
     return result
 
 
+SKILL_ICON_MAP = {
+    "python": "bi-filetype-py",
+    "javascript": "bi-braces",
+    "js": "bi-braces",
+    "typescript": "bi-braces",
+    "ts": "bi-braces",
+    "react": "bi-lightning-charge",
+    "flask": "bi-file-code-fill",
+    "django": "bi-file-code-fill",
+    "fastapi": "bi-lightning-charge",
+    "node": "bi-node-plus",
+    "nodejs": "bi-node-plus",
+    "html": "bi-filetype-html",
+    "css": "bi-filetype-css",
+    "sql": "bi-database-fill",
+    "postgresql": "bi-database-fill",
+    "postgres": "bi-database-fill",
+    "mysql": "bi-database-fill",
+    "mongodb": "bi-server",
+    "mongo": "bi-server",
+    "docker": "bi-box-seam-fill",
+    "kubernetes": "bi-cloud",
+    "k8s": "bi-cloud",
+    "git": "bi-git",
+    "github": "bi-github",
+    "gitlab": "bi-github",
+    "bitbucket": "bi-github",
+    "aws": "bi-cloud-fill",
+    "azure": "bi-cloud-fill",
+    "gcp": "bi-cloud-fill",
+    "linux": "bi-terminal",
+    "ubuntu": "bi-terminal",
+    "bash": "bi-terminal-fill",
+    "shell": "bi-terminal-fill",
+    "rust": "bi-gear-fill",
+    "go": "bi-chevron-double-right",
+    "golang": "bi-chevron-double-right",
+    "java": "bi-cup-hot-fill",
+    "spring": "bi-flower1",
+    "c++": "bi-code-square",
+    "c#": "bi-hash",
+    "csharp": "bi-hash",
+    "php": "bi-file-code-fill",
+    "ruby": "bi-gem",
+    "swift": "bi-apple",
+    "kotlin": "bi-android2",
+    "flutter": "bi-phone-fill",
+    "react native": "bi-phone-fill",
+    "nextjs": "bi-file-code-fill",
+    "vue": "bi-vue",
+    "angular": "bi-file-code-fill",
+    "tailwind": "bi-palette-fill",
+    "bootstrap": "bi-palette2",
+    "sass": "bi-palette2",
+    "graphql": "bi-diagram-3-fill",
+    "rest": "bi-globe2",
+    "api": "bi-globe2",
+    "ci/cd": "bi-arrow-repeat",
+    "devops": "bi-gear",
+    "agile": "bi-people-fill",
+    "scrum": "bi-people-fill",
+    "machine learning": "bi-brain",
+    "ml": "bi-brain",
+    "ai": "bi-robot",
+    "data science": "bi-bar-chart-fill",
+    "security": "bi-shield-check",
+    "testing": "bi-check-circle-fill",
+    "tdd": "bi-check-all",
+    "nginx": "bi-server",
+    "apache": "bi-server",
+    "redis": "bi-lightning-charge-fill",
+    "elasticsearch": "bi-search",
+    "kafka": "bi-arrow-left-right",
+    "terraform": "bi-stack",
+    "ansible": "bi-gear",
+    "jenkins": "bi-arrow-repeat",
+    "github actions": "bi-github",
+    "figma": "bi-palette-fill",
+    "photoshop": "bi-palette-fill",
+    "illustrator": "bi-palette-fill",
+    "wordpress": "bi-wordpress",
+    "vue.js": "bi-vue",
+    "nuxt": "bi-triangle",
+    "svelte": "bi-triangle-half",
+    "three.js": "bi-box",
+    "webgl": "bi-box",
+    "express": "bi-file-code",
+    "prisma": "bi-database",
+    "sequelize": "bi-database",
+    "mongodb": "bi-server",
+}
+
+
+def get_default_icon(skill_name: str) -> str:
+    name_lower = skill_name.lower()
+    for key, icon in SKILL_ICON_MAP.items():
+        if key in name_lower or name_lower in key:
+            return icon
+    return "bi-star"
+
+
 def get_skills(lang="en"):
     skills = Skill.query.all()
-    return [{"name": get_translated(s, "name", lang), "icon": s.icon} for s in skills]
+    result = []
+    for s in skills:
+        name = get_translated(s, "name", lang)
+        icon = s.icon if s.icon else get_default_icon(name)
+        result.append({"name": name, "icon": icon})
+    return result
 
 
 def get_social_links(lang="en"):
@@ -259,40 +365,3 @@ def render_blog_post(post_id):
         next_post=next_data,
         social_links=get_social_links(lang),
     ), 200
-
-
-def render_contact():
-    if request.method == "POST":
-        name = request.form.get("name")
-        email = request.form.get("email")
-        subject = request.form.get("subject")
-        message = request.form.get("message")
-
-        contact = ContactMessage(
-            name=name, email=email, subject=subject, message=message
-        )
-        db.session.add(contact)
-        db.session.commit()
-
-        recipient = Settings.get("contact_recipient", "")
-        smtp_server = Settings.get("smtp_server", "")
-
-        if recipient and smtp_server:
-            try:
-                from app import mail
-
-                msg = Message(
-                    subject=f"Contact Form: {subject}",
-                    recipients=[recipient],
-                    body=f"Name: {name}\nEmail: {email}\n\nMessage:\n{message}",
-                )
-                mail.send(msg)
-            except Exception as e:
-                current_app.logger.error(f"Failed to send email: {e}")
-
-        flash("Message sent successfully!", "success")
-        return redirect(url_for("main.contact"))
-
-    return render_template(
-        "contact.html", social_links=get_social_links(session.get("lang", "en"))
-    )

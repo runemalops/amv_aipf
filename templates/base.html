@@ -774,9 +774,6 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{{ url_for('main.blog') }}">{{ t('blog') }}</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{{ url_for('main.contact') }}">{{ t('contact') }}</a>
-                    </li>
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="langDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             {{ 'EN' if current_lang == 'en' else 'ES' }}
@@ -825,5 +822,9 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     {% block extra_js %}{% endblock %}
+    
+    <link rel="stylesheet" href="{{ url_for('static', filename='react/assets/styles.css') }}">
+    <script type="module" src="{{ url_for('static', filename='react/assets/panel.js') }}"></script>
+    <div id="contact-panel-root"></div>
 </body>
 </html>

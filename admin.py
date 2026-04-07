@@ -478,6 +478,7 @@ def new_interest():
 
         interest = Interest(
             name=request.form.get("name"),
+            icon=request.form.get("icon"),
             translations=translations if translations["es"] else {},
         )
         db.session.add(interest)
@@ -495,6 +496,7 @@ def edit_interest(id):
 
     if request.method == "POST":
         interest.name = request.form.get("name")
+        interest.icon = request.form.get("icon")
 
         translations = interest.translations or {}
         if request.form.get("name_es"):

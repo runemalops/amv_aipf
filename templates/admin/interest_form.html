@@ -28,13 +28,52 @@
                 <input type="text" class="form-control" id="name" name="name" value="{{ interest.name if interest else '' }}" required>
             </div>
             <hr>
-            <h5 class="mb-3">Spanish</h5>
+            <h5 class="mb-3">Spanish <button type="button" class="btn btn-sm btn-info" onclick="translateInterestToSpanish()">Auto-Translate from English</button></h5>
             <div class="mb-3">
                 <label for="name_es" class="form-label">Name (Spanish)</label>
                 <input type="text" class="form-control" id="name_es" name="name_es" value="{{ interest.translations.es.name if interest and interest.translations and interest.translations.es else '' }}">
+            </div>
+            <hr>
+            <h5 class="mb-3">Icon</h5>
+            <div class="mb-3">
+                <label for="icon" class="form-label">Bootstrap Icon (e.g., bi-music-note)</label>
+                <input type="text" class="form-control" id="icon" name="icon" value="{{ interest.icon if interest else '' }}" placeholder="bi-heart">
+                <small class="text-muted">Leave empty to use auto-generated icon based on name</small>
             </div>
             <button type="submit" class="btn btn-primary">{{ 'Update' if interest else 'Create' }}</button>
         </form>
     </div>
 </div>
+
+<script>
+async function translateToSpanish(text, endpoint) {
+    const response = await fetch(endpoint, {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        credentials: 'include',
+        body: JSON.stringify({text: text, target_lang: 'es'})
+    });
+    const data = await response.json();
+    return data.translated;
+}
+
+async function translateInterestToSpanish() {
+    const name = document.getElementById('name').value;
+    
+    const btn = event.target;
+    btn.disabled = true;
+    btn.textContent = 'Translating...';
+    
+    try {
+        if (name) {
+            document.getElementById('name_es').value = await translateToSpanish(name, '/admin/translate');
+        }
+    } catch (e) {
+        alert('Translation failed. Please try again.');
+    }
+    
+    btn.disabled = false;
+    btn.textContent = 'Auto-Translate from English';
+}
+</script>
 {% endblock %}

@@ -32,7 +32,7 @@
                 <input type="text" class="form-control" id="school" name="school" value="{{ education.school if education else '' }}" required>
             </div>
             <hr>
-            <h5 class="mb-3">Spanish</h5>
+            <h5 class="mb-3">Spanish <button type="button" class="btn btn-sm btn-info" onclick="translateEducationToSpanish()">Auto-Translate from English</button></h5>
             <div class="mb-3">
                 <label for="degree_es" class="form-label">Degree (Spanish)</label>
                 <input type="text" class="form-control" id="degree_es" name="degree_es" value="{{ education.translations.es.degree if education and education.translations and education.translations.es else '' }}">
@@ -51,4 +51,40 @@
         </form>
     </div>
 </div>
+
+<script>
+async function translateToSpanish(text, endpoint) {
+    const response = await fetch(endpoint, {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        credentials: 'include',
+        body: JSON.stringify({text: text, target_lang: 'es'})
+    });
+    const data = await response.json();
+    return data.translated;
+}
+
+async function translateEducationToSpanish() {
+    const degree = document.getElementById('degree').value;
+    const school = document.getElementById('school').value;
+    
+    const btn = event.target;
+    btn.disabled = true;
+    btn.textContent = 'Translating...';
+    
+    try {
+        if (degree) {
+            document.getElementById('degree_es').value = await translateToSpanish(degree, '/admin/translate');
+        }
+        if (school) {
+            document.getElementById('school_es').value = await translateToSpanish(school, '/admin/translate');
+        }
+    } catch (e) {
+        alert('Translation failed. Please try again.');
+    }
+    
+    btn.disabled = false;
+    btn.textContent = 'Auto-Translate from English';
+}
+</script>
 {% endblock %}
