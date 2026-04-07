@@ -1,34 +1,24 @@
 # amv_aipf
 
-Personal portfolio web application built with Flask, SQLAlchemy, and Bootstrap CSS with React islands for interactive components.
+Personal portfolio web application built with Flask and React, featuring a hybrid architecture with Flask/Jinja templates and React islands for interactive components.
 
 ## Features
 
-- **Public Pages**: Home, About, Projects, Experience, Blog, Contact
-- **Admin Panel**: Full CRUD management for all content (Projects, Experience, Education, Blog, Skills, Interests, Social Links)
+- **Public Pages**: Home, About, Projects, Experience, Blog
+- **Admin Panel**: Full CRUD for all content with auto-translate
 - **Authentication**: Secure admin login with password hashing
-- **Database**: SQLite with Flask-Migrate for version control
-- **Internationalization**: English and Spanish language support with auto-translate
-- **Multilingual Content**: All user content (projects, blog posts, skills, etc.) supports English and Spanish
-- **React Islands**: Interactive components (ProjectsGrid with filtering, ContactForm with validation)
-
-## Tech Stack
-
-- **Backend**: Flask 3.x, SQLAlchemy
-- **Auth**: Flask-Login with password hashing
+- **Multilingual**: English and Spanish with auto-translate
+- **React Islands**: Interactive project filtering and contact form
 - **Database**: SQLite with Flask-Migrate
-- **Frontend**: Bootstrap 5, Bootstrap Icons, React 18
-- **State Management**: Zustand
-- **Build Tool**: Vite
-- **Email**: Flask-Mail (SMTP)
-- **Production**: Gunicorn, Podman
+- **Deployment**: Podman with Quadlet systemd integration
 
-## Quick Start (Development)
+---
+
+## Quick Start
 
 ```bash
 # Create virtual environment
-python3 -m venv venv
-source venv/bin/activate
+python3 -m venv venv && source venv/bin/activate
 
 # Install dependencies
 pip install -r requirements.txt
@@ -52,252 +42,200 @@ python app.py
 
 Access at http://localhost:5000
 
-## React Development
-
-Interactive components use React with Vite:
-
-```bash
-cd react
-
-# Install dependencies
-npm install
-
-# Development server (proxies to Flask at localhost:5000)
-npm run dev
-
-# Production build
-npm run build
-```
-
-### Flask-React Architecture
-
-The application uses a hybrid approach:
-
-| Section | Approach | Reason |
-|---------|----------|--------|
-| Header/Footer | Flask/Jinja | Static, SEO-critical |
-| Project Grid | **React** | Technology filtering, animations |
-| Contact Form | **React** | Client-side validation, async submit |
-| Blog Posts | Flask | SEO-friendly content |
-| About/Education | Flask | Simple display |
-
-### API Endpoints
-
-React components communicate via REST API:
-
-| Endpoint | Method | Description |
-|----------|--------|-------------|
-| `/api/projects` | GET | List all projects |
-| `/api/projects?featured=true` | GET | Featured projects only |
-| `/api/blog` | GET | Blog posts |
-| `/api/blog?limit=3` | GET | Limited posts |
-| `/api/experience` | GET | Work experience |
-| `/api/education` | GET | Education |
-| `/api/skills` | GET | Skills |
-| `/api/contact` | POST | Submit contact form |
-| `/api/csrf-token` | GET | CSRF token for forms |
-
-## Deployment with Podman
-
-### Build the Container Image
-
-```bash
-# Run from project root directory
-podman build -f deploy/Containerfile -t amv_aipf:latest .
-```
-
-### Deploy with Quadlet
-
-```bash
-# Prepare instance directory for persistent database
-mkdir -p ~/.local/share/amv_aipf/instance
-cp instance/portfolio.db ~/.local/share/amv_aipf/instance/
-
-# Create environment file with secret key
-mkdir -p ~/.local/share/amv_aipf
-echo "SECRET_KEY=$(python3 -c 'import secrets; print(secrets.token_hex(32))')" > ~/.local/share/amv_aipf/amv_aipf.env
-
-# Copy quadlet to systemd directory
-mkdir -p ~/.config/containers/systemd/
-cp deploy/amv_aipf.container ~/.config/containers/systemd/
-
-# Reload systemd and start the container
-systemctl --user daemon-reload
-systemctl --user start amv_aipf
-```
-
-### View Logs
-
-```bash
-journalctl --user -u amv_aipf -f
-```
-
-## Exposing with Cloudflare Tunnel
-
-Run cloudflared on the host:
-
-```bash
-cloudflared tunnel --url http://localhost:5000
-```
-
-Or configure a persistent tunnel with your domain in `~/.cloudflared/config.yml`.
+---
 
 ## Project Structure
 
 ```
 amv_aipf/
-├── app.py                  # Main Flask application
-├── api.py                  # REST API endpoints for React
-├── models.py               # Database models with translations
-├── routes.py               # Public URL routes
-├── views.py                # View functions (business logic)
-├── auth.py                 # Authentication routes
-├── admin.py                # Admin panel CRUD operations
-├── seed.py                 # Data seeding
-├── translation_service.py  # MyMemory API integration
-├── translation_utils.py    # Translation helpers
-├── translations.py         # JSON file loader, t() function
-├── requirements.txt        # Python dependencies
-├── agent.md               # Agent instructions for AI assistants
-├── .opencode/             # OpenCode skills configuration (optional)
-│   └── skills/            # Multi-skill directory
-│       ├── ui-ux-pro-max/ # UI/UX design skill
-│       ├── flask-backend-expert/ # Flask backend skill
-│       ├── backend-expert/ # General backend skill
-│       ├── python-developer/ # Python development skill
-│       ├── react-integration/ # React + Flask hybrid skill
-│       └── react-native-expert/ # React Native mobile skill
-├── react/                 # React frontend
+├── app.py                    # Main Flask application, CLI commands
+├── api.py                    # REST API endpoints for React
+├── models.py                 # SQLAlchemy database models
+├── routes.py                 # Public URL routes
+├── views.py                  # View functions, business logic
+├── auth.py                   # Authentication routes
+├── admin.py                  # Admin panel CRUD operations
+├── seed.py                   # Database seeding script
+├── translation_service.py     # MyMemory API translation
+├── translation_utils.py       # Translation helpers, icon maps
+├── translations.py            # JSON file loader, t() function
+├── requirements.txt          # Python dependencies
+├── agent.md                 # AI agent instructions
+│
+├── templates/                # Jinja2 HTML templates
+│   ├── base.html            # Base template with navbar, footer
+│   ├── index.html           # Home page
+│   ├── about.html           # About page (skills, interests, education)
+│   ├── projects.html        # Projects page (React island)
+│   ├── experience.html      # Work experience timeline
+│   ├── blog.html            # Blog listing
+│   ├── blog_post.html       # Single blog post
+│   └── admin/               # Admin templates
+│
+├── react/                   # React frontend
 │   ├── src/
-│   │   ├── components/   # React components
-│   │   ├── api/          # API client and types
-│   │   ├── hooks/        # Custom hooks
-│   │   ├── stores/       # Zustand stores
-│   │   └── entries/      # Entry points
-│   └── vite.config.ts    # Vite configuration
-├── instance/              # SQLite database
-├── migrations/            # Flask-Migrate migrations
-├── templates/             # HTML templates (Jinja2)
-├── translations/          # Language JSON files
-└── deploy/                # Deployment files
+│   │   ├── components/      # React components
+│   │   │   ├── features/    # Feature components (ProjectsGrid, ContactForm)
+│   │   │   └── ui/         # UI components (Button, Card, Input)
+│   │   ├── api/            # API client, types
+│   │   ├── hooks/          # Custom hooks
+│   │   ├── stores/         # Zustand state stores
+│   │   └── entries/        # Entry points
+│   ├── vite.config.ts      # Vite build configuration
+│   └── styles.css          # React component styles
+│
+├── instance/                # SQLite database (gitignored)
+├── migrations/              # Flask-Migrate migrations
+├── translations/            # Language JSON files (en.json, es.json)
+└── deploy/                  # Deployment files
+    ├── Containerfile        # Multi-stage Docker build
+    └── amv_aipf.container   # Quadlet systemd unit
 ```
 
-## OpenCode Skills (Optional)
-
-This portfolio includes multi-skill support for [OpenCode](https://opencode.ai) AI assistant. Skills provide specialized knowledge about different aspects of the project.
-
-### Enabling OpenCode Skills
-
-1. **Create the skills directory structure:**
-   ```bash
-   mkdir -p .opencode/skills
-   ```
-
-2. **Create a skill file** with the following format:
-
-   `.opencode/skills/<skill-name>/SKILL.md`
-   ```
-   ---
-   name: <Skill Display Name>
-   description: Brief description of what this skill covers
-   ---
-   
-   # Skill Content
-   
-   Detailed instructions, patterns, and best practices...
-   ```
-
-3. **Example skill structure:**
-   ```
-   .opencode/skills/
-   ├── README.md                    # Optional: lists all available skills
-   ├── flask-backend-expert/
-   │   └── SKILL.md
-   ├── react-integration/
-   │   └── SKILL.md
-   └── python-developer/
-       └── SKILL.md
-   ```
-
-### SKILL.md Format
-
-Each skill file uses YAML frontmatter followed by Markdown content:
-
-```markdown
----
-name: Flask Backend Expert
-description: Flask web development, routes, models, authentication, API
 ---
 
-# Flask Backend Expert
+## Backend Layer
 
-## Architecture Patterns
+### Flask Application (`app.py`)
 
-This portfolio uses Flask blueprints for modular organization...
+Main application factory with:
+- Blueprint registration
+- Database initialization
+- Custom CLI commands (`create-admin`, `set-skill-icons`, `set-interest-icons`)
+- Session configuration
 
-## Database Models
+### Models (`models.py`)
 
-Models are defined in `models.py` using SQLAlchemy...
+SQLAlchemy models with translation support:
 
-## API Design
+| Model | Fields | Translatable |
+|-------|--------|--------------|
+| `Project` | title, description, technologies, link, demo, featured | title, description |
+| `Experience` | title, company, period, location, responsibilities, technologies | title, responsibilities |
+| `Education` | degree, school, year | degree, school |
+| `BlogPost` | title, excerpt, content, image, author, category, date | title, excerpt, content |
+| `Skill` | name, icon, category | name |
+| `Interest` | name, icon | name |
+| `SocialLink` | platform, url, icon | platform |
+| `ContactMessage` | name, email, subject, message |
+| `Settings` | key, value, translations | value |
 
-REST endpoints are in `api.py`...
+### REST API (`api.py`)
+
+Endpoints for React components:
+
+| Endpoint | Method | Description |
+|----------|--------|-------------|
+| `/api/projects` | GET | List all projects |
+| `/api/projects?featured=true` | GET | Featured projects only |
+| `/api/blog` | GET | Blog posts (optional `?limit=N`) |
+| `/api/experience` | GET | Work experience |
+| `/api/education` | GET | Education entries |
+| `/api/skills` | GET | Skills with auto-icons |
+| `/api/contact` | POST | Submit contact form |
+| `/api/csrf-token` | GET | CSRF token for forms |
+
+### Admin Panel (`admin.py`)
+
+CRUD operations at `/admin/`:
+- Projects, Experience, Education, Blog Posts
+- Skills, Interests, Social Links
+- Contact Messages viewing
+- Settings and Site Configuration
+- Change password
+
+---
+
+## Frontend Layer
+
+### Templates (`templates/`)
+
+Flask/Jinja templates using Bootstrap 5 and Bootstrap Icons.
+
+**Page Sections:**
+- `index.html` - Hero, Features, Featured Projects, Latest Posts, CTA
+- `about.html` - Introduction, Skills (auto-icons), Interests (auto-icons), Education
+- `projects.html` - React ProjectsGrid island
+- `experience.html` - Timeline of work experience
+- `blog.html` - Blog post listings
+- `blog_post.html` - Single blog post with translations
+
+### Flask-React Hybrid Architecture
+
+| Section | Approach | Reason |
+|---------|----------|--------|
+| Header/Footer | Flask/Jinja | Static, SEO-critical |
+| Project Grid | **React** | Technology filtering, animations |
+| Contact Form | **React** | Client-side validation, slide-in panel |
+| Blog Posts | Flask | SEO-friendly content |
+| About/Education | Flask | Simple display |
+
+### React Components (`react/`)
+
+**Entry Points:**
+- `projects.tsx` - ProjectsGrid with filters
+- `contact.tsx` - Full page contact form
+- `panel.tsx` - Slide-in contact panel (floating button)
+
+**Features:**
+- `ProjectsGrid.tsx` - Filter buttons, project cards, modals
+- `ContactForm.tsx` - Form validation, async submission
+
+**UI Components:**
+- Button, Card, Input, TextArea, Badge, Modal, Loading
+
+---
+
+## Data Layer
+
+### Database (`instance/`)
+
+SQLite database with Flask-Migrate for version control.
+
+### Migrations
+
+```bash
+# Create migration
+flask db migrate -m "Description"
+
+# Apply migrations
+flask db upgrade
+
+# Rollback
+flask db downgrade
 ```
 
-### Available Skills in This Project
+### Seeding (`seed.py`)
 
-| Skill | Purpose | When to Use |
-|-------|---------|-------------|
-| `ui-ux-pro-max` | UI/UX design intelligence | Designing pages, components, color schemes |
-| `flask-backend-expert` | Flask web development | Routes, models, authentication, API |
-| `backend-expert` | General backend development | APIs, databases, architecture |
-| `python-developer` | Python development | Scripts, automation, data processing |
-| `react-integration` | React + Flask hybrid | React components, Vite, Zustand |
-| `react-native-expert` | React Native development | Mobile apps, iOS/Android |
+Initial data for development:
+- Admin user
+- Sample projects
+- Work experience
+- Education
+- Skills with auto-icons
+- Interests with auto-icons
 
-### Key Files Reference
+---
 
-When creating skills, reference these key files:
+## Features
 
-| File | Purpose |
-|------|---------|
-| `app.py` | Main Flask app, CLI commands |
-| `api.py` | REST API endpoints |
-| `models.py` | SQLAlchemy models |
-| `views.py` | View functions |
-| `admin.py` | Admin CRUD operations |
-| `templates/` | Jinja2 HTML templates |
-| `react/` | React frontend |
+### Internationalization
 
-### Customizing Skills
+Three-layer translation system:
 
-To customize skills for your portfolio:
-
-1. **Update skill descriptions** to match your stack
-2. **Add project-specific patterns** (e.g., your admin structure)
-3. **Include your conventions** (naming, organization)
-4. **Document custom CLI commands** relevant to your project
-
-## Internationalization Architecture
-
-The application uses a 3-layer translation system:
-
-| Layer | Source | Usage in Templates |
-|-------|--------|-------------------|
+| Layer | Source | Usage |
+|-------|--------|-------|
 | UI Strings | `translations/*.json` | `{{ t('key') }}` |
-| Database Content | `translations` JSON column | Via `get_translated()` in views |
+| Database Content | Model `translations` column | `get_translated()` |
 | Site Config | `Settings` model | `{{ site_config.field }}` |
 
-### Translation Flow:
-1. User selects language → stored in session
-2. Route calls view function with `lang` parameter
-3. View fetches data using `get_translated()` functions
-4. Translated data passed to template
-5. Template renders content in selected language
+**Admin auto-translate** buttons available for:
+- Projects, Experience, Education, Blog Posts
+- Skills, Interests, Social Links
 
-## Skills with Auto-Icons
+### Auto-Icons
 
-Skills automatically receive appropriate Bootstrap Icons based on their name. The icon mapping includes:
+#### Skills Icon Map
 
 | Technology | Icon | Technology | Icon |
 |-----------|------|-----------|------|
@@ -305,33 +243,151 @@ Skills automatically receive appropriate Bootstrap Icons based on their name. Th
 | JavaScript/TypeScript | bi-braces | Git | bi-git |
 | React | bi-lightning-charge | Linux/Bash | bi-terminal |
 | Flask/Django | bi-file-code-fill | AWS/Azure/GCP | bi-cloud-fill |
-| HTML | bi-filetype-html | Database (SQL) | bi-database-fill |
+| HTML | bi-filetype-html | Database | bi-database-fill |
 | CSS | bi-filetype-css | Node.js | bi-node-plus |
-| Machine Learning/AI | bi-brain | Security | bi-shield-check |
+| ML/AI | bi-brain | Security | bi-shield-check |
 | Terraform | bi-stack | FastAPI | bi-lightning-charge |
 
-To set/update icons for all skills in the database:
-```bash
-flask set-skill-icons
-```
-
-This command updates all skills with icons matching the technology map.
-
-## Interests with Auto-Icons
-
-Interests also automatically receive appropriate Bootstrap Icons based on their name. The icon mapping includes:
+#### Interests Icon Map
 
 | Interest | Icon | Interest | Icon |
 |----------|------|----------|------|
-| Coding/Programming | bi-code-square | Music | bi-music-note |
+| Coding | bi-code-square | Music | bi-music-note |
 | Open Source | bi-github | Motorcycles | bi-bicycle |
-| Cloud Computing | bi-cloud | Cars | bi-car-front |
-| Machine Learning | bi-brain | Video Games | bi-controller |
+| Cloud | bi-cloud | Cars | bi-car-front |
+| ML/AI | bi-brain | Video Games | bi-controller |
 | Cybersecurity | bi-shield-lock | Photography | bi-camera |
-| Web Development | bi-globe | Hiking | bi-compass |
-| Mobile Apps | bi-phone | Learning | bi-book |
+| Web Dev | bi-globe | Hiking | bi-compass |
+| Mobile | bi-phone | Learning | bi-book |
 
-To set/update icons for all interests in the database:
+**CLI commands:**
 ```bash
-flask set-interest-icons
+flask set-skill-icons      # Update skill icons
+flask set-interest-icons   # Update interest icons
 ```
+
+---
+
+## Development
+
+### React Development
+
+```bash
+cd react
+
+# Install dependencies
+npm install
+
+# Development server (proxies to Flask)
+npm run dev
+
+# Production build
+npm run build
+```
+
+### Flask Development
+
+```bash
+# Set environment
+export FLASK_ENV=development
+export FLASK_DEBUG=1
+
+# Run server
+python app.py
+```
+
+---
+
+## Deployment
+
+### Build Container
+
+```bash
+podman build -f deploy/Containerfile -t amv_aipf:latest .
+```
+
+### Quadlet Deployment
+
+```bash
+# Prepare directories
+mkdir -p ~/.local/share/amv_aipf/instance
+mkdir -p ~/.local/share/amv_aipf
+
+# Copy database
+cp instance/portfolio.db ~/.local/share/amv_aipf/instance/
+
+# Create secret key
+echo "SECRET_KEY=$(python3 -c 'import secrets; print(secrets.token_hex(32))')" \
+  > ~/.local/share/amv_aipf/amv_aipf.env
+
+# Copy quadlet
+mkdir -p ~/.config/containers/systemd/
+cp deploy/amv_aipf.container ~/.config/containers/systemd/
+
+# Start service
+systemctl --user daemon-reload
+systemctl --user start amv_aipf
+
+# Check status
+systemctl --user status amv_aipf
+
+# View logs
+journalctl --user -u amv_aipf -f
+```
+
+### Cloudflare Tunnel
+
+```bash
+cloudflared tunnel --url http://localhost:5000
+```
+
+Or configure a persistent tunnel in `~/.cloudflared/config.yml`.
+
+---
+
+## OpenCode Skills (Optional)
+
+Enable AI assistant skills for [OpenCode](https://opencode.ai).
+
+### Setup
+
+```bash
+mkdir -p .opencode/skills
+```
+
+### Create a Skill
+
+`.opencode/skills/<name>/SKILL.md`:
+```markdown
+---
+name: Skill Display Name
+description: What this skill covers
+---
+
+# Skill Content
+
+Detailed instructions...
+```
+
+### Available Skills
+
+| Skill | Purpose |
+|-------|---------|
+| `ui-ux-pro-max` | UI/UX design |
+| `flask-backend-expert` | Flask development |
+| `backend-expert` | General backend/API |
+| `python-developer` | Python scripts |
+| `react-integration` | React + Flask hybrid |
+| `react-native-expert` | React Native mobile |
+
+### Key Files Reference
+
+| File | Purpose |
+|------|---------|
+| `app.py` | Main app, CLI commands |
+| `api.py` | REST API |
+| `models.py` | Database models |
+| `views.py` | View functions |
+| `admin.py` | Admin CRUD |
+| `templates/` | Jinja2 templates |
+| `react/` | React frontend |
