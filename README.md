@@ -159,8 +159,7 @@ amv_aipf/
 ├── translations.py         # JSON file loader, t() function
 ├── requirements.txt        # Python dependencies
 ├── agent.md               # Agent instructions for AI assistants
-├── skill.md               # Default skill file
-├── .opencode/             # OpenCode skills configuration
+├── .opencode/             # OpenCode skills configuration (optional)
 │   └── skills/            # Multi-skill directory
 │       ├── ui-ux-pro-max/ # UI/UX design skill
 │       ├── flask-backend-expert/ # Flask backend skill
@@ -182,6 +181,102 @@ amv_aipf/
 ├── translations/          # Language JSON files
 └── deploy/                # Deployment files
 ```
+
+## OpenCode Skills (Optional)
+
+This portfolio includes multi-skill support for [OpenCode](https://opencode.ai) AI assistant. Skills provide specialized knowledge about different aspects of the project.
+
+### Enabling OpenCode Skills
+
+1. **Create the skills directory structure:**
+   ```bash
+   mkdir -p .opencode/skills
+   ```
+
+2. **Create a skill file** with the following format:
+
+   `.opencode/skills/<skill-name>/SKILL.md`
+   ```
+   ---
+   name: <Skill Display Name>
+   description: Brief description of what this skill covers
+   ---
+   
+   # Skill Content
+   
+   Detailed instructions, patterns, and best practices...
+   ```
+
+3. **Example skill structure:**
+   ```
+   .opencode/skills/
+   ├── README.md                    # Optional: lists all available skills
+   ├── flask-backend-expert/
+   │   └── SKILL.md
+   ├── react-integration/
+   │   └── SKILL.md
+   └── python-developer/
+       └── SKILL.md
+   ```
+
+### SKILL.md Format
+
+Each skill file uses YAML frontmatter followed by Markdown content:
+
+```markdown
+---
+name: Flask Backend Expert
+description: Flask web development, routes, models, authentication, API
+---
+
+# Flask Backend Expert
+
+## Architecture Patterns
+
+This portfolio uses Flask blueprints for modular organization...
+
+## Database Models
+
+Models are defined in `models.py` using SQLAlchemy...
+
+## API Design
+
+REST endpoints are in `api.py`...
+```
+
+### Available Skills in This Project
+
+| Skill | Purpose | When to Use |
+|-------|---------|-------------|
+| `ui-ux-pro-max` | UI/UX design intelligence | Designing pages, components, color schemes |
+| `flask-backend-expert` | Flask web development | Routes, models, authentication, API |
+| `backend-expert` | General backend development | APIs, databases, architecture |
+| `python-developer` | Python development | Scripts, automation, data processing |
+| `react-integration` | React + Flask hybrid | React components, Vite, Zustand |
+| `react-native-expert` | React Native development | Mobile apps, iOS/Android |
+
+### Key Files Reference
+
+When creating skills, reference these key files:
+
+| File | Purpose |
+|------|---------|
+| `app.py` | Main Flask app, CLI commands |
+| `api.py` | REST API endpoints |
+| `models.py` | SQLAlchemy models |
+| `views.py` | View functions |
+| `admin.py` | Admin CRUD operations |
+| `templates/` | Jinja2 HTML templates |
+| `react/` | React frontend |
+
+### Customizing Skills
+
+To customize skills for your portfolio:
+
+1. **Update skill descriptions** to match your stack
+2. **Add project-specific patterns** (e.g., your admin structure)
+3. **Include your conventions** (naming, organization)
+4. **Document custom CLI commands** relevant to your project
 
 ## Internationalization Architecture
 
