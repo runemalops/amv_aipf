@@ -25,7 +25,7 @@
                         <small class="text-muted">Your title/profession shown in the hero section</small>
                     </div>
                     <hr>
-                    <h6 class="text-muted mb-3">Spanish</h6>
+                    <h6 class="text-muted mb-3">Spanish <button type="button" class="btn btn-sm btn-info ms-2" onclick="translateSection('site')">Auto-Translate from English</button></h6>
                     <div class="mb-3">
                         <label for="site_title_es" class="form-label">Site Title (Spanish)</label>
                         <input type="text" class="form-control" id="site_title_es" name="site_title_es" value="{{ config_es.site_title if config_es else '' }}">
@@ -74,7 +74,7 @@
                         <small class="text-muted">Leave empty to use default background</small>
                     </div>
                     <hr>
-                    <h6 class="text-muted mb-3">Spanish</h6>
+                    <h6 class="text-muted mb-3">Spanish <button type="button" class="btn btn-sm btn-info ms-2" onclick="translateSection('hero')">Auto-Translate from English</button></h6>
                     <div class="mb-3">
                         <label for="hero_title_es" class="form-label">Hero Title (Spanish)</label>
                         <input type="text" class="form-control" id="hero_title_es" name="hero_title_es" value="{{ config_es.hero_title if config_es else '' }}">
@@ -139,7 +139,7 @@
                         </div>
                     </div>
                     <hr>
-                    <h6 class="text-muted mb-3">Spanish</h6>
+                    <h6 class="text-muted mb-3">Spanish <button type="button" class="btn btn-sm btn-info ms-2" onclick="translateSection('whatido')">Auto-Translate from English</button></h6>
                     <div class="mb-3">
                         <label for="what_i_do_title_es" class="form-label">Section Title (Spanish)</label>
                         <input type="text" class="form-control" id="what_i_do_title_es" name="what_i_do_title_es" value="{{ config_es.what_i_do_title if config_es else '' }}">
@@ -206,7 +206,7 @@
                         <textarea class="form-control" id="about_description2" name="about_description2" rows="3">{{ config.about_description2 }}</textarea>
                     </div>
                     <hr>
-                    <h6 class="text-muted mb-3">Spanish</h6>
+                    <h6 class="text-muted mb-3">Spanish <button type="button" class="btn btn-sm btn-info ms-2" onclick="translateSection('about')">Auto-Translate from English</button></h6>
                     <div class="mb-3">
                         <label for="about_badge_es" class="form-label">Badge Text (Spanish)</label>
                         <input type="text" class="form-control" id="about_badge_es" name="about_badge_es" value="{{ config_es.about_badge if config_es else '' }}">
@@ -269,7 +269,7 @@
                         <input type="text" class="form-control" id="cta_text" name="cta_text" value="{{ config.cta_text }}">
                     </div>
                     <hr>
-                    <h6 class="text-muted mb-3">Spanish</h6>
+                    <h6 class="text-muted mb-3">Spanish <button type="button" class="btn btn-sm btn-info ms-2" onclick="translateSection('subtitles')">Auto-Translate from English</button></h6>
                     <div class="mb-3">
                         <label for="projects_subtitle_es" class="form-label">Featured Projects Subtitle (Spanish)</label>
                         <input type="text" class="form-control" id="projects_subtitle_es" name="projects_subtitle_es" value="{{ config_es.projects_subtitle if config_es else '' }}">
@@ -310,4 +310,100 @@
         </div>
     </div>
 </div>
+
+<script>
+async function translateToSpanish(text) {
+    const response = await fetch('/admin/translate', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        credentials: 'include',
+        body: JSON.stringify({text: text, target_lang: 'es'})
+    });
+    const data = await response.json();
+    return data.translated;
+}
+
+async function translateSection(section) {
+    const btn = event.target;
+    btn.disabled = true;
+    btn.textContent = 'Translating...';
+    
+    try {
+        if (section === 'site') {
+            if (document.getElementById('site_title').value) {
+                document.getElementById('site_title_es').value = await translateToSpanish(document.getElementById('site_title').value);
+            }
+            if (document.getElementById('site_subtitle').value) {
+                document.getElementById('site_subtitle_es').value = await translateToSpanish(document.getElementById('site_subtitle').value);
+            }
+        } else if (section === 'hero') {
+            if (document.getElementById('hero_title').value) {
+                document.getElementById('hero_title_es').value = await translateToSpanish(document.getElementById('hero_title').value);
+            }
+            if (document.getElementById('hero_cta_text').value) {
+                document.getElementById('hero_cta_text_es').value = await translateToSpanish(document.getElementById('hero_cta_text').value);
+            }
+            if (document.getElementById('hero_cta_secondary_text').value) {
+                document.getElementById('hero_cta_secondary_text_es').value = await translateToSpanish(document.getElementById('hero_cta_secondary_text').value);
+            }
+        } else if (section === 'whatido') {
+            if (document.getElementById('what_i_do_title').value) {
+                document.getElementById('what_i_do_title_es').value = await translateToSpanish(document.getElementById('what_i_do_title').value);
+            }
+            if (document.getElementById('what_i_do_subtitle').value) {
+                document.getElementById('what_i_do_subtitle_es').value = await translateToSpanish(document.getElementById('what_i_do_subtitle').value);
+            }
+            if (document.getElementById('feature1_title').value) {
+                document.getElementById('feature1_title_es').value = await translateToSpanish(document.getElementById('feature1_title').value);
+            }
+            if (document.getElementById('feature1_desc').value) {
+                document.getElementById('feature1_desc_es').value = await translateToSpanish(document.getElementById('feature1_desc').value);
+            }
+            if (document.getElementById('feature2_title').value) {
+                document.getElementById('feature2_title_es').value = await translateToSpanish(document.getElementById('feature2_title').value);
+            }
+            if (document.getElementById('feature2_desc').value) {
+                document.getElementById('feature2_desc_es').value = await translateToSpanish(document.getElementById('feature2_desc').value);
+            }
+            if (document.getElementById('feature3_title').value) {
+                document.getElementById('feature3_title_es').value = await translateToSpanish(document.getElementById('feature3_title').value);
+            }
+            if (document.getElementById('feature3_desc').value) {
+                document.getElementById('feature3_desc_es').value = await translateToSpanish(document.getElementById('feature3_desc').value);
+            }
+        } else if (section === 'about') {
+            if (document.getElementById('about_badge').value) {
+                document.getElementById('about_badge_es').value = await translateToSpanish(document.getElementById('about_badge').value);
+            }
+            if (document.getElementById('about_intro').value) {
+                document.getElementById('about_intro_es').value = await translateToSpanish(document.getElementById('about_intro').value);
+            }
+            if (document.getElementById('about_description1').value) {
+                document.getElementById('about_description1_es').value = await translateToSpanish(document.getElementById('about_description1').value);
+            }
+            if (document.getElementById('about_description2').value) {
+                document.getElementById('about_description2_es').value = await translateToSpanish(document.getElementById('about_description2').value);
+            }
+        } else if (section === 'subtitles') {
+            if (document.getElementById('projects_subtitle').value) {
+                document.getElementById('projects_subtitle_es').value = await translateToSpanish(document.getElementById('projects_subtitle').value);
+            }
+            if (document.getElementById('blog_subtitle').value) {
+                document.getElementById('blog_subtitle_es').value = await translateToSpanish(document.getElementById('blog_subtitle').value);
+            }
+            if (document.getElementById('cta_title').value) {
+                document.getElementById('cta_title_es').value = await translateToSpanish(document.getElementById('cta_title').value);
+            }
+            if (document.getElementById('cta_text').value) {
+                document.getElementById('cta_text_es').value = await translateToSpanish(document.getElementById('cta_text').value);
+            }
+        }
+    } catch (e) {
+        alert('Translation failed. Please try again.');
+    }
+    
+    btn.disabled = false;
+    btn.textContent = 'Auto-Translate from English';
+}
+</script>
 {% endblock %}
