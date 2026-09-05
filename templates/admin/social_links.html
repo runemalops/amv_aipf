@@ -32,7 +32,7 @@
             <td><i class="bi {{ link.icon }}"></i> {{ link.icon }}</td>
             <td>
                 <a href="{{ url_for('admin.edit_social_link', id=link.id) }}" class="btn btn-sm btn-secondary">Edit</a>
-                <form method="POST" action="{{ url_for('admin.delete_social_link', id=link.id) }}" style="display:inline;">
+                <form method="POST" action="{{ url_for('admin.delete_social_link', id=link.id) }}" class="d-inline">
                     <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure?')">Delete</button>
                 </form>
             </td>

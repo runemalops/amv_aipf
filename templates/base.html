@@ -682,47 +682,6 @@
             margin-right: auto;
         }
 
-        .project-icon {
-            width: 56px;
-            height: 56px;
-            background: linear-gradient(135deg, var(--accent) 0%, var(--accent-secondary) 100%);
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 1.5rem;
-        }
-
-        .project-icon i {
-            font-size: 1.5rem;
-            color: var(--white);
-        }
-
-        .project-content {
-            padding: 1.75rem;
-        }
-
-        .project-content h3 {
-            font-weight: 600;
-            color: var(--primary);
-            margin-bottom: 0.75rem;
-        }
-
-        .project-description {
-            color: var(--text-muted);
-            margin-bottom: 1rem;
-            line-height: 1.7;
-        }
-
-        .project-tech {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-            margin-bottom: 1.5rem;
-            padding-top: 1rem;
-            border-top: 1px solid var(--border-color);
-        }
-
         .project-links {
             display: flex;
             gap: 0.75rem;
@@ -805,11 +764,6 @@
                             {% for link in social_links %}
                             <a href="{{ link.url }}" target="_blank" rel="noopener noreferrer"><i class="bi {{ link.icon }}"></i></a>
                             {% endfor %}
-                        {% else %}
-                        <a href="#"><i class="bi bi-github"></i></a>
-                        <a href="#"><i class="bi bi-linkedin"></i></a>
-                        <a href="#"><i class="bi bi-twitter-x"></i></a>
-                        <a href="#"><i class="bi bi-envelope"></i></a>
                         {% endif %}
                     </div>
                 </div>

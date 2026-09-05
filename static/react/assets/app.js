@@ -1,0 +1,1 @@
+import{c as e,j as t,R as c}from"./styles.js";import{P as s}from"./ProjectsGrid.js";import{C as n}from"./ContactForm.js";const o=document.getElementById("projects-grid-root");o&&e.createRoot(o).render(t.jsx(c.StrictMode,{children:t.jsx(s,{})}));const r=document.getElementById("contact-form-root");r&&e.createRoot(r).render(t.jsx(c.StrictMode,{children:t.jsx(n,{})}));

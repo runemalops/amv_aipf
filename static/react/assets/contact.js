@@ -1,0 +1,1 @@
+import{c as e,j as t,R as r}from"./styles.js";import{C as c}from"./ContactForm.js";const o=document.getElementById("contact-form-root");o&&e.createRoot(o).render(t.jsx(r.StrictMode,{children:t.jsx(c,{showLabels:!0})}));

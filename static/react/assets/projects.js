@@ -1,0 +1,1 @@
+import{c as r,j as t,R as e}from"./styles.js";import{P as s}from"./ProjectsGrid.js";const o=document.getElementById("projects-grid-root");o&&r.createRoot(o).render(t.jsx(e.StrictMode,{children:t.jsx(s,{showFilters:!0})}));

@@ -1,7 +1,7 @@
 [Container]
 Image=amv_aipf:latest
 ContainerName=amv_aipf
-PublishPort=5000:5000
+PublishPort=5002:5000
 Volume=%h/.local/share/amv_aipf/instance:/app/instance
 Environment=FLASK_APP=app.py
 Environment=FLASK_ENV=production

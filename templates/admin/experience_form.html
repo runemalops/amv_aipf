@@ -50,18 +50,8 @@
     <a href="{{ url_for('admin.experiences') }}" class="btn btn-secondary">Cancel</a>
 </form>
 
+<script src="{{ url_for('static', filename='js/translate.js') }}"></script>
 <script>
-async function translateToSpanish(text, endpoint) {
-    const response = await fetch(endpoint, {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        credentials: 'include',
-        body: JSON.stringify({text: text, target_lang: 'es'})
-    });
-    const data = await response.json();
-    return data.translated;
-}
-
 async function translateExperienceToSpanish() {
     const title = document.getElementById('title').value;
     const responsibilities = document.getElementById('responsibilities').value;

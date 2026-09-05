@@ -8,17 +8,6 @@
     <a href="{{ url_for('admin.educations') }}" class="btn btn-secondary">Back</a>
 </div>
 
-{% with messages = get_flashed_messages(with_categories=true) %}
-  {% if messages %}
-    {% for category, message in messages %}
-      <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
-        {{ message }}
-        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-      </div>
-    {% endfor %}
-  {% endif %}
-{% endwith %}
-
 <div class="card">
     <div class="card-body">
         <form method="POST">
@@ -52,18 +41,8 @@
     </div>
 </div>
 
+<script src="{{ url_for('static', filename='js/translate.js') }}"></script>
 <script>
-async function translateToSpanish(text, endpoint) {
-    const response = await fetch(endpoint, {
-        method: 'POST',
-        headers: {'Content-Type': 'application/json'},
-        credentials: 'include',
-        body: JSON.stringify({text: text, target_lang: 'es'})
-    });
-    const data = await response.json();
-    return data.translated;
-}
-
 async function translateEducationToSpanish() {
     const degree = document.getElementById('degree').value;
     const school = document.getElementById('school').value;

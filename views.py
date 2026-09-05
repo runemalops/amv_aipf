@@ -203,7 +203,7 @@ def get_education(lang="en"):
 
 
 def get_experience(lang="en"):
-    experiences = Experience.query.order_by(Experience.created_at.desc()).all()
+    experiences = Experience.query.order_by(Experience.id.asc()).all()
     result = []
     for e in experiences:
         responsibilities = get_translated(e, "responsibilities", lang)

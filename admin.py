@@ -62,6 +62,7 @@ def dashboard():
     skill_count = Skill.query.count()
     education_count = Education.query.count()
     interest_count = Interest.query.count()
+    social_link_count = SocialLink.query.count()
 
     return render_template(
         "admin/dashboard.html",
@@ -71,6 +72,7 @@ def dashboard():
         skill_count=skill_count,
         education_count=education_count,
         interest_count=interest_count,
+        social_link_count=social_link_count,
     )
 
 
